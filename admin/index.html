@@ -132,7 +132,7 @@ body::after {
   width: 100%; padding: 11px 14px;
   border: 1px solid var(--border-bright); border-radius: 3px;
   font-family: 'Share Tech Mono', monospace; font-size: .88rem;
-  background: var(--surface2); color: var(--text-bright); transition: .2s;
+  background: var(--cyan-glow); color: var(--text-bright); transition: .2s;
 }
 .lfield input::placeholder { color: var(--muted); }
 .lfield input:focus {
@@ -366,11 +366,11 @@ body::after {
     </div>
     <div class="login-subtitle">Panel de Administración</div>
     <div class="lfield">
-      <label>Usuario</label>
-      <input type="text" id="loginUser" placeholder="admin" autocomplete="username">
+      <label>USERNAME</label>
+      <input type="text" id="loginUser" placeholder="neo" autocomplete="username">
     </div>
     <div class="lfield">
-      <label>Contraseña</label>
+      <label>PASSWORD</label>
       <input type="password" id="loginPass" placeholder="••••••••" autocomplete="current-password">
     </div>
     <button class="btn-login" onclick="doLogin()">Ingresar</button>
@@ -382,7 +382,7 @@ body::after {
 <div id="adminApp">
   <div class="topbar">
     <div class="topbar-logo">
-      <div class="topbar-mark">iA</div>
+      <div class="topbar-mark">i A</div>
       <div class="topbar-name">in Albis</div>
     </div>
     <button class="btn-logout" onclick="doLogout()">Cerrar sesión</button>
