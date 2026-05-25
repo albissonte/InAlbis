@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Onboarding — Mi Negocio Web</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #f8f6f2;
+      --bg2:      #f0ede6;
+      --surface:  #ffffff;
+      --border:   #e0dbd0;
+      --accent:   #b8924a;
+      --accent2:  #d4a96a;
+      --dark:     #1a1814;
+      --text:     #2d2926;
+      --text2:    #6b6455;
+      --muted:    #a09880;
+      --danger:   #dc2626;
+    }
+
+    html { font-size: 16px; scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      min-height: 100vh;
+    }
+
+    /* ── Grain overlay ── */
+    body::after {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── Hero header ── */
+    .hero {
+      background: var(--dark);
+      color: #f0ede6;
+      padding: 4rem 2rem 3rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 70% 80% at 80% 50%, rgba(180,140,70,0.12) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 60% at 10% 80%, rgba(80,60,160,0.08) 0%, transparent 60%);
+    }
+
+    .hero-inner {
+      position: relative; z-index: 1;
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      font-size: 0.78rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--accent2);
+      margin-bottom: 1.25rem;
+    }
+
+    .hero h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(2rem, 5vw, 3rem);
+      line-height: 1.12;
+      letter-spacing: -0.02em;
+      margin-bottom: 1rem;
+    }
+
+    .hero h1 em {
+      font-style: italic;
+      color: var(--accent2);
+    }
+
+    .hero p {
+      color: rgba(240,237,230,0.65);
+      font-size: 1rem;
+      line-height: 1.65;
+      max-width: 560px;
+    }
+
+    /* ── Steps indicator ── */
+    .steps-bar {
+      background: var(--dark);
+      border-top: 1px solid rgba(255,255,255,0.06);
+      padding: 1rem 2rem;
+      display: flex; justify-content: center;
+    }
+
+    .steps {
+      display: flex; align-items: center; gap: 0;
+      max-width: 720px; width: 100%;
+    }
+
+    .step {
+      display: flex; align-items: center; gap: 0.5rem;
+      font-size: 0.75rem;
+      color: rgba(240,237,230,0.35);
+      flex: 1;
+    }
+
+    .step.active { color: var(--accent2); }
+    .step.done   { color: rgba(240,237,230,0.55); }
+
+    .step-num {
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      border: 1.5px solid currentColor;
+      display: grid; place-items: center;
+      font-size: 0.7rem;
+      font-weight: 600;
+      flex-shrink: 0;
+    }
+
+    .step.active .step-num { background: var(--accent); border-color: var(--accent); color: #1a1814; }
+    .step.done   .step-num { background: rgba(240,237,230,0.15); }
+
+    .step-line {
+      flex: 1;
+      height: 1px;
+      background: rgba(255,255,255,0.08);
+      margin: 0 0.5rem;
+    }
+
+    /* ── Formulario ── */
+    .form-wrapper {
+      position: relative; z-index: 1;
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 2.5rem 1.5rem 4rem;
+    }
+
+    .form-page {
+      display: none;
+      animation: fadeIn 0.35s ease;
+    }
+
+    .form-page.active { display: block; }
+
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+    .section-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.5rem;
+      letter-spacing: -0.01em;
+      margin-bottom: 0.4rem;
+    }
+
+    .section-desc {
+      color: var(--text2);
+      font-size: 0.9rem;
+      margin-bottom: 2rem;
+      line-height: 1.6;
+    }
+
+    /* ── Campos ── */
+    .field { margin-bottom: 1.4rem; }
+
+    .field label {
+      display: block;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 0.45rem;
+    }
+
+    .field label .required { color: var(--accent); }
+
+    .field input[type="text"],
+    .field input[type="email"],
+    .field input[type="tel"],
+    .field input[type="date"],
+    .field input[type="url"],
+    .field textarea,
+    .field select {
+      width: 100%;
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      padding: 0.85rem 1rem;
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.95rem;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      -webkit-appearance: none;
+    }
+
+    .field input:focus,
+    .field textarea:focus,
+    .field select:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(184,146,74,0.12);
+    }
+
+    .field textarea { resize: vertical; min-height: 100px; line-height: 1.55; }
+
+    .field-hint {
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-top: 0.35rem;
+    }
+
+    .field-error {
+      font-size: 0.78rem;
+      color: var(--danger);
+      margin-top: 0.35rem;
+      display: none;
+    }
+
+    .field.error input, .field.error textarea { border-color: var(--danger); }
+    .field.error .field-error { display: block; }
+
+    /* ── Dos columnas ── */
+    .field-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    @media (max-width: 540px) { .field-row { grid-template-columns: 1fr; } }
+
+    /* ── Upload drop zone ── */
+    .dropzone {
+      background: var(--surface);
+      border: 2px dashed var(--border);
+      border-radius: 12px;
+      padding: 2rem;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+      position: relative;
+    }
+
+    .dropzone:hover,
+    .dropzone.drag-over { border-color: var(--accent); background: rgba(184,146,74,0.04); }
+
+    .dropzone input[type="file"] {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      opacity: 0; cursor: pointer;
+    }
+
+    .dropzone-icon { font-size: 2rem; margin-bottom: 0.5rem; }
+    .dropzone-text { font-size: 0.88rem; color: var(--text2); }
+    .dropzone-sub  { font-size: 0.78rem; color: var(--muted); margin-top: 0.25rem; }
+
+    .file-preview {
+      display: flex; flex-wrap: wrap; gap: 0.5rem;
+      margin-top: 0.75rem;
+    }
+
+    .file-chip {
+      background: rgba(184,146,74,0.1);
+      border: 1px solid rgba(184,146,74,0.2);
+      border-radius: 8px;
+      padding: 0.3rem 0.7rem;
+      font-size: 0.78rem;
+      color: var(--accent);
+      display: flex; align-items: center; gap: 0.4rem;
+    }
+
+    /* ── Checkboxes con diseño personalizado ── */
+    .checkbox-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 0.6rem;
+    }
+
+    .checkbox-item {
+      display: flex; align-items: center; gap: 0.65rem;
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      padding: 0.7rem 0.9rem;
+      cursor: pointer;
+      transition: all 0.15s;
+      font-size: 0.88rem;
+    }
+
+    .checkbox-item:has(input:checked) {
+      border-color: var(--accent);
+      background: rgba(184,146,74,0.07);
+      color: var(--accent);
+    }
+
+    .checkbox-item input { width: 16px; height: 16px; accent-color: var(--accent); flex-shrink: 0; }
+
+    /* ── Navegación entre pasos ── */
+    .form-nav {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-top: 2.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .btn-prev {
+      background: none;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      padding: 0.75rem 1.4rem;
+      color: var(--text2);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.88rem;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .btn-prev:hover { border-color: var(--text2); color: var(--text); }
+
+    .btn-next, .btn-submit {
+      background: var(--dark);
+      border: none;
+      border-radius: 10px;
+      padding: 0.8rem 1.6rem;
+      color: var(--bg);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s;
+      display: flex; align-items: center; gap: 0.5rem;
+    }
+    .btn-next:hover, .btn-submit:hover { background: var(--accent); transform: translateY(-1px); }
+
+    .btn-submit {
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color: var(--dark);
+    }
+
+    /* ── Pantalla de éxito ── */
+    .success-screen {
+      display: none;
+      text-align: center;
+      padding: 3rem 1rem;
+    }
+
+    .success-screen.show { display: block; animation: fadeIn 0.5s ease; }
+
+    .success-icon {
+      font-size: 4rem;
+      margin-bottom: 1rem;
+      display: block;
+    }
+
+    .success-screen h2 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 2rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .success-screen p {
+      color: var(--text2);
+      font-size: 1rem;
+      line-height: 1.65;
+      max-width: 440px;
+      margin: 0 auto;
+    }
+
+    /* ── Loading overlay ── */
+    .loading-overlay {
+      display: none;
+      position: fixed; inset: 0; z-index: 9999;
+      background: rgba(248,246,242,0.85);
+      backdrop-filter: blur(6px);
+      align-items: center; justify-content: center;
+      flex-direction: column; gap: 1rem;
+    }
+    .loading-overlay.show { display: flex; }
+
+    .spinner {
+      width: 40px; height: 40px;
+      border: 3px solid var(--border);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
+</head>
+<body>
+
+<!-- Hero -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow">⚡ Mi Negocio Web</div>
+    <h1>Contanos todo sobre<br>tu <em>negocio</em></h1>
+    <p>Esta información nos permite entender tu marca a fondo y crear una web que realmente represente quiénes son. Tomáte el tiempo que necesites.</p>
+  </div>
+</div>
+
+<!-- Steps bar -->
+<div class="steps-bar">
+  <div class="steps">
+    <div class="step active" id="step-1">
+      <div class="step-num">1</div>
+      <span>Negocio</span>
+    </div>
+    <div class="step-line"></div>
+    <div class="step" id="step-2">
+      <div class="step-num">2</div>
+      <span>Diseño</span>
+    </div>
+    <div class="step-line"></div>
+    <div class="step" id="step-3">
+      <div class="step-num">3</div>
+      <span>Objetivos</span>
+    </div>
+    <div class="step-line"></div>
+    <div class="step" id="step-4">
+      <div class="step-num">4</div>
+      <span>Técnico</span>
+    </div>
+  </div>
+</div>
+
+<!-- Formulario -->
+<div class="form-wrapper">
+  <form id="onboarding-form" enctype="multipart/form-data">
+
+    <!-- ── PÁGINA 1: Información del negocio ── -->
+    <div class="form-page active" data-page="1">
+      <div class="section-title">Tu negocio</div>
+      <div class="section-desc">Empecemos por lo básico. Cuanto más detallado, mejor podemos representarte.</div>
+
+      <div class="field" data-required>
+        <label>Nombre del negocio <span class="required">*</span></label>
+        <input type="text" name="business_name" placeholder="Ej: Café El Rincón">
+        <div class="field-error">Este campo es obligatorio</div>
+      </div>
+
+      <div class="field-row">
+        <div class="field" data-required>
+          <label>Rubro <span class="required">*</span></label>
+          <input type="text" name="business_type" placeholder="Ej: Gastronomía, Moda, Salud...">
+          <div class="field-error">Obligatorio</div>
+        </div>
+        <div class="field" data-required>
+          <label>Teléfono / WhatsApp <span class="required">*</span></label>
+          <input type="tel" name="phone" placeholder="+54 9 11 1234-5678">
+          <div class="field-error">Obligatorio</div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Descripción del negocio</label>
+        <textarea name="description" placeholder="¿Qué hacen? ¿Cuál es su propuesta de valor? ¿Qué los hace únicos?"></textarea>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label>Email de contacto</label>
+          <input type="email" name="email" placeholder="hola@negocio.com">
+        </div>
+        <div class="field">
+          <label>Dirección / Zona</label>
+          <input type="text" name="address" placeholder="Ej: Palermo, Buenos Aires">
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Horarios de atención</label>
+        <input type="text" name="hours" placeholder="Ej: Lun–Vie 9 a 18 h / Sáb 10 a 14 h">
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label>Instagram</label>
+          <input type="text" name="instagram" placeholder="@tu_negocio">
+        </div>
+        <div class="field">
+          <label>Otras redes sociales</label>
+          <input type="text" name="other_social" placeholder="Facebook, TikTok, LinkedIn...">
+        </div>
+      </div>
+
+      <div class="form-nav">
+        <div></div>
+        <button type="button" class="btn-next" onclick="nextPage(1)">Siguiente →</button>
+      </div>
+    </div>
+
+    <!-- ── PÁGINA 2: Diseño y marca ── -->
+    <div class="form-page" data-page="2">
+      <div class="section-title">Identidad y diseño</div>
+      <div class="section-desc">Esta info nos ayuda a capturar la esencia visual de tu marca.</div>
+
+      <div class="field">
+        <label>Logo</label>
+        <div class="dropzone" id="logo-zone">
+          <input type="file" name="logo" accept="image/*" onchange="previewFiles(this, 'logo-preview')">
+          <div class="dropzone-icon">🖼</div>
+          <div class="dropzone-text">Arrastrá tu logo acá o hacé clic para seleccionar</div>
+          <div class="dropzone-sub">JPG, PNG, SVG · máx 10 MB</div>
+        </div>
+        <div class="file-preview" id="logo-preview"></div>
+      </div>
+
+      <div class="field">
+        <label>Fotos del negocio / productos</label>
+        <div class="dropzone" id="photos-zone">
+          <input type="file" name="photos[]" accept="image/*" multiple onchange="previewFiles(this, 'photos-preview')">
+          <div class="dropzone-icon">📸</div>
+          <div class="dropzone-text">Podés subir varias fotos a la vez</div>
+          <div class="dropzone-sub">JPG, PNG, WebP · máx 10 MB c/u</div>
+        </div>
+        <div class="file-preview" id="photos-preview"></div>
+      </div>
+
+      <div class="field">
+        <label>Servicios o productos que ofrecen</label>
+        <textarea name="services" placeholder="Listá tus principales servicios o productos. Ej: Corte de cabello, coloración, mechas..."></textarea>
+      </div>
+
+      <div class="field">
+        <label>Referencias de diseño</label>
+        <input type="text" name="design_references" placeholder="Links a webs que te gustan: https://ejemplo.com, https://otro.com">
+        <div class="field-hint">Pueden ser de competidores o de cualquier rubro que te inspire visualmente</div>
+      </div>
+
+      <div class="field">
+        <label>Colores de la marca</label>
+        <input type="text" name="brand_colors" placeholder="Ej: azul marino, blanco, dorado — o códigos HEX #1A2B3C">
+      </div>
+
+      <div class="field">
+        <label>Texto para sección "Nosotros" / "Sobre nosotros"</label>
+        <textarea name="about_us" placeholder="Contanos la historia del negocio, su misión, sus valores..."></textarea>
+      </div>
+
+      <div class="form-nav">
+        <button type="button" class="btn-prev" onclick="prevPage(2)">← Anterior</button>
+        <button type="button" class="btn-next" onclick="nextPage(2)">Siguiente →</button>
+      </div>
+    </div>
+
+    <!-- ── PÁGINA 3: Objetivos y funcionalidades ── -->
+    <div class="form-page" data-page="3">
+      <div class="section-title">¿Qué necesita tu web?</div>
+      <div class="section-desc">Contanos qué querés lograr y qué funciones son clave para tu negocio.</div>
+
+      <div class="field">
+        <label>Objetivo principal del sitio web</label>
+        <div class="checkbox-grid">
+          <label class="checkbox-item"><input type="checkbox" name="main_goals[]" value="Conseguir clientes"> Conseguir clientes</label>
+          <label class="checkbox-item"><input type="checkbox" name="main_goals[]" value="Vender online"> Vender online</label>
+          <label class="checkbox-item"><input type="checkbox" name="main_goals[]" value="Mostrar trabajos"> Mostrar trabajos / Portfolio</label>
+          <label class="checkbox-item"><input type="checkbox" name="main_goals[]" value="Gestionar reservas"> Gestionar reservas</label>
+          <label class="checkbox-item"><input type="checkbox" name="main_goals[]" value="Dar credibilidad"> Dar credibilidad</label>
+          <label class="checkbox-item"><input type="checkbox" name="main_goals[]" value="Otro"> Otro</label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Funciones especiales que necesita</label>
+        <div class="checkbox-grid">
+          <label class="checkbox-item"><input type="checkbox" name="special_functions[]" value="Sistema de turnos"> Sistema de turnos</label>
+          <label class="checkbox-item"><input type="checkbox" name="special_functions[]" value="Tienda online"> Tienda online</label>
+          <label class="checkbox-item"><input type="checkbox" name="special_functions[]" value="Formulario de contacto"> Formulario de contacto</label>
+          <label class="checkbox-item"><input type="checkbox" name="special_functions[]" value="Botón WhatsApp"> Botón WhatsApp</label>
+          <label class="checkbox-item"><input type="checkbox" name="special_functions[]" value="Mapa de ubicación"> Mapa de ubicación</label>
+          <label class="checkbox-item"><input type="checkbox" name="special_functions[]" value="Blog o noticias"> Blog / Noticias</label>
+          <label class="checkbox-item"><input type="checkbox" name="special_functions[]" value="Galería de fotos"> Galería de fotos</label>
+          <label class="checkbox-item"><input type="checkbox" name="special_functions[]" value="Otro"> Otro</label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Métodos de pago que aceptan</label>
+        <input type="text" name="payment_methods" placeholder="Ej: Efectivo, transferencia, Mercado Pago, tarjetas...">
+      </div>
+
+      <div class="field">
+        <label>¿A quién le apuntan? (público objetivo)</label>
+        <textarea name="target_audience" placeholder="Ej: Mujeres de 25–45 años, profesionales de Buenos Aires que buscan..."></textarea>
+      </div>
+
+      <div class="form-nav">
+        <button type="button" class="btn-prev" onclick="prevPage(3)">← Anterior</button>
+        <button type="button" class="btn-next" onclick="nextPage(3)">Siguiente →</button>
+      </div>
+    </div>
+
+    <!-- ── PÁGINA 4: Info técnica y cierre ── -->
+    <div class="form-page" data-page="4">
+      <div class="section-title">Detalles finales</div>
+      <div class="section-desc">Casi terminamos. Estos últimos datos nos ayudan a planificar bien el proyecto.</div>
+
+      <div class="field">
+        <label>Competencia o referentes del rubro</label>
+        <textarea name="competitors" placeholder="Webs de competidores o negocios similares que admiran"></textarea>
+      </div>
+
+      <div class="field">
+        <label>Dominio y hosting</label>
+        <input type="text" name="domain_hosting" placeholder="Ej: Ya tengo sunegocio.com en Nic.ar — o no sé qué tengo">
+        <div class="field-hint">Si no sabés, no hay problema, lo vemos juntos</div>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label>¿Quién aprueba el diseño final?</label>
+          <input type="text" name="approver" placeholder="Nombre y cargo">
+        </div>
+        <div class="field">
+          <label>Fecha límite ideal del proyecto</label>
+          <input type="date" name="deadline">
+        </div>
+      </div>
+
+      <div class="field">
+        <label>¿Algo más que quieras contarnos?</label>
+        <textarea name="extra_notes" placeholder="Cualquier detalle importante que no hayamos preguntado..."></textarea>
+      </div>
+
+      <div class="form-nav">
+        <button type="button" class="btn-prev" onclick="prevPage(4)">← Anterior</button>
+        <button type="submit" class="btn-submit">
+          <span>Enviar formulario</span> ✓
+        </button>
+      </div>
+    </div>
+
+  </form>
+
+  <!-- Pantalla éxito -->
+  <div class="success-screen" id="success-screen">
+    <span class="success-icon">🎉</span>
+    <h2>¡Recibimos todo!</h2>
+    <p>Gracias por completar el formulario. Vamos a revisar tu información y nos ponemos en contacto en las próximas 24–48 horas para arrancar con tu proyecto.</p>
+  </div>
+</div>
+
+<!-- Loading -->
+<div class="loading-overlay" id="loading">
+  <div class="spinner"></div>
+  <p style="font-size:0.9rem;color:var(--text2)">Enviando tu formulario...</p>
+</div>
+
+<script>
+let currentPage = 1;
+const totalPages = 4;
+
+// ── Navegación entre pasos ──────────────────────────────────
+function goToPage(page) {
+  document.querySelectorAll('.form-page').forEach(p => p.classList.remove('active'));
+  const target = document.querySelector(`.form-page[data-page="${page}"]`);
+  if (target) target.classList.add('active');
+
+  // Steps
+  for (let i = 1; i <= totalPages; i++) {
+    const s = document.getElementById('step-' + i);
+    if (!s) continue;
+    s.classList.remove('active','done');
+    if (i === page) s.classList.add('active');
+    if (i < page)  s.classList.add('done');
+  }
+
+  currentPage = page;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function nextPage(page) {
+  if (!validatePage(page)) return;
+  goToPage(page + 1);
+}
+
+function prevPage(page) {
+  goToPage(page - 1);
+}
+
+// ── Validación básica ────────────────────────────────────────
+function validatePage(page) {
+  const p = document.querySelector(`.form-page[data-page="${page}"]`);
+  let valid = true;
+
+  p.querySelectorAll('[data-required]').forEach(wrapper => {
+    const input = wrapper.querySelector('input, textarea, select');
+    if (!input || !input.value.trim()) {
+      wrapper.classList.add('error');
+      valid = false;
+    } else {
+      wrapper.classList.remove('error');
+    }
+  });
+
+  return valid;
+}
+
+// ── Preview de archivos ──────────────────────────────────────
+function previewFiles(input, previewId) {
+  const preview = document.getElementById(previewId);
+  preview.innerHTML = '';
+  Array.from(input.files).forEach(f => {
+    const chip = document.createElement('div');
+    chip.className = 'file-chip';
+    chip.innerHTML = `📎 ${f.name}`;
+    preview.appendChild(chip);
+  });
+}
+
+// ── Drag over en dropzones ───────────────────────────────────
+document.querySelectorAll('.dropzone').forEach(zone => {
+  zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('drag-over'); });
+  zone.addEventListener('dragleave', () => zone.classList.remove('drag-over'));
+  zone.addEventListener('drop',      () => zone.classList.remove('drag-over'));
+});
+
+// ── Submit ───────────────────────────────────────────────────
+document.getElementById('onboarding-form').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  if (!validatePage(4)) return;
+
+  document.getElementById('loading').classList.add('show');
+
+  try {
+    const formData = new FormData(this);
+    const r = await fetch('/api/submit-form', { method: 'POST', body: formData });
+    const d = await r.json();
+
+    document.getElementById('loading').classList.remove('show');
+
+    if (d.success) {
+      this.style.display = 'none';
+      document.getElementById('success-screen').classList.add('show');
+      document.querySelector('.steps-bar').style.display = 'none';
+    } else {
+      alert('Error: ' + d.message);
+    }
+  } catch (err) {
+    document.getElementById('loading').classList.remove('show');
+    alert('Hubo un error al enviar. Por favor intentá de nuevo.');
+  }
+});
+</script>
+
+</body>
+</html>
