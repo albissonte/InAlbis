@@ -1,1 +1,486 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Panel in Albis</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #0f172a; --gold: #c9a84c; --muted: #64748b;
+  --bg: #f8fafc; --white: #ffffff; --border: #e2e8f0;
+  --green: #16a34a; --orange: #ea580c; --blue: #2563eb; --red: #dc2626;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Nunito', sans-serif; background: var(--bg); color: var(--ink); }
 
+/* ── LOGIN ── */
+#loginScreen {
+  min-height: 100vh; display: flex; align-items: center; justify-content: center;
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f3460 100%);
+}
+.login-box {
+  background: var(--white); border-radius: 16px; padding: 40px 32px;
+  box-shadow: 0 24px 60px rgba(0,0,0,.3); width: 100%; max-width: 360px;
+}
+.login-logo {
+  display: flex; align-items: center; justify-content: center;
+  gap: 10px; margin-bottom: 28px;
+}
+.login-logo-mark {
+  width: 44px; height: 44px; background: var(--ink); border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--gold); font-size: 14px; font-weight: 900; letter-spacing: -1px;
+}
+.login-logo-text { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.3rem; color: var(--ink); }
+.login-subtitle { text-align: center; color: var(--muted); font-size: .78rem; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 28px; }
+.lfield { margin-bottom: 14px; }
+.lfield label { display: block; font-size: .7rem; font-weight: 800; color: var(--gold); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 6px; }
+.lfield input {
+  width: 100%; padding: 11px 14px; border: 1.5px solid var(--border); border-radius: 10px;
+  font-family: 'Nunito', sans-serif; font-size: .9rem; font-weight: 700; transition: .2s;
+}
+.lfield input:focus { outline: none; border-color: var(--gold); }
+.btn-login {
+  width: 100%; padding: 13px; background: var(--ink); color: #fff;
+  border: none; border-radius: 10px; font-family: 'Nunito', sans-serif;
+  font-weight: 800; font-size: .9rem; cursor: pointer; margin-top: 8px; transition: .2s;
+  letter-spacing: .3px;
+}
+.btn-login:hover { background: #1e293b; }
+.login-err { color: var(--red); font-size: .78rem; font-weight: 700; margin-top: 10px; text-align: center; display: none; }
+
+/* ── APP ── */
+#adminApp { display: none; }
+.topbar {
+  background: var(--ink); padding: 14px 24px;
+  display: flex; align-items: center; justify-content: space-between;
+  position: sticky; top: 0; z-index: 100;
+}
+.topbar-logo { display: flex; align-items: center; gap: 10px; }
+.topbar-mark {
+  width: 32px; height: 32px; background: var(--gold); border-radius: 7px;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--ink); font-size: 11px; font-weight: 900;
+}
+.topbar-name { font-family: 'Playfair Display', serif; font-style: italic; color: #fff; font-size: 1.1rem; }
+.btn-logout {
+  padding: 6px 14px; background: #1e293b; border: 1px solid #334155; border-radius: 8px;
+  color: #94a3b8; font-family: 'Nunito', sans-serif; font-weight: 700; font-size: .75rem;
+  cursor: pointer; transition: .2s;
+}
+.btn-logout:hover { background: #dc2626; color: #fff; border-color: #dc2626; }
+
+.tabs { background: var(--white); border-bottom: 1px solid var(--border); padding: 0 24px; display: flex; gap: 4px; }
+.tab-btn {
+  padding: 14px 18px; border: none; background: none; font-family: 'Nunito', sans-serif;
+  font-weight: 800; font-size: .82rem; color: var(--muted); cursor: pointer;
+  border-bottom: 2px solid transparent; margin-bottom: -1px; transition: .2s;
+}
+.tab-btn.active { color: var(--ink); border-bottom-color: var(--gold); }
+
+.tab-pane { display: none; padding: 24px; }
+.tab-pane.active { display: block; }
+
+/* ── STATS ── */
+.stats { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px,1fr)); gap: 12px; margin-bottom: 24px; }
+.stat {
+  background: var(--white); border: 1px solid var(--border); border-radius: 10px;
+  padding: 14px 16px; text-align: center;
+}
+.stat-n { font-size: 1.8rem; font-weight: 900; color: var(--ink); line-height: 1; }
+.stat-l { font-size: .65rem; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-top: 4px; }
+
+/* ── FILTERS ── */
+.filters { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; align-items: center; }
+.filter-btn {
+  padding: 6px 14px; border: 1.5px solid var(--border); background: var(--white);
+  border-radius: 50px; font-family: 'Nunito', sans-serif; font-weight: 800;
+  font-size: .75rem; color: var(--muted); cursor: pointer; transition: .2s;
+}
+.filter-btn.active { background: var(--ink); color: #fff; border-color: var(--ink); }
+.search-input {
+  padding: 7px 14px; border: 1.5px solid var(--border); border-radius: 50px;
+  font-family: 'Nunito', sans-serif; font-size: .8rem; font-weight: 700;
+  width: 200px; transition: .2s; margin-left: auto;
+}
+.search-input:focus { outline: none; border-color: var(--gold); }
+
+/* ── PROJECT CARDS ── */
+.projects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px,1fr)); gap: 14px; }
+.proj-card {
+  background: var(--white); border: 1px solid var(--border); border-radius: 12px;
+  padding: 18px; cursor: pointer; transition: .2s;
+}
+.proj-card:hover { border-color: var(--gold); box-shadow: 0 4px 16px rgba(201,168,76,.15); transform: translateY(-2px); }
+.proj-card-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px; }
+.proj-name { font-weight: 900; font-size: .95rem; color: var(--ink); }
+.proj-type { font-size: .72rem; color: var(--muted); font-weight: 600; margin-top: 2px; }
+.proj-date { font-size: .68rem; color: var(--muted); font-weight: 700; white-space: nowrap; }
+.proj-email { font-size: .78rem; color: var(--muted); margin-bottom: 12px; }
+.proj-footer { display: flex; align-items: center; justify-content: space-between; }
+.badge {
+  display: inline-block; padding: 3px 10px; border-radius: 50px;
+  font-size: .65rem; font-weight: 800; text-transform: uppercase; letter-spacing: .5px;
+}
+.badge-pending    { background: #fef3c7; color: #92400e; }
+.badge-in_progress { background: #dbeafe; color: #1e40af; }
+.badge-completed  { background: #dcfce7; color: #166534; }
+.badge-archived   { background: #f1f5f9; color: #64748b; }
+.proj-notes { font-size: .72rem; color: var(--muted); font-weight: 700; }
+
+/* ── DETAIL PANEL ── */
+.detail-overlay {
+  position: fixed; inset: 0; background: rgba(15,23,42,.5); z-index: 200;
+  display: none; align-items: flex-start; justify-content: flex-end;
+}
+.detail-overlay.open { display: flex; }
+.detail-panel {
+  background: var(--white); width: 100%; max-width: 480px; height: 100vh;
+  overflow-y: auto; padding: 24px; box-shadow: -8px 0 40px rgba(0,0,0,.15);
+}
+.detail-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+.detail-title { font-size: 1.1rem; font-weight: 900; color: var(--ink); }
+.btn-close { background: none; border: none; font-size: 1.2rem; cursor: pointer; color: var(--muted); padding: 4px; }
+.detail-section { margin-bottom: 20px; }
+.detail-section-title {
+  font-size: .65rem; font-weight: 800; color: var(--gold);
+  text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 10px;
+  padding-bottom: 6px; border-bottom: 1px solid var(--border);
+}
+.detail-row { display: flex; gap: 8px; margin-bottom: 8px; }
+.detail-label { font-size: .72rem; font-weight: 800; color: var(--muted); min-width: 80px; }
+.detail-value { font-size: .82rem; font-weight: 700; color: var(--ink); flex: 1; }
+
+.status-select {
+  padding: 7px 12px; border: 1.5px solid var(--border); border-radius: 8px;
+  font-family: 'Nunito', sans-serif; font-size: .82rem; font-weight: 800;
+  cursor: pointer; transition: .2s; background: var(--white);
+}
+.status-select:focus { outline: none; border-color: var(--gold); }
+
+/* ── NOTES ── */
+.note {
+  background: var(--bg); border: 1px solid var(--border); border-radius: 8px;
+  padding: 10px 12px; margin-bottom: 8px;
+}
+.note-text { font-size: .82rem; color: var(--ink); line-height: 1.5; }
+.note-meta { display: flex; align-items: center; justify-content: space-between; margin-top: 6px; }
+.note-date { font-size: .67rem; color: var(--muted); font-weight: 700; }
+.btn-del-note { background: none; border: none; color: #ef4444; font-size: .75rem; cursor: pointer; font-weight: 800; }
+.note-input-wrap { display: flex; gap: 8px; margin-top: 10px; }
+.note-input {
+  flex: 1; padding: 9px 12px; border: 1.5px solid var(--border); border-radius: 8px;
+  font-family: 'Nunito', sans-serif; font-size: .82rem; font-weight: 700;
+  resize: none;
+}
+.note-input:focus { outline: none; border-color: var(--gold); }
+.btn-note {
+  padding: 9px 16px; background: var(--ink); color: #fff; border: none;
+  border-radius: 8px; font-family: 'Nunito', sans-serif; font-weight: 800;
+  font-size: .78rem; cursor: pointer; white-space: nowrap;
+}
+
+.loading { text-align: center; padding: 48px; color: var(--muted); font-weight: 700; }
+.empty { text-align: center; padding: 48px; color: var(--muted); font-size: .88rem; font-weight: 700; }
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="loginScreen">
+  <div class="login-box">
+    <div class="login-logo">
+      <div class="login-logo-mark">iA</div>
+      <div class="login-logo-text">in Albis</div>
+    </div>
+    <div class="login-subtitle">Panel de Administración</div>
+    <div class="lfield">
+      <label>Usuario</label>
+      <input type="text" id="loginUser" placeholder="admin" autocomplete="username">
+    </div>
+    <div class="lfield">
+      <label>Contraseña</label>
+      <input type="password" id="loginPass" placeholder="••••••••" autocomplete="current-password">
+    </div>
+    <button class="btn-login" onclick="doLogin()">Ingresar</button>
+    <div class="login-err" id="loginErr">Usuario o contraseña incorrectos</div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="adminApp">
+  <div class="topbar">
+    <div class="topbar-logo">
+      <div class="topbar-mark">iA</div>
+      <div class="topbar-name">in Albis</div>
+    </div>
+    <button class="btn-logout" onclick="doLogout()">Cerrar sesión</button>
+  </div>
+
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('proyectos', this)">📁 Proyectos</button>
+  </div>
+
+  <div id="tab-proyectos" class="tab-pane active">
+    <div class="stats">
+      <div class="stat"><div class="stat-n" id="stTotal">–</div><div class="stat-l">Total</div></div>
+      <div class="stat"><div class="stat-n" id="stPending">–</div><div class="stat-l">Pendientes</div></div>
+      <div class="stat"><div class="stat-n" id="stProgress">–</div><div class="stat-l">En curso</div></div>
+      <div class="stat"><div class="stat-n" id="stDone">–</div><div class="stat-l">Completos</div></div>
+    </div>
+
+    <div class="filters">
+      <button class="filter-btn active" onclick="filterStatus('', this)">Todos</button>
+      <button class="filter-btn" onclick="filterStatus('pending', this)">Pendientes</button>
+      <button class="filter-btn" onclick="filterStatus('in_progress', this)">En curso</button>
+      <button class="filter-btn" onclick="filterStatus('completed', this)">Completos</button>
+      <button class="filter-btn" onclick="filterStatus('archived', this)">Archivados</button>
+      <input class="search-input" type="text" placeholder="🔍 Buscar..." oninput="searchProjects(this.value)">
+    </div>
+
+    <div class="projects-grid" id="projGrid">
+      <div class="loading">Cargando proyectos...</div>
+    </div>
+  </div>
+</div>
+
+<!-- DETAIL PANEL -->
+<div class="detail-overlay" id="detailOverlay" onclick="closeDetail(event)">
+  <div class="detail-panel" id="detailPanel">
+    <div class="detail-header">
+      <div class="detail-title" id="detailTitle">–</div>
+      <button class="btn-close" onclick="closeDetailPanel()">✕</button>
+    </div>
+    <div id="detailContent"></div>
+  </div>
+</div>
+
+<script>
+const ADMIN_USER = 'admin';
+const ADMIN_PASS = 'Archy44';
+const API = '/api/admin';
+
+let allProjects = [];
+let currentFilter = '';
+
+// ── AUTH ──────────────────────────────────────────────────
+function doLogin() {
+  const u = document.getElementById('loginUser').value.trim();
+  const p = document.getElementById('loginPass').value;
+  if (u === ADMIN_USER && p === ADMIN_PASS) {
+    sessionStorage.setItem('ia_admin', '1');
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('adminApp').style.display = 'block';
+    loadProjects();
+  } else {
+    document.getElementById('loginErr').style.display = 'block';
+  }
+}
+
+function doLogout() {
+  sessionStorage.removeItem('ia_admin');
+  location.reload();
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+  if (sessionStorage.getItem('ia_admin')) {
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('adminApp').style.display = 'block';
+    loadProjects();
+  }
+  ['loginUser','loginPass'].forEach(id => {
+    document.getElementById(id).addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+  });
+});
+
+// ── PROJECTS ──────────────────────────────────────────────
+async function loadProjects() {
+  try {
+    const res = await fetch(`${API}/projects`);
+    const data = await res.json();
+    allProjects = data.projects || [];
+    updateStats(allProjects);
+    renderProjects(allProjects);
+  } catch {
+    document.getElementById('projGrid').innerHTML = '<div class="empty">Error al cargar. Verificá que el Worker esté desplegado.</div>';
+  }
+}
+
+function updateStats(projects) {
+  document.getElementById('stTotal').textContent    = projects.length;
+  document.getElementById('stPending').textContent  = projects.filter(p => p.status === 'pending').length;
+  document.getElementById('stProgress').textContent = projects.filter(p => p.status === 'in_progress').length;
+  document.getElementById('stDone').textContent     = projects.filter(p => p.status === 'completed').length;
+}
+
+function renderProjects(projects) {
+  const grid = document.getElementById('projGrid');
+  if (!projects.length) { grid.innerHTML = '<div class="empty">No hay proyectos aún.</div>'; return; }
+  grid.innerHTML = projects.map(p => {
+    const fd = p.form_data || {};
+    const date = new Date(p.created_at).toLocaleDateString('es-AR', { day:'numeric', month:'short', year:'numeric' });
+    return `
+    <div class="proj-card" onclick="openDetail(${p.id})">
+      <div class="proj-card-top">
+        <div>
+          <div class="proj-name">${p.client_name}</div>
+          <div class="proj-type">${fd.business_type || '—'}</div>
+        </div>
+        <div class="proj-date">${date}</div>
+      </div>
+      <div class="proj-email">${fd.email || '—'}</div>
+      <div class="proj-footer">
+        <span class="badge badge-${p.status}">${statusLabel(p.status)}</span>
+        <span class="proj-notes">${p.notes_count || 0} nota${p.notes_count !== 1 ? 's' : ''}</span>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function filterStatus(status, btn) {
+  currentFilter = status;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const filtered = status ? allProjects.filter(p => p.status === status) : allProjects;
+  renderProjects(filtered);
+}
+
+function searchProjects(q) {
+  const filtered = allProjects.filter(p => {
+    const fd = p.form_data || {};
+    return p.client_name.toLowerCase().includes(q.toLowerCase()) ||
+           (fd.email || '').toLowerCase().includes(q.toLowerCase()) ||
+           (fd.phone || '').includes(q);
+  });
+  renderProjects(filtered);
+}
+
+function switchTab(name, btn) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-pane').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('tab-' + name).classList.add('active');
+}
+
+// ── DETAIL ────────────────────────────────────────────────
+async function openDetail(id) {
+  document.getElementById('detailOverlay').classList.add('open');
+  document.getElementById('detailContent').innerHTML = '<div class="loading">Cargando...</div>';
+
+  const [projRes, notesRes] = await Promise.all([
+    fetch(`${API}/projects/${id}`),
+    fetch(`${API}/projects/${id}/notes`),
+  ]);
+  const { project } = await projRes.json();
+  const { notes }   = await notesRes.json();
+
+  document.getElementById('detailTitle').textContent = project.client_name;
+  const fd = project.form_data || {};
+
+  const rows = [
+    ['Email',     fd.email],
+    ['Teléfono',  fd.phone],
+    ['Instagram', fd.instagram],
+    ['Deadline',  fd.deadline],
+    ['Objetivos', Array.isArray(fd.main_goals) ? fd.main_goals.join(', ') : fd.main_goals],
+    ['Funciones', Array.isArray(fd.special_functions) ? fd.special_functions.join(', ') : fd.special_functions],
+    ['Servicios', fd.services],
+    ['Colores',   fd.brand_colors],
+    ['Descripción', fd.description],
+    ['Notas',     fd.extra_notes],
+  ].filter(([,v]) => v);
+
+  const date = new Date(project.created_at).toLocaleString('es-AR');
+
+  document.getElementById('detailContent').innerHTML = `
+    <div class="detail-section">
+      <div class="detail-section-title">Estado del proyecto</div>
+      <select class="status-select" onchange="updateStatus(${id}, this.value)">
+        <option value="pending"     ${project.status==='pending'?'selected':''}>⏳ Pendiente</option>
+        <option value="in_progress" ${project.status==='in_progress'?'selected':''}>🔵 En curso</option>
+        <option value="completed"   ${project.status==='completed'?'selected':''}>✅ Completado</option>
+        <option value="archived"    ${project.status==='archived'?'selected':''}>📦 Archivado</option>
+      </select>
+      <div style="margin-top:8px;font-size:.7rem;color:var(--muted);font-weight:700;">Recibido: ${date}</div>
+    </div>
+
+    <div class="detail-section">
+      <div class="detail-section-title">Información del cliente</div>
+      ${rows.map(([l,v]) => `
+        <div class="detail-row">
+          <div class="detail-label">${l}</div>
+          <div class="detail-value">${v}</div>
+        </div>`).join('')}
+    </div>
+
+    <div class="detail-section">
+      <div class="detail-section-title">Notas internas</div>
+      <div id="notesList">
+        ${notes.length ? notes.map(n => noteHtml(n)).join('') : '<div style="font-size:.8rem;color:var(--muted);padding:8px 0;">Sin notas aún.</div>'}
+      </div>
+      <div class="note-input-wrap">
+        <textarea class="note-input" id="noteInput" rows="2" placeholder="Agregar nota interna..."></textarea>
+        <button class="btn-note" onclick="addNote(${id})">+ Nota</button>
+      </div>
+    </div>`;
+}
+
+function noteHtml(n) {
+  const d = new Date(n.created_at).toLocaleString('es-AR');
+  return `<div class="note" id="note-${n.id}">
+    <div class="note-text">${n.content}</div>
+    <div class="note-meta">
+      <span class="note-date">${d}</span>
+      <button class="btn-del-note" onclick="deleteNote(${n.id})">Eliminar</button>
+    </div>
+  </div>`;
+}
+
+function closeDetail(e) {
+  if (e.target === document.getElementById('detailOverlay')) closeDetailPanel();
+}
+function closeDetailPanel() {
+  document.getElementById('detailOverlay').classList.remove('open');
+  loadProjects();
+}
+
+async function updateStatus(id, status) {
+  await fetch(`${API}/projects/${id}`, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ status }),
+  });
+}
+
+async function addNote(projectId) {
+  const input = document.getElementById('noteInput');
+  const content = input.value.trim();
+  if (!content) return;
+  const res = await fetch(`${API}/projects/${projectId}/notes`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ content }),
+  });
+  const data = await res.json();
+  if (data.success) {
+    input.value = '';
+    const list = document.getElementById('notesList');
+    const now = new Date().toISOString();
+    list.insertAdjacentHTML('beforeend', noteHtml({ id: data.note_id, content, created_at: now }));
+  }
+}
+
+async function deleteNote(id) {
+  if (!confirm('¿Eliminar esta nota?')) return;
+  await fetch(`${API}/notes/${id}`, { method: 'DELETE' });
+  document.getElementById(`note-${id}`)?.remove();
+}
+
+// ── HELPERS ───────────────────────────────────────────────
+function statusLabel(s) {
+  return { pending: 'Pendiente', in_progress: 'En curso', completed: 'Completado', archived: 'Archivado' }[s] || s;
+}
+</script>
+</body>
+</html>
