@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — Matias Jump</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --or: #FF6B00; --pk: #FF1493; --gr: #00C94A; --bl: #00AAFF;
+  --dk: #141414; --bg: #f7f8ff;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Nunito', sans-serif; background: var(--bg); color: var(--dk); }
+
+/* ── LOGIN ── */
+#loginScreen {
+  min-height: 100vh; display: flex; align-items: center; justify-content: center;
+  background: linear-gradient(135deg, #fff8f0, #fff0fa, #f0f8ff);
+}
+.login-box {
+  background: #fff; border-radius: 24px; padding: 40px 32px;
+  box-shadow: 0 20px 60px rgba(255,107,0,.15); width: 100%; max-width: 380px;
+  text-align: center;
+}
+.login-box h1 { font-family: 'Fredoka One', cursive; font-size: 2rem; color: var(--dk); margin-bottom: 4px; }
+.login-box p { color: #888; font-size: .85rem; margin-bottom: 28px; }
+.lfield { display: flex; flex-direction: column; gap: 5px; text-align: left; margin-bottom: 14px; }
+.lfield label { font-size: .72rem; font-weight: 800; color: var(--or); text-transform: uppercase; letter-spacing: 1px; }
+.lfield input {
+  padding: 11px 14px; border: 2px solid #eee; border-radius: 12px;
+  font-family: 'Nunito', sans-serif; font-size: .9rem; font-weight: 700; transition: .2s;
+}
+.lfield input:focus { outline: none; border-color: var(--or); }
+.btn-login {
+  width: 100%; padding: 13px; background: linear-gradient(135deg, var(--or), #ff9100);
+  color: #fff; border: none; border-radius: 50px; font-family: 'Nunito', sans-serif;
+  font-weight: 900; font-size: 1rem; cursor: pointer; margin-top: 8px; transition: .2s;
+}
+.btn-login:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(255,107,0,.4); }
+.login-err { color: #ff4757; font-size: .8rem; font-weight: 700; margin-top: 10px; display: none; }
+
+/* ── MAIN LAYOUT ── */
+#adminApp { display: none; min-height: 100vh; }
+.top-bar {
+  background: #fff; border-bottom: 3px solid var(--or); padding: 12px 20px;
+  display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100;
+}
+.top-bar-logo { font-family: 'Fredoka One', cursive; font-size: 1.3rem; color: var(--dk); }
+.top-bar-logo span { color: var(--or); }
+.top-bar-right { display: flex; align-items: center; gap: 10px; }
+.btn-logout {
+  padding: 7px 16px; background: #f0f0f0; border: none; border-radius: 50px;
+  font-family: 'Nunito', sans-serif; font-weight: 800; font-size: .78rem; cursor: pointer; transition: .2s;
+}
+.btn-logout:hover { background: #ffdddd; color: #c00; }
+
+/* ── TABS ── */
+.tabs-bar {
+  background: #fff; padding: 0 20px; border-bottom: 2px solid #f0f0f0;
+  display: flex; gap: 4px;
+}
+.tab-btn {
+  padding: 12px 20px; border: none; background: none; font-family: 'Nunito', sans-serif;
+  font-weight: 800; font-size: .85rem; color: #888; cursor: pointer; border-bottom: 3px solid transparent;
+  margin-bottom: -2px; transition: .2s;
+}
+.tab-btn.active { color: var(--or); border-bottom-color: var(--or); }
+
+.tab-content { display: none; padding: 24px 20px; }
+.tab-content.active { display: block; }
+
+/* ── SECTION HEADERS ── */
+.sec-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 20px; flex-wrap: wrap; gap: 10px;
+}
+.sec-title { font-family: 'Fredoka One', cursive; font-size: 1.4rem; color: var(--dk); }
+.btn-primary {
+  padding: 9px 20px; background: linear-gradient(135deg, var(--or), #ff9100);
+  color: #fff; border: none; border-radius: 50px; font-family: 'Nunito', sans-serif;
+  font-weight: 900; font-size: .82rem; cursor: pointer; transition: .2s;
+}
+.btn-primary:hover { transform: scale(1.04); }
+
+/* ── TABLES ── */
+.table-wrap { overflow-x: auto; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,.06); }
+table { width: 100%; border-collapse: collapse; background: #fff; }
+thead { background: linear-gradient(135deg, var(--or), #ff9100); color: #fff; }
+th { padding: 12px 14px; text-align: left; font-size: .78rem; font-weight: 800; text-transform: uppercase; letter-spacing: .8px; white-space: nowrap; }
+td { padding: 11px 14px; border-bottom: 1px solid #f5f5f5; font-size: .84rem; font-weight: 700; }
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: #fff8f0; }
+
+.badge {
+  display: inline-block; padding: 3px 10px; border-radius: 50px; font-size: .7rem; font-weight: 800;
+}
+.badge-pending { background: #fff3e0; color: #e65c00; }
+.badge-confirmed { background: #e0ffe8; color: var(--gr); }
+.badge-cancelled { background: #ffebee; color: #c00; }
+.badge-completed { background: #e3f2fd; color: var(--bl); }
+
+.action-btn {
+  padding: 4px 10px; border: none; border-radius: 50px; font-family: 'Nunito', sans-serif;
+  font-weight: 800; font-size: .7rem; cursor: pointer; transition: .2s; margin: 2px;
+}
+.btn-confirm { background: #e0ffe8; color: var(--gr); }
+.btn-cancel { background: #ffebee; color: #c00; }
+.btn-edit { background: #e3f2fd; color: var(--bl); }
+.btn-delete { background: #ffebee; color: #c00; }
+
+/* ── PRODUCT GRID ── */
+.prod-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
+.prod-card {
+  background: #fff; border-radius: 16px; padding: 18px;
+  box-shadow: 0 4px 16px rgba(0,0,0,.07); transition: .2s;
+}
+.prod-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(255,107,0,.1); }
+.prod-card-name { font-family: 'Fredoka One', cursive; font-size: 1.1rem; color: var(--dk); margin-bottom: 4px; }
+.prod-card-cat { font-size: .7rem; font-weight: 800; color: #aaa; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+.prod-card-price { font-family: 'Fredoka One', cursive; font-size: 1.5rem; color: var(--or); margin-bottom: 12px; }
+.prod-card-actions { display: flex; gap: 6px; }
+.prod-inactive { opacity: .5; }
+
+/* ── MODAL ── */
+.modal-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,.5); z-index: 500;
+  display: none; align-items: center; justify-content: center; padding: 20px;
+}
+.modal-overlay.open { display: flex; }
+.modal {
+  background: #fff; border-radius: 20px; padding: 28px 24px;
+  width: 100%; max-width: 460px; max-height: 90vh; overflow-y: auto;
+}
+.modal h3 { font-family: 'Fredoka One', cursive; font-size: 1.3rem; color: var(--dk); margin-bottom: 20px; }
+.mfield { display: flex; flex-direction: column; gap: 5px; margin-bottom: 14px; }
+.mfield label { font-size: .72rem; font-weight: 800; color: var(--or); text-transform: uppercase; letter-spacing: 1px; }
+.mfield input, .mfield select, .mfield textarea {
+  padding: 10px 13px; border: 2px solid #eee; border-radius: 10px;
+  font-family: 'Nunito', sans-serif; font-size: .88rem; font-weight: 700; transition: .2s;
+}
+.mfield input:focus, .mfield select:focus, .mfield textarea:focus { outline: none; border-color: var(--or); }
+.mfield textarea { resize: vertical; min-height: 80px; }
+.modal-btns { display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px; }
+.btn-secondary {
+  padding: 9px 20px; background: #f0f0f0; border: none; border-radius: 50px;
+  font-family: 'Nunito', sans-serif; font-weight: 800; font-size: .82rem; cursor: pointer;
+}
+
+/* ── STATS ── */
+.stats-row { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 14px; margin-bottom: 28px; }
+.stat-card {
+  background: #fff; border-radius: 14px; padding: 16px;
+  box-shadow: 0 4px 16px rgba(0,0,0,.06); text-align: center;
+}
+.stat-num { font-family: 'Fredoka One', cursive; font-size: 2rem; color: var(--or); }
+.stat-lbl { font-size: .68rem; font-weight: 800; color: #aaa; text-transform: uppercase; letter-spacing: 1px; }
+
+/* ── SEARCH ── */
+.search-bar {
+  padding: 9px 14px; border: 2px solid #eee; border-radius: 50px;
+  font-family: 'Nunito', sans-serif; font-size: .84rem; font-weight: 700;
+  width: 100%; max-width: 280px; transition: .2s;
+}
+.search-bar:focus { outline: none; border-color: var(--or); }
+
+.loading { text-align: center; padding: 40px; color: #aaa; font-weight: 700; }
+.empty { text-align: center; padding: 40px; color: #aaa; font-size: .9rem; font-weight: 700; }
+</style>
+</head>
+<body>
+
+<!-- ══ LOGIN SCREEN ══ -->
+<div id="loginScreen">
+  <div class="login-box">
+    <div style="font-size:2.5rem; margin-bottom:8px;">🪂</div>
+    <h1>Matias <span style="color:var(--or)">Jump</span></h1>
+    <p>Panel de Administración</p>
+    <div class="lfield">
+      <label>Usuario</label>
+      <input type="text" id="loginUser" placeholder="admin" autocomplete="username">
+    </div>
+    <div class="lfield">
+      <label>Contraseña</label>
+      <input type="password" id="loginPass" placeholder="••••••••" autocomplete="current-password">
+    </div>
+    <button class="btn-login" onclick="doLogin()">Entrar</button>
+    <div class="login-err" id="loginErr">Usuario o contraseña incorrectos</div>
+  </div>
+</div>
+
+<!-- ══ ADMIN APP ══ -->
+<div id="adminApp">
+  <div class="top-bar">
+    <div class="top-bar-logo">🪂 Matias <span>Jump</span> Admin</div>
+    <div class="top-bar-right">
+      <span id="adminUserLabel" style="font-size:.8rem;font-weight:800;color:#888;"></span>
+      <button class="btn-logout" onclick="doLogout()">Cerrar sesión</button>
+    </div>
+  </div>
+
+  <div class="tabs-bar">
+    <button class="tab-btn active" onclick="switchTab('reservas', this)">📅 Reservas</button>
+    <button class="tab-btn" onclick="switchTab('productos', this)">🛝 Productos</button>
+  </div>
+
+  <!-- ── TAB: RESERVAS ── -->
+  <div id="tab-reservas" class="tab-content active">
+    <div class="stats-row" id="statsRow">
+      <div class="stat-card"><div class="stat-num" id="stTotal">–</div><div class="stat-lbl">Total</div></div>
+      <div class="stat-card"><div class="stat-num" id="stPending">–</div><div class="stat-lbl">Pendientes</div></div>
+      <div class="stat-card"><div class="stat-num" id="stConfirmed">–</div><div class="stat-lbl">Confirmadas</div></div>
+      <div class="stat-card"><div class="stat-num" id="stCancelled">–</div><div class="stat-lbl">Canceladas</div></div>
+    </div>
+    <div class="sec-header">
+      <div class="sec-title">Reservas</div>
+      <input class="search-bar" type="text" placeholder="🔍 Buscar..." oninput="filterBookings(this.value)">
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Ref</th><th>Cliente</th><th>Artículo</th><th>Fecha</th><th>Hora</th><th>Estado</th><th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody id="bookingsTbody">
+          <tr><td colspan="7" class="loading">Cargando...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ── TAB: PRODUCTOS ── -->
+  <div id="tab-productos" class="tab-content">
+    <div class="sec-header">
+      <div class="sec-title">Productos</div>
+      <button class="btn-primary" onclick="openProductModal()">+ Nuevo producto</button>
+    </div>
+    <div class="prod-grid" id="prodGrid">
+      <div class="loading">Cargando...</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ PRODUCT MODAL ══ -->
+<div class="modal-overlay" id="productModal">
+  <div class="modal">
+    <h3 id="modalTitle">Nuevo Producto</h3>
+    <input type="hidden" id="prodId">
+    <div class="mfield">
+      <label>Nombre del producto</label>
+      <input type="text" id="prodName" placeholder="Big Combo Violet Castle">
+    </div>
+    <div class="mfield">
+      <label>Categoría</label>
+      <select id="prodCat">
+        <option value="bouncer">Bouncer</option>
+        <option value="combo">Combo</option>
+        <option value="water">Water Slide</option>
+        <option value="special">Special</option>
+        <option value="extra">Extra</option>
+      </select>
+    </div>
+    <div class="mfield">
+      <label>Precio ($)</label>
+      <input type="number" id="prodPrice" placeholder="249">
+    </div>
+    <div class="mfield">
+      <label>Descripción</label>
+      <textarea id="prodDesc" placeholder="Descripción del artículo..."></textarea>
+    </div>
+    <div class="mfield">
+      <label>Estado</label>
+      <select id="prodActive">
+        <option value="1">Activo</option>
+        <option value="0">Inactivo</option>
+      </select>
+    </div>
+    <div class="modal-btns">
+      <button class="btn-secondary" onclick="closeProductModal()">Cancelar</button>
+      <button class="btn-primary" onclick="saveProduct()">Guardar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════
+// CONFIG — cambia estas credenciales
+// ══════════════════════════════════════════════
+const ADMIN_USER = 'admin';
+const ADMIN_PASS = 'MatiasJump2025!';
+const API = '/api/booking';
+const ADMIN_API = '/api/admin';
+
+// ══════════════════════════════════════════════
+// AUTH
+// ══════════════════════════════════════════════
+let isLoggedIn = false;
+
+function doLogin() {
+  const u = document.getElementById('loginUser').value.trim();
+  const p = document.getElementById('loginPass').value;
+  if (u === ADMIN_USER && p === ADMIN_PASS) {
+    isLoggedIn = true;
+    sessionStorage.setItem('mj_admin', '1');
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('adminApp').style.display = 'block';
+    document.getElementById('adminUserLabel').textContent = u;
+    loadBookings();
+    loadProducts();
+  } else {
+    document.getElementById('loginErr').style.display = 'block';
+  }
+}
+
+function doLogout() {
+  sessionStorage.removeItem('mj_admin');
+  location.reload();
+}
+
+// Auto-login if session exists
+window.addEventListener('DOMContentLoaded', () => {
+  if (sessionStorage.getItem('mj_admin')) {
+    document.getElementById('loginUser').value = ADMIN_USER;
+    doLogin();
+  }
+  // Enter key on login
+  ['loginUser','loginPass'].forEach(id => {
+    document.getElementById(id).addEventListener('keydown', e => {
+      if (e.key === 'Enter') doLogin();
+    });
+  });
+});
+
+// ══════════════════════════════════════════════
+// TABS
+// ══════════════════════════════════════════════
+function switchTab(name, btn) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('tab-' + name).classList.add('active');
+}
+
+// ══════════════════════════════════════════════
+// BOOKINGS
+// ══════════════════════════════════════════════
+let allBookings = [];
+
+async function loadBookings() {
+  try {
+    const res = await fetch(ADMIN_API + '/bookings');
+    const data = await res.json();
+    allBookings = data.bookings || [];
+    renderBookings(allBookings);
+    updateStats(allBookings);
+  } catch (e) {
+    document.getElementById('bookingsTbody').innerHTML =
+      '<tr><td colspan="7" class="empty">Error al cargar reservas. Verifica que el Worker esté desplegado.</td></tr>';
+  }
+}
+
+function updateStats(bookings) {
+  document.getElementById('stTotal').textContent = bookings.length;
+  document.getElementById('stPending').textContent = bookings.filter(b => b.status === 'pending').length;
+  document.getElementById('stConfirmed').textContent = bookings.filter(b => b.status === 'confirmed').length;
+  document.getElementById('stCancelled').textContent = bookings.filter(b => b.status === 'cancelled').length;
+}
+
+function renderBookings(bookings) {
+  const tbody = document.getElementById('bookingsTbody');
+  if (!bookings.length) {
+    tbody.innerHTML = '<tr><td colspan="7" class="empty">No hay reservas aún.</td></tr>';
+    return;
+  }
+  tbody.innerHTML = bookings.map(b => `
+    <tr>
+      <td><strong>${b.booking_ref}</strong></td>
+      <td>
+        <div style="font-weight:800">${b.customer_name}</div>
+        <div style="font-size:.72rem;color:#888">${b.customer_email}</div>
+      </td>
+      <td>${b.item_name}</td>
+      <td>${formatDate(b.event_date)}</td>
+      <td>${b.event_time}</td>
+      <td><span class="badge badge-${b.status}">${statusLabel(b.status)}</span></td>
+      <td>
+        ${b.status === 'pending' ? `<button class="action-btn btn-confirm" onclick="updateBookingStatus('${b.booking_ref}','confirmed')">✓ Confirmar</button>` : ''}
+        ${b.status !== 'cancelled' && b.status !== 'completed' ? `<button class="action-btn btn-cancel" onclick="updateBookingStatus('${b.booking_ref}','cancelled')">✗ Cancelar</button>` : ''}
+      </td>
+    </tr>
+  `).join('');
+}
+
+function filterBookings(q) {
+  const filtered = allBookings.filter(b =>
+    b.customer_name.toLowerCase().includes(q.toLowerCase()) ||
+    b.item_name.toLowerCase().includes(q.toLowerCase()) ||
+    b.booking_ref.toLowerCase().includes(q.toLowerCase()) ||
+    b.customer_email.toLowerCase().includes(q.toLowerCase())
+  );
+  renderBookings(filtered);
+}
+
+async function updateBookingStatus(ref, status) {
+  const labels = { confirmed: 'confirmar', cancelled: 'cancelar' };
+  if (!confirm(`¿Seguro que quieres ${labels[status]} la reserva ${ref}?`)) return;
+  try {
+    const res = await fetch(ADMIN_API + '/bookings/' + ref, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ status })
+    });
+    if (res.ok) { loadBookings(); }
+    else { alert('Error al actualizar la reserva.'); }
+  } catch { alert('Error de conexión.'); }
+}
+
+// ══════════════════════════════════════════════
+// PRODUCTS
+// ══════════════════════════════════════════════
+let allProducts = [];
+
+async function loadProducts() {
+  try {
+    const res = await fetch(ADMIN_API + '/products');
+    const data = await res.json();
+    allProducts = data.products || [];
+    renderProducts(allProducts);
+  } catch (e) {
+    document.getElementById('prodGrid').innerHTML =
+      '<div class="empty">Error al cargar productos.</div>';
+  }
+}
+
+function renderProducts(products) {
+  const grid = document.getElementById('prodGrid');
+  if (!products.length) {
+    grid.innerHTML = '<div class="empty">No hay productos. Crea el primero.</div>';
+    return;
+  }
+  const cats = { bouncer: '🏰', combo: '🎪', water: '💦', special: '🎯', extra: '🍿' };
+  grid.innerHTML = products.map(p => `
+    <div class="prod-card ${p.active ? '' : 'prod-inactive'}">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+        <span style="font-size:1.4rem">${cats[p.category] || '📦'}</span>
+        <span style="font-size:.7rem;font-weight:800;color:${p.active ? 'var(--gr)' : '#aaa'}">${p.active ? 'ACTIVO' : 'INACTIVO'}</span>
+      </div>
+      <div class="prod-card-name">${p.name}</div>
+      <div class="prod-card-cat">${p.category}</div>
+      <div class="prod-card-price">$${p.price}</div>
+      ${p.description ? `<div style="font-size:.78rem;color:#888;margin-bottom:12px;line-height:1.5">${p.description}</div>` : ''}
+      <div class="prod-card-actions">
+        <button class="action-btn btn-edit" onclick='openProductModal(${JSON.stringify(p)})'>✏️ Editar</button>
+        <button class="action-btn btn-delete" onclick="deleteProduct(${p.id})">🗑 Eliminar</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function openProductModal(prod = null) {
+  document.getElementById('modalTitle').textContent = prod ? 'Editar Producto' : 'Nuevo Producto';
+  document.getElementById('prodId').value = prod ? prod.id : '';
+  document.getElementById('prodName').value = prod ? prod.name : '';
+  document.getElementById('prodCat').value = prod ? prod.category : 'bouncer';
+  document.getElementById('prodPrice').value = prod ? prod.price : '';
+  document.getElementById('prodDesc').value = prod ? (prod.description || '') : '';
+  document.getElementById('prodActive').value = prod ? (prod.active ? '1' : '0') : '1';
+  document.getElementById('productModal').classList.add('open');
+}
+
+function closeProductModal() {
+  document.getElementById('productModal').classList.remove('open');
+}
+
+async function saveProduct() {
+  const id = document.getElementById('prodId').value;
+  const payload = {
+    name: document.getElementById('prodName').value.trim(),
+    category: document.getElementById('prodCat').value,
+    price: parseFloat(document.getElementById('prodPrice').value),
+    description: document.getElementById('prodDesc').value.trim(),
+    active: parseInt(document.getElementById('prodActive').value)
+  };
+  if (!payload.name || !payload.price) { alert('Nombre y precio son obligatorios.'); return; }
+  try {
+    const res = await fetch(ADMIN_API + '/products' + (id ? '/' + id : ''), {
+      method: id ? 'PUT' : 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    if (res.ok) { closeProductModal(); loadProducts(); }
+    else { alert('Error al guardar el producto.'); }
+  } catch { alert('Error de conexión.'); }
+}
+
+async function deleteProduct(id) {
+  if (!confirm('¿Eliminar este producto? Las reservas existentes no se verán afectadas.')) return;
+  try {
+    const res = await fetch(ADMIN_API + '/products/' + id, { method: 'DELETE' });
+    if (res.ok) { loadProducts(); }
+    else { alert('Error al eliminar.'); }
+  } catch { alert('Error de conexión.'); }
+}
+
+// ══════════════════════════════════════════════
+// HELPERS
+// ══════════════════════════════════════════════
+function formatDate(d) {
+  return new Date(d + 'T12:00:00').toLocaleDateString('es-US', { month: 'short', day: 'numeric', year: 'numeric' });
+}
+function statusLabel(s) {
+  return { pending: 'Pendiente', confirmed: 'Confirmada', cancelled: 'Cancelada', completed: 'Completada' }[s] || s;
+}
+
+// Close modal on overlay click
+document.getElementById('productModal').addEventListener('click', function(e) {
+  if (e.target === this) closeProductModal();
+});
+</script>
+</body>
+</html>
