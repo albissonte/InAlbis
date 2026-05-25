@@ -361,7 +361,7 @@ body::after {
 <div id="loginScreen">
   <div class="login-box">
     <div class="login-logo">
-      <div class="login-logo-mark">iA</div>
+      <div class="login-logo-mark">i A</div>
       <div class="login-logo-text">in Albis</div>
     </div>
     <div class="login-subtitle">Panel de Administración</div>
@@ -389,7 +389,7 @@ body::after {
   </div>
 
   <div class="tabs">
-    <button class="tab-btn active" onclick="switchTab('proyectos', this)">📁 Proyectos</button>
+    <button class="tab-btn active" onclick="switchTab('proyectos', this)">PROYECTOS</button>
   </div>
 
   <div id="tab-proyectos" class="tab-pane active">
@@ -406,7 +406,7 @@ body::after {
       <button class="filter-btn" onclick="filterStatus('in_progress', this)">En curso</button>
       <button class="filter-btn" onclick="filterStatus('completed', this)">Completos</button>
       <button class="filter-btn" onclick="filterStatus('archived', this)">Archivados</button>
-      <input class="search-input" type="text" placeholder="🔍 Buscar..." oninput="searchProjects(this.value)">
+      <input class="search-input" type="text" placeholder=" Buscar..." oninput="searchProjects(this.value)">
     </div>
 
     <div class="projects-grid" id="projGrid">
@@ -567,7 +567,7 @@ async function openDetail(id) {
     <div class="detail-section">
       <div class="detail-section-title">Estado del proyecto</div>
       <select class="status-select" onchange="updateStatus(${id}, this.value)">
-        <option value="pending"     ${project.status==='pending'?'selected':''}>⏳ Pendiente</option>
+        <option value="pending"     ${project.status==='pending'?'selected':''}>🟡 Pendiente</option>
         <option value="in_progress" ${project.status==='in_progress'?'selected':''}>🔵 En curso</option>
         <option value="completed"   ${project.status==='completed'?'selected':''}>✅ Completado</option>
         <option value="archived"    ${project.status==='archived'?'selected':''}>📦 Archivado</option>
