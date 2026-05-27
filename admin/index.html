@@ -182,6 +182,12 @@ body::after {
   font-size: 1rem; letter-spacing: 3px;
   animation: flickerGlow 6s ease-in-out infinite;
 }
+.topbar-right { display:flex; align-items:center; gap:12px; }
+.topbar-status {
+  font-size:.65rem; font-weight:800; color:var(--green); letter-spacing:1px;
+  text-shadow:0 0 10px var(--green);
+}
+.topbar-status::before { content:'● '; }
 .btn-logout {
   padding: 6px 14px; background: transparent;
   border: 1px solid var(--border-bright); border-radius: 3px;
@@ -385,7 +391,10 @@ body::after {
       <div class="topbar-mark">i A</div>
       <div class="topbar-name">Terminal de Control</div>
     </div>
-    <button class="btn-logout" onclick="doLogout()">Cerrar sesión</button>
+    <div class="topbar-right">
+      <span class="topbar-status">SISTEMA ACTIVO</span>
+      <button class="btn-logout" onclick="doLogout()">SALIR</button>
+    </div>
   </div>
 
   <div class="tabs">
