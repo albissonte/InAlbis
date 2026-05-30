@@ -1,0 +1,1032 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>In Albis — Páginas web que consiguen clientes</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #0a0a0f;
+  --cream: #f5f0e8;
+  --gold: #c8a96e;
+  --rust: #c0572a;
+  --mist: #e8e4dc;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--ink);
+  color: var(--cream);
+  font-family: 'DM Sans', sans-serif;
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* ── CUSTOM CURSOR ── */
+.cursor {
+  width: 12px; height: 12px;
+  background: var(--gold);
+  border-radius: 50%;
+  position: fixed;
+  pointer-events: none;
+  z-index: 9999;
+  transition: transform 0.15s ease, width 0.2s, height 0.2s;
+  mix-blend-mode: difference;
+}
+.cursor-ring {
+  width: 40px; height: 40px;
+  border: 1px solid rgba(200,169,110,0.5);
+  border-radius: 50%;
+  position: fixed;
+  pointer-events: none;
+  z-index: 9998;
+  transition: all 0.12s ease;
+}
+
+/* ── NOISE OVERLAY ── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 1000;
+  opacity: 0.3;
+}
+
+/* ── PROGRESS BAR ── */
+.progress {
+  position: fixed;
+  top: 0; left: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--gold), var(--rust));
+  z-index: 500;
+  width: 0%;
+  transition: width 0.1s linear;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  padding: 24px 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 400;
+  mix-blend-mode: normal;
+}
+.nav-logo {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 1.4rem;
+  color: var(--cream);
+  letter-spacing: -0.02em;
+}
+.nav-logo span { color: var(--gold); }
+.nav-cta {
+  padding: 10px 24px;
+  border: 1px solid rgba(200,169,110,0.4);
+  border-radius: 2px;
+  color: var(--gold);
+  text-decoration: none;
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  transition: all 0.3s;
+}
+.nav-cta:hover {
+  background: var(--gold);
+  color: var(--ink);
+}
+
+/* ── SECTIONS ── */
+section {
+  min-height: 100vh;
+  position: relative;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+
+/* ── HERO ── */
+#hero {
+  justify-content: center;
+  text-align: center;
+}
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 30% 50%, rgba(200,169,110,0.08) 0%, transparent 60%),
+              radial-gradient(ellipse at 70% 50%, rgba(192,87,42,0.06) 0%, transparent 60%);
+}
+.hero-lines {
+  position: absolute;
+  inset: 0;
+  background-image: 
+    linear-gradient(rgba(200,169,110,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(200,169,110,0.04) 1px, transparent 1px);
+  background-size: 60px 60px;
+  transform: perspective(800px) rotateX(60deg) translateY(-20%);
+  transform-origin: top;
+}
+.hero-content { position: relative; z-index: 2; padding: 0 20px; }
+.hero-tag {
+  display: inline-block;
+  font-size: 0.7rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 32px;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeUp 0.8s 0.3s forwards;
+}
+.hero-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(3rem, 9vw, 8rem);
+  font-weight: 900;
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+  color: var(--cream);
+  opacity: 0;
+  transform: translateY(40px);
+  animation: fadeUp 1s 0.5s forwards;
+}
+.hero-title em {
+  font-style: italic;
+  color: var(--gold);
+  display: block;
+}
+.hero-sub {
+  font-size: clamp(1rem, 2vw, 1.2rem);
+  color: rgba(245,240,232,0.5);
+  margin-top: 28px;
+  font-weight: 300;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeUp 0.8s 0.9s forwards;
+}
+.hero-btns {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  margin-top: 48px;
+  opacity: 0;
+  animation: fadeUp 0.8s 1.1s forwards;
+  flex-wrap: wrap;
+}
+.btn-gold {
+  padding: 16px 40px;
+  background: var(--gold);
+  color: var(--ink);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.85rem;
+  letter-spacing: 0.05em;
+  border-radius: 2px;
+  transition: all 0.3s;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.btn-gold:hover { background: #e0bf82; transform: translateY(-2px); }
+.btn-ghost {
+  padding: 16px 40px;
+  border: 1px solid rgba(245,240,232,0.2);
+  color: var(--cream);
+  text-decoration: none;
+  font-size: 0.85rem;
+  letter-spacing: 0.05em;
+  border-radius: 2px;
+  transition: all 0.3s;
+}
+.btn-ghost:hover { border-color: var(--gold); color: var(--gold); }
+
+/* ── SCROLL INDICATOR ── */
+.scroll-hint {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  opacity: 0;
+  animation: fadeUp 0.8s 1.5s forwards;
+}
+.scroll-hint span {
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(245,240,232,0.3);
+}
+.scroll-line {
+  width: 1px;
+  height: 60px;
+  background: linear-gradient(var(--gold), transparent);
+  animation: scrollLine 2s ease-in-out infinite;
+}
+@keyframes scrollLine {
+  0% { transform: scaleY(0); transform-origin: top; }
+  50% { transform: scaleY(1); transform-origin: top; }
+  51% { transform: scaleY(1); transform-origin: bottom; }
+  100% { transform: scaleY(0); transform-origin: bottom; }
+}
+
+/* ── PARALLAX STORY SECTION ── */
+#story {
+  background: var(--cream);
+  color: var(--ink);
+  padding: 120px 0;
+  min-height: auto;
+  display: block;
+}
+.story-track {
+  position: relative;
+}
+.story-panel {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  padding: 80px clamp(20px, 5vw, 80px);
+  gap: 60px;
+  position: relative;
+}
+.story-panel:nth-child(even) { direction: rtl; }
+.story-panel:nth-child(even) > * { direction: ltr; }
+.panel-visual {
+  position: relative;
+  height: 500px;
+  overflow: hidden;
+  border-radius: 4px;
+}
+.panel-visual-inner {
+  position: absolute;
+  inset: -20%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  will-change: transform;
+}
+.panel-icon {
+  font-size: 10rem;
+  opacity: 0.15;
+}
+.panel-bg {
+  position: absolute;
+  inset: 0;
+  border-radius: 4px;
+}
+.panel-text { max-width: 500px; }
+.panel-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 6rem;
+  font-weight: 900;
+  color: var(--gold);
+  opacity: 0.3;
+  line-height: 1;
+  margin-bottom: -20px;
+}
+.panel-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  font-weight: 700;
+  line-height: 1.1;
+  color: var(--ink);
+  margin-bottom: 20px;
+}
+.panel-title em { color: var(--rust); font-style: italic; }
+.panel-desc {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: rgba(10,10,15,0.6);
+  margin-bottom: 28px;
+}
+.panel-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--rust);
+  font-weight: 500;
+  font-size: 0.85rem;
+  letter-spacing: 0.05em;
+  text-decoration: none;
+  border-bottom: 1px solid currentColor;
+  padding-bottom: 2px;
+  transition: gap 0.2s;
+}
+.panel-link:hover { gap: 14px; }
+
+/* ── PRICING ── */
+#pricing {
+  background: var(--ink);
+  padding: 140px clamp(20px, 5vw, 80px);
+  display: block;
+  min-height: auto;
+}
+.section-label {
+  font-size: 0.7rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 16px;
+}
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.5rem, 5vw, 5rem);
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  margin-bottom: 80px;
+}
+.section-title em { font-style: italic; color: var(--gold); }
+.plans {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2px;
+}
+.plan {
+  padding: 48px 36px;
+  border: 1px solid rgba(200,169,110,0.1);
+  position: relative;
+  transition: all 0.4s;
+  background: rgba(200,169,110,0.02);
+}
+.plan:hover {
+  background: rgba(200,169,110,0.06);
+  border-color: rgba(200,169,110,0.3);
+  transform: translateY(-8px);
+}
+.plan.featured {
+  background: rgba(200,169,110,0.08);
+  border-color: rgba(200,169,110,0.4);
+}
+.plan-badge {
+  position: absolute;
+  top: -12px;
+  left: 36px;
+  background: var(--gold);
+  color: var(--ink);
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 4px 12px;
+}
+.plan-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.plan-desc { font-size: 0.85rem; color: rgba(245,240,232,0.4); margin-bottom: 32px; }
+.plan-price {
+  font-family: 'Playfair Display', serif;
+  font-size: 3.5rem;
+  font-weight: 900;
+  color: var(--gold);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.plan-price sup { font-size: 1.5rem; vertical-align: super; }
+.plan-period { font-size: 0.75rem; color: rgba(245,240,232,0.3); margin-bottom: 32px; }
+.plan-features { list-style: none; margin-bottom: 40px; }
+.plan-features li {
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(200,169,110,0.08);
+  font-size: 0.85rem;
+  color: rgba(245,240,232,0.7);
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+.plan-features li::before {
+  content: '—';
+  color: var(--gold);
+  flex-shrink: 0;
+}
+.plan-btn {
+  display: block;
+  padding: 14px;
+  text-align: center;
+  border: 1px solid rgba(200,169,110,0.4);
+  color: var(--gold);
+  text-decoration: none;
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  transition: all 0.3s;
+}
+.plan-btn:hover, .plan.featured .plan-btn {
+  background: var(--gold);
+  color: var(--ink);
+  border-color: var(--gold);
+}
+
+/* ── REVIEWS PARALLAX ── */
+#reviews {
+  background: var(--cream);
+  color: var(--ink);
+  padding: 140px 0;
+  display: block;
+  min-height: auto;
+  overflow: hidden;
+}
+.reviews-header {
+  padding: 0 clamp(20px, 5vw, 80px);
+  margin-bottom: 80px;
+}
+.reviews-header .section-label { color: var(--rust); }
+.reviews-header .section-title { color: var(--ink); }
+.reviews-header .section-title em { color: var(--rust); }
+.reviews-track {
+  display: flex;
+  gap: 24px;
+  padding: 0 clamp(20px, 5vw, 80px);
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.reviews-track::-webkit-scrollbar { display: none; }
+.review-card {
+  flex-shrink: 0;
+  width: 360px;
+  padding: 40px;
+  background: #fff;
+  border-radius: 4px;
+  box-shadow: 0 4px 40px rgba(0,0,0,0.06);
+  transform: rotate(var(--rot, 0deg));
+  transition: transform 0.3s;
+  position: relative;
+}
+.review-card:hover { transform: rotate(0deg) translateY(-8px); }
+.review-stars {
+  color: var(--gold);
+  font-size: 1rem;
+  margin-bottom: 20px;
+  letter-spacing: 4px;
+}
+.review-text {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: var(--ink);
+  font-style: italic;
+  margin-bottom: 28px;
+}
+.review-author {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.review-avatar {
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  background: var(--gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  color: var(--ink);
+  font-size: 1rem;
+}
+.review-name { font-weight: 600; font-size: 0.9rem; }
+.review-business { font-size: 0.75rem; color: rgba(10,10,15,0.4); }
+.review-quote {
+  position: absolute;
+  top: 20px; right: 24px;
+  font-family: 'Playfair Display', serif;
+  font-size: 4rem;
+  color: rgba(200,169,110,0.15);
+  line-height: 1;
+}
+
+/* ── PORTFOLIO ── */
+#portfolio {
+  background: var(--ink);
+  padding: 140px clamp(20px, 5vw, 80px);
+  display: block;
+  min-height: auto;
+}
+.portfolio-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2px;
+  margin-top: 60px;
+}
+.portfolio-item {
+  position: relative;
+  aspect-ratio: 4/3;
+  overflow: hidden;
+  background: rgba(200,169,110,0.05);
+  border: 1px solid rgba(200,169,110,0.08);
+  cursor: pointer;
+}
+.portfolio-bg {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 5rem;
+  transition: transform 0.6s ease;
+}
+.portfolio-item:hover .portfolio-bg { transform: scale(1.1); }
+.portfolio-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(10,10,15,0.95) 0%, rgba(10,10,15,0) 50%);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 28px;
+  transform: translateY(20px);
+  opacity: 0;
+  transition: all 0.4s;
+}
+.portfolio-item:hover .portfolio-overlay { transform: translateY(0); opacity: 1; }
+.portfolio-tag {
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 6px;
+}
+.portfolio-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+.portfolio-result { font-size: 0.8rem; color: rgba(245,240,232,0.5); margin-top: 4px; }
+
+/* ── CTA FINAL ── */
+#contact {
+  background: var(--cream);
+  color: var(--ink);
+  text-align: center;
+  padding: 180px clamp(20px, 5vw, 80px);
+  display: block;
+  min-height: auto;
+  position: relative;
+  overflow: hidden;
+}
+.contact-bg {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 100%, rgba(192,87,42,0.08) 0%, transparent 60%);
+}
+.contact-content { position: relative; z-index: 2; }
+.contact-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.5rem, 7vw, 7rem);
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  margin-bottom: 24px;
+}
+.contact-title em { font-style: italic; color: var(--rust); }
+.contact-sub {
+  font-size: 1.1rem;
+  color: rgba(10,10,15,0.5);
+  margin-bottom: 56px;
+  font-weight: 300;
+}
+.contact-actions { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+.btn-dark {
+  padding: 18px 48px;
+  background: var(--ink);
+  color: var(--cream);
+  text-decoration: none;
+  font-size: 0.85rem;
+  letter-spacing: 0.05em;
+  border-radius: 2px;
+  transition: all 0.3s;
+}
+.btn-dark:hover { background: #1a1a2a; transform: translateY(-2px); }
+.btn-outline-dark {
+  padding: 18px 48px;
+  border: 1px solid rgba(10,10,15,0.2);
+  color: var(--ink);
+  text-decoration: none;
+  font-size: 0.85rem;
+  letter-spacing: 0.05em;
+  border-radius: 2px;
+  transition: all 0.3s;
+}
+.btn-outline-dark:hover { border-color: var(--ink); }
+
+/* ── FOOTER ── */
+footer {
+  background: var(--ink);
+  padding: 48px clamp(20px, 5vw, 80px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 20px;
+  border-top: 1px solid rgba(200,169,110,0.1);
+}
+.footer-logo {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 1.2rem;
+  color: var(--cream);
+}
+.footer-logo span { color: var(--gold); }
+.footer-copy { font-size: 0.75rem; color: rgba(245,240,232,0.3); }
+.footer-link {
+  font-size: 0.75rem;
+  color: rgba(245,240,232,0.4);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.footer-link:hover { color: var(--gold); }
+
+/* ── REVEAL ANIMATION ── */
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+.reveal-delay-4 { transition-delay: 0.4s; }
+
+@keyframes fadeUp {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 768px) {
+  nav { padding: 20px; }
+  .story-panel { grid-template-columns: 1fr; padding: 60px 20px; gap: 40px; }
+  .story-panel:nth-child(even) { direction: ltr; }
+  .panel-visual { height: 260px; }
+  .panel-num { font-size: 4rem; }
+  .review-card { width: 300px; }
+  footer { flex-direction: column; text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+<div class="progress" id="progress"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">in <span>albis</span></div>
+  <a href="https://wa.me/541168115491" class="nav-cta">Consultar →</a>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-lines"></div>
+  <div class="hero-content">
+    <div class="hero-tag">Desarrollo web · SEO · Buenos Aires</div>
+    <h1 class="hero-title">
+      Páginas que
+      <em>consiguen</em>
+      clientes
+    </h1>
+    <p class="hero-sub">Diseño, desarrollo y SEO local para negocios que quieren crecer más allá de Instagram y aparecer en Google.</p>
+    <div class="hero-btns">
+      <a href="#pricing" class="btn-gold">Ver paquetes →</a>
+      <a href="https://wa.me/541168115491" class="btn-ghost">WhatsApp directo</a>
+    </div>
+  </div>
+  <div class="scroll-hint">
+    <span>Scrollear</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- STORY PARALLAX -->
+<section id="story">
+  <div class="story-track">
+
+    <div class="story-panel">
+      <div class="panel-visual reveal">
+        <div class="panel-bg" style="background: linear-gradient(135deg, #fff8f0, #fdebd0);"></div>
+        <div class="panel-visual-inner" data-parallax="0.3">
+          <div class="panel-icon">⚡</div>
+        </div>
+      </div>
+      <div class="panel-text">
+        <div class="panel-num reveal">01</div>
+        <h2 class="panel-title reveal reveal-delay-1">Entrega en <em>7–14 días</em></h2>
+        <p class="panel-desc reveal reveal-delay-2">Sin reuniones infinitas. Sin vueltas. Definís lo que necesitás, nosotros lo construimos rápido y bien. Tu web lista cuando la necesitás.</p>
+        <a href="#pricing" class="panel-link reveal reveal-delay-3">Ver paquetes →</a>
+      </div>
+    </div>
+
+    <div class="story-panel">
+      <div class="panel-visual reveal">
+        <div class="panel-bg" style="background: linear-gradient(135deg, #f0fff4, #d5f5e3);"></div>
+        <div class="panel-visual-inner" data-parallax="-0.2">
+          <div class="panel-icon">📍</div>
+        </div>
+      </div>
+      <div class="panel-text">
+        <div class="panel-num reveal">02</div>
+        <h2 class="panel-title reveal reveal-delay-1">SEO local <em>incluido</em></h2>
+        <p class="panel-desc reveal reveal-delay-2">Aparecer en Google Maps no es magia, es estrategia. Optimizamos tu presencia para que los clientes de tu zona te encuentren primero a vos.</p>
+        <a href="https://wa.me/541168115491" class="panel-link reveal reveal-delay-3">Hablar con nosotros →</a>
+      </div>
+    </div>
+
+    <div class="story-panel">
+      <div class="panel-visual reveal">
+        <div class="panel-bg" style="background: linear-gradient(135deg, #f0f4ff, #dde5ff);"></div>
+        <div class="panel-visual-inner" data-parallax="0.15">
+          <div class="panel-icon">📱</div>
+        </div>
+      </div>
+      <div class="panel-text">
+        <div class="panel-num reveal">03</div>
+        <h2 class="panel-title reveal reveal-delay-1">Mobile-first <em>siempre</em></h2>
+        <p class="panel-desc reveal reveal-delay-2">El 70% de tus clientes entran desde el teléfono. Diseñamos primero para móvil y luego escalamos. Nunca al revés.</p>
+        <a href="#portfolio" class="panel-link reveal reveal-delay-3">Ver trabajos →</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing">
+  <div class="section-label reveal">Paquetes</div>
+  <h2 class="section-title reveal reveal-delay-1">Elegí el que <em>mejor te sirve</em></h2>
+  <p style="color:rgba(245,240,232,0.4);margin-bottom:60px;font-size:.85rem" class="reveal reveal-delay-2">50% al inicio · 50% al finalizar · Financiación disponible</p>
+  <div class="plans">
+    <div class="plan reveal">
+      <div class="plan-name">Esencial</div>
+      <div class="plan-desc">Para negocios que necesitan existir en internet con lo esencial.</div>
+      <div class="plan-price"><sup>$</sup>250</div>
+      <div class="plan-period">USD · pago único</div>
+      <ul class="plan-features">
+        <li>Landing page de 1 página</li>
+        <li>Diseño mobile-first</li>
+        <li>Botón WhatsApp y redes</li>
+        <li>Formulario de contacto</li>
+        <li>Google Maps embed</li>
+        <li>SEO básico</li>
+        <li>Hosting gratuito</li>
+      </ul>
+      <a href="https://wa.me/541168115491" class="plan-btn">Empezar →</a>
+    </div>
+    <div class="plan featured reveal reveal-delay-1">
+      <div class="plan-badge">Más elegido</div>
+      <div class="plan-name">Negocio</div>
+      <div class="plan-desc">Web completa con catálogo, SEO real y todo lo que necesita un negocio.</div>
+      <div class="plan-price"><sup>$</sup>450</div>
+      <div class="plan-period">USD · pago único</div>
+      <ul class="plan-features">
+        <li>Web de 4–6 páginas</li>
+        <li>Diseño premium a medida</li>
+        <li>Catálogo de productos</li>
+        <li>SEO local completo</li>
+        <li>Google Maps + Search Console</li>
+        <li>Dominio .com.ar (1 año)</li>
+        <li>2 meses de soporte gratuito</li>
+      </ul>
+      <a href="https://wa.me/541168115491" class="plan-btn">Lo quiero →</a>
+    </div>
+    <div class="plan reveal reveal-delay-2">
+      <div class="plan-name">Pro</div>
+      <div class="plan-desc">Para negocios establecidos que quieren ser los primeros en su zona.</div>
+      <div class="plan-price"><sup>$</sup>700</div>
+      <div class="plan-period">USD · pago único</div>
+      <ul class="plan-features">
+        <li>Todo lo del plan Negocio</li>
+        <li>Hasta 10 páginas</li>
+        <li>Blog o sección de novedades</li>
+        <li>Animaciones y efectos</li>
+        <li>SEO avanzado</li>
+        <li>Panel de edición propio</li>
+        <li>3 meses de soporte gratuito</li>
+      </ul>
+      <a href="https://wa.me/541168115491" class="plan-btn">Consultar →</a>
+    </div>
+  </div>
+</section>
+
+<!-- REVIEWS -->
+<section id="reviews">
+  <div class="reviews-header">
+    <div class="section-label reveal">Reseñas</div>
+    <h2 class="section-title reveal reveal-delay-1">Lo que dicen <em>nuestros clientes</em></h2>
+  </div>
+  <div class="reviews-track" id="reviewsTrack">
+    <div class="review-card" style="--rot: -2deg">
+      <div class="review-quote">"</div>
+      <div class="review-stars">★★★★★</div>
+      <p class="review-text">"En menos de 2 semanas tenía mi página online y empecé a recibir consultas de Google. Nunca pensé que fuera tan rápido."</p>
+      <div class="review-author">
+        <div class="review-avatar">K</div>
+        <div>
+          <div class="review-name">Krystian A.</div>
+          <div class="review-business">Servicios del hogar · Springfield VA</div>
+        </div>
+      </div>
+    </div>
+    <div class="review-card" style="--rot: 1.5deg">
+      <div class="review-quote">"</div>
+      <div class="review-stars">★★★★★</div>
+      <p class="review-text">"El catálogo de productos quedó increíble. Los clientes pueden ver todo desde el celular y reservar directo. Un antes y un después."</p>
+      <div class="review-author">
+        <div class="review-avatar">M</div>
+        <div>
+          <div class="review-name">Matias JJ</div>
+          <div class="review-business">Castillos inflables · VA · MD · DC</div>
+        </div>
+      </div>
+    </div>
+    <div class="review-card" style="--rot: -1deg">
+      <div class="review-quote">"</div>
+      <div class="review-stars">★★★★★</div>
+      <p class="review-text">"Aparecer en Google Maps cambió todo. Ahora me llaman clientes que ni saben que existo por redes. El ROI fue increíble."</p>
+      <div class="review-author">
+        <div class="review-avatar">L</div>
+        <div>
+          <div class="review-name">La Unión Apple</div>
+          <div class="review-business">Comercio · Productos Apple</div>
+        </div>
+      </div>
+    </div>
+    <div class="review-card" style="--rot: 2deg">
+      <div class="review-quote">"</div>
+      <div class="review-stars">★★★★★</div>
+      <p class="review-text">"Profesionalismo total. Me explicaron todo, me acompañaron y el resultado superó lo que esperaba. 100% recomendado."</p>
+      <div class="review-author">
+        <div class="review-avatar">A</div>
+        <div>
+          <div class="review-name">Ana G.</div>
+          <div class="review-business">Estudio de yoga · Buenos Aires</div>
+        </div>
+      </div>
+    </div>
+    <div class="review-card" style="--rot: -1.5deg">
+      <div class="review-quote">"</div>
+      <div class="review-stars">★★★★★</div>
+      <p class="review-text">"Rápido, confiable y con ojo para el diseño. Mi web quedó elegante y funcional. Ya tuve 3 clientes nuevos el primer mes."</p>
+      <div class="review-author">
+        <div class="review-avatar">C</div>
+        <div>
+          <div class="review-name">Carlos M.</div>
+          <div class="review-business">Arquitecto · Córdoba</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PORTFOLIO -->
+<section id="portfolio">
+  <div class="section-label reveal">Portfolio</div>
+  <h2 class="section-title reveal reveal-delay-1">Trabajos <em>realizados</em></h2>
+  <div class="portfolio-grid">
+    <div class="portfolio-item reveal">
+      <div class="portfolio-bg">🪂</div>
+      <div class="portfolio-overlay">
+        <div class="portfolio-tag">Tienda online · Reservas</div>
+        <div class="portfolio-name">Matias JJ</div>
+        <div class="portfolio-result">+30% ventas · Carrito · Catálogo</div>
+      </div>
+    </div>
+    <div class="portfolio-item reveal reveal-delay-1">
+      <div class="portfolio-bg">🏠</div>
+      <div class="portfolio-overlay">
+        <div class="portfolio-tag">Servicios del hogar · SEO local</div>
+        <div class="portfolio-name">Krystian Albisson</div>
+        <div class="portfolio-result">Top 3 Google Maps · Landing optimizada</div>
+      </div>
+    </div>
+    <div class="portfolio-item reveal reveal-delay-2">
+      <div class="portfolio-bg">📱</div>
+      <div class="portfolio-overlay">
+        <div class="portfolio-tag">Comercio · Productos</div>
+        <div class="portfolio-name">La Unión Apple</div>
+        <div class="portfolio-result">Catálogo digital · SEO local</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA FINAL -->
+<section id="contact">
+  <div class="contact-bg"></div>
+  <div class="contact-content">
+    <h2 class="contact-title reveal">¿Hablamos <em>hoy?</em></h2>
+    <p class="contact-sub reveal reveal-delay-1">Sin compromiso · Respondemos en menos de 24 horas</p>
+    <div class="contact-actions reveal reveal-delay-2">
+      <a href="https://wa.me/541168115491" class="btn-dark">💬 WhatsApp →</a>
+      <a href="mailto:albissonte@gmail.com" class="btn-outline-dark">✉️ Email</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">in <span>albis</span></div>
+  <div class="footer-copy">© 2026 In Albis · Desarrollo Web · SEO</div>
+  <a href="mailto:albissonte@gmail.com" class="footer-link">albissonte@gmail.com</a>
+</footer>
+
+<script>
+// ── CURSOR
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursorRing');
+let mx = 0, my = 0, rx = 0, ry = 0;
+document.addEventListener('mousemove', e => {
+  mx = e.clientX; my = e.clientY;
+  cursor.style.left = mx - 6 + 'px';
+  cursor.style.top = my - 6 + 'px';
+});
+function animRing() {
+  rx += (mx - rx) * 0.12;
+  ry += (my - ry) *.12;
+  ring.style.left = rx - 20 + 'px';
+  ring.style.top = ry - 20 + 'px';
+  requestAnimationFrame(animRing);
+}
+animRing();
+document.querySelectorAll('a, button').forEach(el => {
+  el.addEventListener('mouseenter', () => {
+    cursor.style.transform = 'scale(2.5)';
+    ring.style.transform = 'scale(1.5)';
+  });
+  el.addEventListener('mouseleave', () => {
+    cursor.style.transform = 'scale(1)';
+    ring.style.transform = 'scale(1)';
+  });
+});
+
+// ── PROGRESS BAR
+const progress = document.getElementById('progress');
+window.addEventListener('scroll', () => {
+  const pct = window.scrollY / (document.body.scrollHeight - window.innerHeight) * 100;
+  progress.style.width = pct + '%';
+});
+
+// ── SCROLL REVEAL
+const reveals = document.querySelectorAll('.reveal');
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('visible'); }
+  });
+}, { threshold: 0.15 });
+reveals.forEach(el => obs.observe(el));
+
+// ── PARALLAX en paneles
+const parallaxEls = document.querySelectorAll('[data-parallax]');
+window.addEventListener('scroll', () => {
+  const sy = window.scrollY;
+  parallaxEls.forEach(el => {
+    const speed = parseFloat(el.dataset.parallax);
+    const rect = el.closest('.panel-visual').getBoundingClientRect();
+    const offset = (rect.top + rect.height / 2 - window.innerHeight / 2) * speed;
+    el.style.transform = `translateY(${offset}px)`;
+  });
+});
+
+// ── REVIEWS drag scroll
+const track = document.getElementById('reviewsTrack');
+let isDown = false, startX, scrollLeft;
+track.addEventListener('mousedown', e => {
+  isDown = true; track.style.cursor = 'grabbing';
+  startX = e.pageX - track.offsetLeft;
+  scrollLeft = track.scrollLeft;
+});
+track.addEventListener('mouseleave', () => { isDown = false; track.style.cursor = ''; });
+track.addEventListener('mouseup', () => { isDown = false; track.style.cursor = ''; });
+track.addEventListener('mousemove', e => {
+  if (!isDown) return;
+  e.preventDefault();
+  const x = e.pageX - track.offsetLeft;
+  track.scrollLeft = scrollLeft - (x - startX) * 1.5;
+});
+
+// ── SMOOTH SCROLL
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth' }); }
+  });
+});
+</script>
+</body>
+</html>
