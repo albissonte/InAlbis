@@ -6,6 +6,7 @@
 <title>Panel in Albis</title>
 <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@700;900&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
 :root {
   --ink: #050d14;
@@ -15,7 +16,7 @@
   --cyan-faint: rgba(0,255,231,0.07);
   --muted: #4a7a80;
   --bg: #060e14;
-  --surface: #0a1620;
+  --surface: rgba(10,22,32,0.55);
   --surface2: #0d1e2b;
   --border: #0e2d38;
   --border-bright: #1a4f5e;
@@ -47,6 +48,11 @@
   from { opacity: 0; transform: translateY(8px); }
   to   { opacity: 1; transform: translateY(0); }
 }
+@keyframes floatCard { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-4px)} }
+@keyframes waveGrow  { from{transform:scaleX(0);opacity:0} to{transform:scaleX(1);opacity:1} }
+@keyframes spinSlow  { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+@keyframes pulseRing { 0%{transform:scale(.3);opacity:1} 100%{transform:scale(1.5);opacity:0} }
+@keyframes logScroll { from{transform:translateY(0)} to{transform:translateY(-50%)} }
 @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -168,6 +174,130 @@ body::after {
   text-shadow: 0 0 8px var(--red);
 }
 
+/* ── WIDGETS ── */
+.widgets-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+  margin-bottom: 28px;
+}
+.widget {
+  background: var(--surface);
+  border: 1px solid var(--border-bright);
+  border-radius: 6px;
+  padding: 18px 20px;
+  backdrop-filter: blur(16px);
+  animation: borderPulse 5s ease-in-out infinite;
+}
+.widget-title {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: .68rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--cyan);
+  text-shadow: 0 0 8px var(--cyan-glow);
+  margin-bottom: 14px;
+}
+
+/* ── TABLE WIDGET ── */
+.dyn-table { width: 100%; border-collapse: collapse; font-size: .75rem; }
+.dyn-table thead tr {
+  border-bottom: 1px solid var(--border-bright);
+}
+.dyn-table th {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: .62rem; letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--muted); padding: 0 8px 8px; text-align: left; font-weight: 400;
+}
+.dyn-table th.sortable { cursor: pointer; user-select: none; }
+.dyn-table th.sortable:hover { color: var(--cyan); }
+.dyn-table th .sort-arrow { margin-left: 4px; opacity: .4; }
+.dyn-table th.asc .sort-arrow::after  { content: '▲'; }
+.dyn-table th.desc .sort-arrow::after { content: '▼'; }
+.dyn-table th:not(.asc):not(.desc) .sort-arrow::after { content: '⇅'; }
+.dyn-table tbody tr {
+  border-bottom: 1px solid var(--border);
+  transition: background .15s;
+  cursor: default;
+}
+.dyn-table tbody tr:hover { background: var(--cyan-faint); }
+.dyn-table td { padding: 8px; color: var(--text); }
+.dyn-table td.mono { font-family: 'Share Tech Mono', monospace; font-size: .7rem; }
+.badge {
+  display: inline-block; padding: 2px 8px; border-radius: 2px;
+  font-family: 'Share Tech Mono', monospace; font-size: .6rem; letter-spacing: 1px;
+}
+.badge-ok     { background: rgba(0,255,153,.1); color: var(--green); border: 1px solid rgba(0,255,153,.25); }
+.badge-warn   { background: rgba(255,140,0,.1);  color: var(--orange); border: 1px solid rgba(255,140,0,.25); }
+.badge-danger { background: rgba(255,51,85,.1);  color: var(--red);    border: 1px solid rgba(255,51,85,.25); }
+.badge-blue   { background: rgba(0,180,255,.1);  color: var(--blue);   border: 1px solid rgba(0,180,255,.25); }
+.table-search {
+  width: 100%; padding: 6px 10px; margin-bottom: 10px;
+  background: var(--surface2); border: 1px solid var(--border-bright);
+  border-radius: 3px; color: var(--text-bright);
+  font-family: 'Share Tech Mono', monospace; font-size: .72rem;
+}
+.table-search:focus { outline: none; border-color: var(--cyan); box-shadow: 0 0 6px var(--cyan-glow); }
+.table-search::placeholder { color: var(--muted); }
+
+
+/* ── LIVE PULSE ── */
+.live-pulse-rings{position:relative;width:44px;height:44px;flex-shrink:0;}
+.pulse-ring{position:absolute;inset:0;border-radius:50%;border:1px solid var(--green);animation:pulseRing 2s ease-in-out infinite;}
+.pulse-ring:nth-child(2){animation-delay:.5s;}.pulse-ring:nth-child(3){animation-delay:1s;}
+.pulse-dot{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:9px;height:9px;background:var(--green);border-radius:50%;box-shadow:0 0 10px var(--green);}
+
+/* ── LOG FEED ── */
+.log-feed{height:110px;overflow:hidden;position:relative;font-family:'Share Tech Mono',monospace;font-size:.58rem;border:1px solid var(--border);border-radius:3px;padding:8px 10px;background:rgba(0,0,0,.3);margin-top:10px;}
+.log-feed::after{content:'';position:absolute;bottom:0;left:0;right:0;height:28px;background:linear-gradient(transparent,var(--surface));pointer-events:none;}
+.log-feed-inner{animation:logScroll 18s linear infinite;}
+.log-line{padding:2px 0;color:var(--muted);line-height:1.6;display:flex;gap:8px;}
+.log-line .log-time{color:var(--cyan-dim);min-width:56px;}
+.log-line .log-type{min-width:46px;}
+.log-line.info .log-type{color:var(--cyan);}
+.log-line.warn .log-type{color:var(--orange);}
+.log-line.ok   .log-type{color:var(--green);}
+.log-line.err  .log-type{color:var(--red);}
+
+/* ── HOLO RINGS ── */
+.holo-rings{display:flex;align-items:center;justify-content:center;height:70px;position:relative;}
+.holo-ring{position:absolute;border:1px solid var(--cyan-dim);border-radius:50%;opacity:.4;}
+.holo-ring:nth-child(1){width:26px;height:26px;animation:spinSlow 4s linear infinite;}
+.holo-ring:nth-child(2){width:44px;height:44px;animation:spinSlow 7s linear infinite reverse;border-color:var(--cyan);}
+.holo-ring:nth-child(3){width:62px;height:62px;animation:spinSlow 12s linear infinite;border-style:dashed;}
+.holo-center{width:10px;height:10px;background:var(--cyan);border-radius:50%;box-shadow:0 0 12px var(--cyan);z-index:1;}
+
+/* ── CSS CHART BARS ── */
+.chart-container{height:90px;display:flex;align-items:flex-end;gap:3px;margin-top:10px;}
+.chart-bar{flex:1;background:linear-gradient(180deg,var(--cyan),var(--cyan-dim));border-radius:1px 1px 0 0;opacity:.65;position:relative;transition:.3s;cursor:pointer;transform-origin:bottom;animation:waveGrow .6s ease both;}
+.chart-bar:hover{opacity:1;box-shadow:0 0 8px var(--cyan-glow);}
+.chart-bar::after{content:attr(data-val);position:absolute;bottom:100%;left:50%;transform:translateX(-50%);font-family:'Share Tech Mono',monospace;font-size:.48rem;color:var(--cyan);opacity:0;transition:.2s;white-space:nowrap;padding-bottom:3px;}
+.chart-bar:hover::after{opacity:1;}
+.chart-label{display:flex;justify-content:space-between;font-family:'Share Tech Mono',monospace;font-size:.48rem;color:var(--muted);margin-top:5px;}
+
+/* ── SECTION HEADER ── */
+.section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--border);}
+.section-title{font-family:'Orbitron',sans-serif;font-size:.72rem;color:var(--cyan);letter-spacing:3px;text-transform:uppercase;}
+.section-title::before{content:'▶ ';color:var(--cyan-dim);font-size:.58rem;}
+
+/* ── ANALYTICS GRID ── */
+.analytics-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:24px;}
+@media(max-width:900px){.analytics-grid{grid-template-columns:1fr 1fr;}}
+@media(max-width:600px){.analytics-grid{grid-template-columns:1fr;}}
+.analytics-panel{background:var(--surface);border:1px solid var(--border-bright);border-radius:4px;padding:18px 20px;backdrop-filter:blur(12px);position:relative;overflow:hidden;animation:floatCard 8s ease-in-out infinite;}
+.analytics-panel.span2{grid-column:span 2;}
+.analytics-panel::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--cyan-dim),transparent);opacity:.5;}
+.ap-title{font-family:'Orbitron',sans-serif;font-size:.58rem;color:var(--cyan);letter-spacing:2px;margin-bottom:8px;text-transform:uppercase;}
+
+/* ── DONUT LEGEND ── */
+.donut-wrap{display:flex;align-items:center;gap:14px;margin-top:10px;}
+.donut-legend{display:flex;flex-direction:column;gap:6px;}
+.donut-item{display:flex;align-items:center;gap:7px;font-family:'Share Tech Mono',monospace;font-size:.56rem;color:var(--text);}
+.donut-dot{width:7px;height:7px;border-radius:50%;}
+
+/* ── LIVE USERS ── */
+.live-users{display:flex;align-items:center;gap:12px;margin-top:10px;}
+.live-num{font-family:'Orbitron',sans-serif;font-size:2.2rem;font-weight:900;color:var(--green);text-shadow:0 0 18px var(--green);}
 /* ── APP ── */
 #adminApp { display: none; position: relative; z-index: 10; }
 .topbar {
@@ -233,26 +363,47 @@ body::after {
 
 /* ── STATS ── */
 .stats { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px,1fr)); gap: 12px; margin-bottom: 24px; }
+/* HUD corners */
+.hud-corner{position:fixed;width:50px;height:50px;z-index:3;pointer-events:none;}
+.hud-corner.tl{top:0;left:0;border-top:1px solid var(--cyan-dim);border-left:1px solid var(--cyan-dim);}
+.hud-corner.tr{top:0;right:0;border-top:1px solid var(--cyan-dim);border-right:1px solid var(--cyan-dim);}
+.hud-corner.bl{bottom:0;left:0;border-bottom:1px solid var(--cyan-dim);border-left:1px solid var(--cyan-dim);}
+.hud-corner.br{bottom:0;right:0;border-bottom:1px solid var(--cyan-dim);border-right:1px solid var(--cyan-dim);}
+
 .stat {
   background: var(--surface); border: 1px solid var(--border-bright); border-radius: 4px;
-  padding: 14px 16px; text-align: center;
-  backdrop-filter: blur(16px) saturate(1.5);
-  animation: borderPulse 4s ease-in-out infinite;
+  padding: 16px 18px; position: relative; overflow: hidden;
+  backdrop-filter: blur(6px) saturate(1.2);
+  animation: floatCard 6s ease-in-out infinite;
+  transition: .3s;
 }
-.stat:nth-child(2) { animation-delay: .8s; }
-.stat:nth-child(3) { animation-delay: 1.6s; }
-.stat:nth-child(4) { animation-delay: 2.4s; }
+.stat::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:1px;
+  background:linear-gradient(90deg,transparent,var(--cyan),transparent); opacity:.6;
+}
+.stat:hover { border-color: var(--cyan); box-shadow: 0 0 20px var(--cyan-glow), 0 6px 24px rgba(0,0,0,.4); transform:translateY(-4px)!important; }
+.stat:nth-child(2) { animation-delay: 1s; }
+.stat:nth-child(3) { animation-delay: 2s; }
+.stat:nth-child(4) { animation-delay: 3s; }
+.stat-icon { font-size: 1.1rem; margin-bottom: 8px; opacity: .75; }
 .stat-n {
   font-family: 'Orbitron', sans-serif;
   font-size: 1.8rem; font-weight: 900;
   color: var(--cyan); line-height: 1;
   text-shadow: 0 0 10px var(--cyan), 0 0 20px var(--cyan-dim);
 }
+.stat-n.green  { color: var(--green);  text-shadow: 0 0 12px var(--green); }
+.stat-n.orange { color: var(--orange); text-shadow: 0 0 12px var(--orange); }
+.stat-n.blue   { color: var(--blue);   text-shadow: 0 0 12px var(--blue); }
 .stat-l {
   font-family: 'Share Tech Mono', monospace;
   font-size: .6rem; color: var(--muted); text-transform: uppercase;
   letter-spacing: 1.5px; margin-top: 6px;
 }
+.stat-sub { font-family:'Share Tech Mono',monospace; font-size:.58rem; color:var(--text-dim); margin-top:4px; }
+.stat-mini-graph { height:28px; display:flex; align-items:flex-end; gap:2px; margin-top:10px; }
+.mini-bar { flex:1; background:var(--cyan); border-radius:1px; opacity:.4; transition:.3s; }
+.stat:hover .mini-bar { opacity:.75; }
 
 /* ── FILTERS ── */
 .filters { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; align-items: center; }
@@ -279,8 +430,10 @@ body::after {
 .projects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px,1fr)); gap: 14px; }
 .proj-card {
   background: var(--surface); border: 1px solid var(--border-bright); border-radius: 4px;
-  padding: 18px; cursor: pointer; transition: .25s; position: relative; overflow: hidden;
+  padding: 18px; cursor: pointer; transition: .3s; position: relative; overflow: hidden;
+  backdrop-filter: blur(12px); animation: floatCard 7s ease-in-out infinite;
 }
+.proj-card:nth-child(even) { animation-delay: 2s; }
 .proj-card::before {
   content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
   background: linear-gradient(90deg, transparent, var(--cyan-dim), transparent);
@@ -543,10 +696,94 @@ body::after {
 
   <div id="tab-proyectos" class="tab-pane active">
     <div class="stats">
-      <div class="stat"><div class="stat-n" id="stTotal">–</div><div class="stat-l">Total</div></div>
-      <div class="stat"><div class="stat-n" id="stPending">–</div><div class="stat-l">Pendientes</div></div>
-      <div class="stat"><div class="stat-n" id="stProgress">–</div><div class="stat-l">En curso</div></div>
-      <div class="stat"><div class="stat-n" id="stDone">–</div><div class="stat-l">Completos</div></div>
+      <div class="stat">
+        <div class="stat-icon">◈</div>
+        <div class="stat-n" id="stTotal">–</div>
+        <div class="stat-l">Total Proyectos</div>
+        <div class="stat-mini-graph">
+          <div class="mini-bar" style="height:40%"></div><div class="mini-bar" style="height:60%"></div>
+          <div class="mini-bar" style="height:50%"></div><div class="mini-bar" style="height:80%"></div>
+          <div class="mini-bar" style="height:70%"></div><div class="mini-bar" style="height:100%"></div>
+        </div>
+      </div>
+      <div class="stat">
+        <div class="stat-icon" style="color:var(--orange)">⏳</div>
+        <div class="stat-n orange" id="stPending">–</div>
+        <div class="stat-l">Pendientes</div>
+        <div class="stat-sub">Esperando inicio</div>
+      </div>
+      <div class="stat">
+        <div class="stat-icon" style="color:var(--blue)">⚡</div>
+        <div class="stat-n blue" id="stProgress">–</div>
+        <div class="stat-l">En Progreso</div>
+        <div class="stat-sub">Activos ahora</div>
+      </div>
+      <div class="stat">
+        <div class="stat-icon" style="color:var(--green)">✓</div>
+        <div class="stat-n green" id="stDone">–</div>
+        <div class="stat-l">Completados</div>
+        <div class="stat-mini-graph">
+          <div class="mini-bar" style="height:30%;background:var(--green)"></div>
+          <div class="mini-bar" style="height:55%;background:var(--green)"></div>
+          <div class="mini-bar" style="height:45%;background:var(--green)"></div>
+          <div class="mini-bar" style="height:90%;background:var(--green)"></div>
+          <div class="mini-bar" style="height:75%;background:var(--green)"></div>
+          <div class="mini-bar" style="height:60%;background:var(--green)"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ANALYTICS GRID -->
+    <div class="analytics-grid" style="margin-top:20px;">
+      <div class="analytics-panel">
+        <div class="ap-title">Usuarios en Vivo</div>
+        <div class="live-users">
+          <div class="live-pulse-rings">
+            <div class="pulse-ring"></div>
+            <div class="pulse-ring"></div>
+            <div class="pulse-ring"></div>
+            <div class="pulse-dot"></div>
+          </div>
+          <div>
+            <div class="live-num">3</div>
+            <div style="font-family:'Share Tech Mono',monospace;font-size:.56rem;color:var(--muted)">personas ahora</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="analytics-panel span2">
+        <div class="ap-title">Tráfico — Últimos 7 Días</div>
+        <div class="chart-container" id="trafficChart"></div>
+        <div class="chart-label" id="trafficLabels"></div>
+      </div>
+
+      <div class="analytics-panel span2">
+        <div class="ap-title">Logs en Vivo</div>
+        <div class="log-feed"><div class="log-feed-inner" id="logFeed"></div></div>
+      </div>
+
+      <div class="analytics-panel">
+        <div class="ap-title">Conversión</div>
+        <div class="holo-rings">
+          <div class="holo-ring"></div>
+          <div class="holo-ring"></div>
+          <div class="holo-ring"></div>
+          <div class="holo-center"></div>
+        </div>
+        <div class="donut-wrap">
+          <svg width="72" height="72" viewBox="0 0 80 80">
+            <circle cx="40" cy="40" r="28" fill="none" stroke="rgba(0,255,231,0.08)" stroke-width="12"/>
+            <circle cx="40" cy="40" r="28" fill="none" stroke="var(--cyan)" stroke-width="12" stroke-dasharray="88 88" stroke-dashoffset="22" stroke-linecap="round" style="transform:rotate(-90deg);transform-origin:center"/>
+            <circle cx="40" cy="40" r="28" fill="none" stroke="var(--blue)" stroke-width="12" stroke-dasharray="44 132" stroke-dashoffset="-66" stroke-linecap="round" style="transform:rotate(-90deg);transform-origin:center"/>
+            <text x="40" y="44" text-anchor="middle" fill="var(--cyan)" font-family="Orbitron,sans-serif" font-size="12" font-weight="900">62%</text>
+          </svg>
+          <div class="donut-legend">
+            <div class="donut-item"><div class="donut-dot" style="background:var(--cyan)"></div>Formularios</div>
+            <div class="donut-item"><div class="donut-dot" style="background:var(--blue)"></div>WhatsApp</div>
+            <div class="donut-item"><div class="donut-dot" style="background:var(--muted)"></div>Orgánico</div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div class="filters">
@@ -565,33 +802,33 @@ body::after {
     <!-- WIDGETS -->
     <div class="widgets-grid">
 
-      <!-- Widget 1: Gráfico lineal -->
+      <!-- Widget 1: Gráfico lineal de crecimiento -->
       <div class="widget">
-        <div class="widget-title">Ingresos Mensuales</div>
-        <canvas id="lineChart" height="140"></canvas>
+        <div class="widget-title">Crecimiento de Proyectos</div>
+        <canvas id="lineChart" height="160"></canvas>
       </div>
 
       <!-- Widget 2: Gráfico sectorial -->
       <div class="widget">
         <div class="widget-title">Distribución por Estado</div>
-        <canvas id="pieChart" height="140"></canvas>
+        <canvas id="pieChart" height="160"></canvas>
       </div>
 
-      <!-- Widget 3: Lista de clientes -->
+      <!-- Widget 3: Tabla dinámica -->
       <div class="widget">
-        <div class="widget-title">Actividad de Clientes</div>
-        <div class="client-list">
-          <div class="client-list-header">
-            <span>Cliente</span><span>Visitas/día</span><span>Renovación</span>
-          </div>
-          <div id="clientListBody">
-            <div class="client-row"><span>Lumina Studio</span><span class="visits">142</span><span class="renew renew-ok">Jun 15</span></div>
-            <div class="client-row"><span>NovaBrand</span><span class="visits">89</span><span class="renew renew-warn">Jun 03</span></div>
-            <div class="client-row"><span>Arco Digital</span><span class="visits">214</span><span class="renew renew-ok">Jul 20</span></div>
-            <div class="client-row"><span>Tectum Co.</span><span class="visits">57</span><span class="renew renew-danger">May 31</span></div>
-            <div class="client-row"><span>Helix Media</span><span class="visits">310</span><span class="renew renew-ok">Aug 08</span></div>
-          </div>
-        </div>
+        <div class="widget-title">Tabla de Clientes</div>
+        <input class="table-search" id="tableSearch" placeholder="Buscar cliente..." oninput="filterTable()">
+        <table class="dyn-table" id="dynTable">
+          <thead>
+            <tr>
+              <th class="sortable" onclick="sortTable(0)">Cliente <span class="sort-arrow"></span></th>
+              <th class="sortable" onclick="sortTable(1)">Ingresos <span class="sort-arrow"></span></th>
+              <th class="sortable" onclick="sortTable(2)">Estado <span class="sort-arrow"></span></th>
+              <th class="sortable" onclick="sortTable(3)">Renovación <span class="sort-arrow"></span></th>
+            </tr>
+          </thead>
+          <tbody id="dynTableBody"></tbody>
+        </table>
       </div>
 
     </div>
@@ -1153,6 +1390,190 @@ async function doBiometric() {
     bioMsg(e.name === 'NotAllowedError' ? '⚠ CANCELADO' : '⚠ ' + e.message);
   }
 }
+
+
+// ── CHARTS & TABLE ────────────────────────────────────────────────────────────
+const CYAN   = '#00ffe7';
+const CYAN2  = 'rgba(0,255,231,0.15)';
+const GREEN  = '#00ff99';
+const ORANGE = '#ff8c00';
+const BLUE   = '#00b4ff';
+const RED    = '#ff3355';
+
+Chart.defaults.color = '#4a7a80';
+Chart.defaults.font.family = "'Share Tech Mono', monospace";
+Chart.defaults.font.size   = 10;
+
+// — Líneal: crecimiento mensual —
+(function() {
+  const ctx = document.getElementById('lineChart');
+  if (!ctx) return;
+  const labels = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+  const data   = [2, 3, 3, 5, 4, 7, 8, 9, 11, 10, 13, 15];
+  new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [{
+        label: 'Proyectos',
+        data,
+        borderColor: CYAN,
+        backgroundColor: CYAN2,
+        borderWidth: 2,
+        pointBackgroundColor: CYAN,
+        pointRadius: 3,
+        fill: true,
+        tension: 0.4,
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { grid: { color: 'rgba(255,255,255,0.04)' }, ticks: { color: '#4a7a80' } },
+        y: { grid: { color: 'rgba(255,255,255,0.04)' }, ticks: { color: '#4a7a80', stepSize: 2 }, beginAtZero: true }
+      }
+    }
+  });
+})();
+
+// — Sectorial: distribución por estado —
+(function() {
+  const ctx = document.getElementById('pieChart');
+  if (!ctx) return;
+  new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels: ['Pendiente', 'En progreso', 'Completado', 'Archivado'],
+      datasets: [{
+        data: [4, 7, 12, 3],
+        backgroundColor: [ORANGE, BLUE, GREEN, '#4a7a80'],
+        borderColor: '#060e14',
+        borderWidth: 3,
+        hoverOffset: 6,
+      }]
+    },
+    options: {
+      responsive: true,
+      cutout: '62%',
+      plugins: {
+        legend: {
+          position: 'bottom',
+          labels: { boxWidth: 10, padding: 12, color: '#4a7a80', font: { size: 9 } }
+        }
+      }
+    }
+  });
+})();
+
+// — Tabla dinámica —
+const TABLE_DATA = [
+  { cliente: 'Lumina Studio', ingresos: 2400, estado: 'completado', renovacion: '2026-06-15' },
+  { cliente: 'NovaBrand',     ingresos: 1800, estado: 'en_progreso', renovacion: '2026-06-03' },
+  { cliente: 'Arco Digital',  ingresos: 3200, estado: 'completado', renovacion: '2026-07-20' },
+  { cliente: 'Tectum Co.',    ingresos:  900, estado: 'pendiente',  renovacion: '2026-05-31' },
+  { cliente: 'Helix Media',   ingresos: 4100, estado: 'completado', renovacion: '2026-08-08' },
+  { cliente: 'Synth Labs',    ingresos: 1200, estado: 'archivado',  renovacion: '2026-04-10' },
+  { cliente: 'Orion Dept.',   ingresos: 2750, estado: 'en_progreso', renovacion: '2026-09-01' },
+];
+
+const BADGE = {
+  completado:  '<span class="badge badge-ok">Completado</span>',
+  en_progreso: '<span class="badge badge-blue">En progreso</span>',
+  pendiente:   '<span class="badge badge-warn">Pendiente</span>',
+  archivado:   '<span class="badge">Archivado</span>',
+};
+
+let tableSortCol = -1, tableSortAsc = true;
+
+function renderTable(data) {
+  const tbody = document.getElementById('dynTableBody');
+  if (!tbody) return;
+  tbody.innerHTML = data.map(r => `
+    <tr>
+      <td>${r.cliente}</td>
+      <td class="mono">€${r.ingresos.toLocaleString('es-ES')}</td>
+      <td>${BADGE[r.estado] || r.estado}</td>
+      <td class="mono">${r.renovacion}</td>
+    </tr>`).join('');
+}
+
+function filterTable() {
+  const q = (document.getElementById('tableSearch')?.value || '').toLowerCase();
+  renderTable(TABLE_DATA.filter(r =>
+    r.cliente.toLowerCase().includes(q) || r.estado.toLowerCase().includes(q)
+  ));
+}
+
+function sortTable(col) {
+  const headers = document.querySelectorAll('#dynTable th.sortable');
+  headers.forEach((th, i) => {
+    th.classList.remove('asc', 'desc');
+  });
+  if (tableSortCol === col) tableSortAsc = !tableSortAsc;
+  else { tableSortCol = col; tableSortAsc = true; }
+  headers[col].classList.add(tableSortAsc ? 'asc' : 'desc');
+
+  const keys = ['cliente', 'ingresos', 'estado', 'renovacion'];
+  const key  = keys[col];
+  const sorted = [...TABLE_DATA].sort((a, b) => {
+    const va = a[key], vb = b[key];
+    if (typeof va === 'number') return tableSortAsc ? va - vb : vb - va;
+    return tableSortAsc ? String(va).localeCompare(String(vb)) : String(vb).localeCompare(String(va));
+  });
+  renderTable(sorted);
+}
+
+// ── TRAFFIC CHART (CSS bars) ─────────────────────────────────────────────────
+(function() {
+  const container = document.getElementById('trafficChart');
+  const labels    = document.getElementById('trafficLabels');
+  if (!container) return;
+  const days  = ['L','M','X','J','V','S','D'];
+  const vals  = [320, 480, 390, 610, 570, 820, 740];
+  const max   = Math.max(...vals);
+  days.forEach((d, i) => {
+    const pct = Math.round((vals[i]/max)*100);
+    const bar = document.createElement('div');
+    bar.className = 'chart-bar';
+    bar.style.height = pct + '%';
+    bar.style.animationDelay = (i * 0.08) + 's';
+    bar.setAttribute('data-val', vals[i].toLocaleString('es-ES'));
+    container.appendChild(bar);
+  });
+  if (labels) labels.innerHTML = days.map(d => `<span>${d}</span>`).join('');
+})();
+
+// ── LOG FEED ─────────────────────────────────────────────────────────────────
+(function() {
+  const feed = document.getElementById('logFeed');
+  if (!feed) return;
+  const logs = [
+    { type:'ok',   time:'01:14:32', cat:'AUTH',   msg:'Login correcto — admin' },
+    { type:'info', time:'01:14:28', cat:'API',    msg:'GET /api/admin/projects 200' },
+    { type:'ok',   time:'01:13:55', cat:'DB',     msg:'Query ejecutada en 4ms' },
+    { type:'warn', time:'01:12:11', cat:'RATE',   msg:'Límite de peticiones al 80%' },
+    { type:'info', time:'01:11:44', cat:'DEPLOY', msg:'Build completado — v2.4.1' },
+    { type:'ok',   time:'01:10:30', cat:'SSL',    msg:'Certificado válido 89 días' },
+    { type:'info', time:'01:09:17', cat:'API',    msg:'POST /api/submit-form 201' },
+    { type:'err',  time:'01:08:02', cat:'EMAIL',  msg:'Retry Brevo — timeout' },
+    { type:'ok',   time:'01:07:58', cat:'EMAIL',  msg:'Email enviado correctamente' },
+    { type:'info', time:'01:06:33', cat:'CDN',    msg:'Cache invalidado — index.html' },
+    { type:'warn', time:'01:05:12', cat:'DB',     msg:'Conexión lenta — 210ms' },
+    { type:'ok',   time:'01:04:50', cat:'AUTH',   msg:'Sesión iniciada correctamente' },
+  ];
+  // duplicar para scroll infinito
+  const html = [...logs, ...logs].map(l =>
+    `<div class="log-line ${l.type}">
+      <span class="log-time">${l.time}</span>
+      <span class="log-type">[${l.cat}]</span>
+      <span>${l.msg}</span>
+    </div>`).join('');
+  feed.innerHTML = html;
+})();
+
+// Render inicial
+renderTable(TABLE_DATA);
 
 (function() {
   let currentValue = 1474686;
