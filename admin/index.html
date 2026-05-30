@@ -243,6 +243,69 @@ body::after {
   text-align: right;
   color: var(--muted);
 }
+
+/* ── HOLO CLOCK ── */
+.holo-clock {
+  position: fixed;
+  top: 108px;
+  right: 20px;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  font-family: 'Orbitron', sans-serif;
+  font-size: .75rem;
+  font-weight: 900;
+  letter-spacing: 2px;
+  color: var(--cyan);
+  text-shadow:
+    0 0 6px var(--cyan),
+    0 0 14px rgba(0,255,231,0.5),
+    0 0 30px rgba(0,255,231,0.2);
+  pointer-events: none;
+  user-select: none;
+  animation: holoFloat 4s ease-in-out infinite;
+  filter: drop-shadow(0 0 8px rgba(0,255,231,0.4));
+}
+@keyframes holoFloat {
+  0%,100% { transform: translateY(0);   opacity: .9; }
+  50%      { transform: translateY(-4px); opacity: 1;  }
+}
+.holo-clock-seg {
+  background: rgba(0,255,231,0.04);
+  border: 1px solid rgba(0,255,231,0.15);
+  border-radius: 3px;
+  padding: 2px 5px;
+  min-width: 28px;
+  text-align: center;
+  backdrop-filter: blur(4px);
+  box-shadow: inset 0 0 10px rgba(0,255,231,0.05), 0 0 12px rgba(0,255,231,0.08);
+  position: relative;
+}
+.holo-clock-seg::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 10%; right: 10%; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+  opacity: .4;
+}
+.holo-clock-sub {
+  display: block;
+  font-size: .28rem;
+  letter-spacing: 3px;
+  color: var(--muted);
+  text-align: center;
+  margin-top: 2px;
+  text-shadow: none;
+}
+.holo-sep {
+  font-size: .7rem;
+  color: var(--cyan);
+  line-height: 1;
+  padding-bottom: 10px;
+  animation: blink 1s step-end infinite;
+  text-shadow: 0 0 8px var(--cyan);
+}
 /* ── TABLE WIDGET ── */
 .dyn-table { width: 100%; border-collapse: collapse; font-size: .75rem; }
 .dyn-table thead tr {
@@ -706,6 +769,15 @@ body::after {
 
 <!-- APP -->
 <div id="adminApp">
+
+  <!-- HOLO CLOCK -->
+  <div class="holo-clock" id="holoClock">
+    <div class="holo-clock-seg"><span id="hc-h">00</span><span class="holo-clock-sub">HRS</span></div>
+    <div class="holo-sep">:</div>
+    <div class="holo-clock-seg"><span id="hc-m">00</span><span class="holo-clock-sub">MIN</span></div>
+    <div class="holo-sep">:</div>
+    <div class="holo-clock-seg"><span id="hc-s">00</span><span class="holo-clock-sub">SEC</span></div>
+  </div>
   <div class="topbar">
     <div class="topbar-logo">
       <div class="topbar-mark">i A</div>
