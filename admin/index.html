@@ -247,7 +247,7 @@ body::after {
 /* ── HOLO CLOCK ── */
 .holo-clock {
   position: fixed;
-  top: 120px;
+  top: 115px;
   right: 20px;
   z-index: 50;
   display: flex;
@@ -1768,6 +1768,22 @@ renderTable(TABLE_DATA);
   }
   setTimeout(tick, 1200);
 })();
+
+// ── HOLO CLOCK ───────────────────────────────────────────────────────────────
+function pad(n) { return String(n).padStart(2, '0'); }
+function updateHoloClock() {
+  const now = new Date();
+  const hh = document.getElementById('hc-h');
+  const hm = document.getElementById('hc-m');
+  const hs = document.getElementById('hc-s');
+  if (hh) hh.textContent = pad(now.getHours());
+  if (hm) hm.textContent = pad(now.getMinutes());
+  if (hs) hs.textContent = pad(now.getSeconds());
+  const lc = document.getElementById('loginClock');
+  if (lc) lc.textContent = pad(now.getHours()) + ':' + pad(now.getMinutes()) + ':' + pad(now.getSeconds());
+}
+updateHoloClock();
+setInterval(updateHoloClock, 1000);
 </script>
 </body>
 </html>
