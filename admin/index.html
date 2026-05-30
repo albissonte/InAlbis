@@ -177,10 +177,12 @@ body::after {
 /* ── WIDGETS ── */
 .widgets-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-template-columns: 2fr 1fr 2fr;
   gap: 16px;
   margin-bottom: 28px;
+  align-items: start;
 }
+@media(max-width:800px){.widgets-grid{grid-template-columns:1fr;}}
 .widget {
   background: var(--surface);
   border: 1px solid var(--border-bright);
@@ -199,6 +201,48 @@ body::after {
   margin-bottom: 14px;
 }
 
+
+/* Widget sin card */
+.widget-naked {
+  padding: 10px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+.pie-neon-legend {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  width: 100%;
+  padding: 0 8px;
+}
+.pie-neon-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: .6rem;
+  letter-spacing: 1px;
+}
+.pie-neon-bar-wrap {
+  flex: 1;
+  height: 3px;
+  background: rgba(0,255,231,0.08);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.pie-neon-bar {
+  height: 100%;
+  border-radius: 2px;
+  animation: waveGrow .8s ease both;
+  transform-origin: left;
+}
+.pie-neon-val {
+  min-width: 26px;
+  text-align: right;
+  color: var(--muted);
+}
 /* ── TABLE WIDGET ── */
 .dyn-table { width: 100%; border-collapse: collapse; font-size: .75rem; }
 .dyn-table thead tr {
@@ -802,19 +846,20 @@ body::after {
     <!-- WIDGETS -->
     <div class="widgets-grid">
 
-      <!-- Widget 1: Gráfico lineal de crecimiento -->
+      <!-- Widget 1: Gráfico lineal horizontal -->
       <div class="widget">
         <div class="widget-title">Crecimiento de Proyectos</div>
-        <canvas id="lineChart" height="160"></canvas>
+        <canvas id="lineChart"></canvas>
       </div>
 
-      <!-- Widget 2: Gráfico sectorial -->
-      <div class="widget">
-        <div class="widget-title">Distribución por Estado</div>
-        <canvas id="pieChart" height="160"></canvas>
+      <!-- Widget 2: Circular sin card, flotando -->
+      <div class="widget-naked">
+        <div class="widget-title" style="text-align:center;">Distribución</div>
+        <canvas id="pieChart" width="160" height="160" style="max-width:160px;margin:0 auto;display:block;"></canvas>
+        <div id="pieNeonLegend" class="pie-neon-legend"></div>
       </div>
 
-      <!-- Widget 3: Tabla dinámica -->
+      <!-- Widget 3: Tabla dinámica horizontal -->
       <div class="widget">
         <div class="widget-title">Tabla de Clientes</div>
         <input class="table-search" id="tableSearch" placeholder="Buscar cliente..." oninput="filterTable()">
@@ -1437,33 +1482,67 @@ Chart.defaults.font.size   = 10;
   });
 })();
 
-// — Sectorial: distribución por estado —
+// — Sectorial: intensidades de neón cyan sin colores ─────────────────────────
 (function() {
   const ctx = document.getElementById('pieChart');
   if (!ctx) return;
+  const labels = ['Completado', 'En progreso', 'Pendiente', 'Archivado'];
+  const data   = [12, 7, 4, 3];
+  // Intensidades de cyan de mayor a menor
+  const neonColors = [
+    'rgba(0,255,231,0.95)',
+    'rgba(0,255,231,0.55)',
+    'rgba(0,255,231,0.28)',
+    'rgba(0,255,231,0.12)',
+  ];
+  // Plugin para glow neón en cada segmento
+  const neonGlowPlugin = {
+    id: 'neonGlow',
+    beforeDraw(chart) {
+      const ctx2 = chart.ctx;
+      ctx2.shadowBlur = 18;
+      ctx2.shadowColor = 'rgba(0,255,231,0.6)';
+    },
+    afterDraw(chart) {
+      chart.ctx.shadowBlur = 0;
+    }
+  };
+
   new Chart(ctx, {
     type: 'doughnut',
     data: {
-      labels: ['Pendiente', 'En progreso', 'Completado', 'Archivado'],
+      labels,
       datasets: [{
-        data: [4, 7, 12, 3],
-        backgroundColor: [ORANGE, BLUE, GREEN, '#4a7a80'],
-        borderColor: '#060e14',
+        data,
+        backgroundColor: neonColors,
+        borderColor: 'rgba(2,8,16,0.9)',
         borderWidth: 3,
         hoverOffset: 6,
       }]
     },
     options: {
-      responsive: true,
-      cutout: '62%',
-      plugins: {
-        legend: {
-          position: 'bottom',
-          labels: { boxWidth: 10, padding: 12, color: '#4a7a80', font: { size: 9 } }
-        }
-      }
-    }
+      responsive: false,
+      cutout: '65%',
+      plugins: { legend: { display: false } },
+      animation: { animateRotate: true, duration: 1200 }
+    },
+    plugins: [neonGlowPlugin]
   });
+
+  // Leyenda con barras de neón
+  const legend = document.getElementById('pieNeonLegend');
+  if (!legend) return;
+  const total = data.reduce((a,b) => a+b, 0);
+  legend.innerHTML = labels.map((l, i) => {
+    const pct = Math.round(data[i]/total*100);
+    return `<div class="pie-neon-item">
+      <span style="color:${neonColors[i]};text-shadow:0 0 6px ${neonColors[i]};min-width:70px">${l}</span>
+      <div class="pie-neon-bar-wrap">
+        <div class="pie-neon-bar" style="width:${pct}%;background:${neonColors[i]};box-shadow:0 0 4px ${neonColors[i]};animation-delay:${i*0.15}s"></div>
+      </div>
+      <span class="pie-neon-val">${data[i]}</span>
+    </div>`;
+  }).join('');
 })();
 
 // — Tabla dinámica —
