@@ -247,7 +247,7 @@ body::after {
 /* ── HOLO CLOCK ── */
 .holo-clock {
   position: fixed;
-  top: 108px;
+  top: 116px;
   right: 20px;
   z-index: 50;
   display: flex;
@@ -306,90 +306,8 @@ body::after {
   animation: blink 1s step-end infinite;
   text-shadow: 0 0 8px var(--cyan);
 }
-/* ── TABLE WIDGET ── */
-.dyn-table { width: 100%; border-collapse: collapse; font-size: .75rem; }
-.dyn-table thead tr {
-  border-bottom: 1px solid var(--border-bright);
-}
-.dyn-table th {
-  font-family: 'Share Tech Mono', monospace;
-  font-size: .62rem; letter-spacing: 1.5px; text-transform: uppercase;
-  color: var(--muted); padding: 0 8px 8px; text-align: left; font-weight: 400;
-}
-.dyn-table th.sortable { cursor: pointer; user-select: none; }
-.dyn-table th.sortable:hover { color: var(--cyan); }
-.dyn-table th .sort-arrow { margin-left: 4px; opacity: .4; }
-.dyn-table th.asc .sort-arrow::after  { content: '▲'; }
-.dyn-table th.desc .sort-arrow::after { content: '▼'; }
-.dyn-table th:not(.asc):not(.desc) .sort-arrow::after { content: '⇅'; }
-.dyn-table tbody tr {
-  border-bottom: 1px solid var(--border);
-  transition: background .15s;
-  cursor: default;
-}
-.dyn-table tbody tr:hover { background: var(--cyan-faint); }
-.dyn-table td { padding: 8px; color: var(--text); }
-.dyn-table td.mono { font-family: 'Share Tech Mono', monospace; font-size: .7rem; }
-.badge {
-  display: inline-block; padding: 2px 8px; border-radius: 2px;
-  font-family: 'Share Tech Mono', monospace; font-size: .6rem; letter-spacing: 1px;
-}
-.badge-ok     { background: rgba(0,255,153,.1); color: var(--green); border: 1px solid rgba(0,255,153,.25); }
-.badge-warn   { background: rgba(255,140,0,.1);  color: var(--orange); border: 1px solid rgba(255,140,0,.25); }
-.badge-danger { background: rgba(255,51,85,.1);  color: var(--red);    border: 1px solid rgba(255,51,85,.25); }
-.badge-blue   { background: rgba(0,180,255,.1);  color: var(--blue);   border: 1px solid rgba(0,180,255,.25); }
-.table-search {
-  width: 100%; padding: 6px 10px; margin-bottom: 10px;
-  background: var(--surface2); border: 1px solid var(--border-bright);
-  border-radius: 3px; color: var(--text-bright);
-  font-family: 'Share Tech Mono', monospace; font-size: .72rem;
-}
-.table-search:focus { outline: none; border-color: var(--cyan); box-shadow: 0 0 6px var(--cyan-glow); }
-.table-search::placeholder { color: var(--muted); }
 
 
-/* ── LIVE PULSE ── */
-.live-pulse-rings{position:relative;width:44px;height:44px;flex-shrink:0;}
-.pulse-ring{position:absolute;inset:0;border-radius:50%;border:1px solid var(--green);animation:pulseRing 2s ease-in-out infinite;}
-.pulse-ring:nth-child(2){animation-delay:.5s;}.pulse-ring:nth-child(3){animation-delay:1s;}
-.pulse-dot{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:9px;height:9px;background:var(--green);border-radius:50%;box-shadow:0 0 10px var(--green);}
-
-/* ── LOG FEED ── */
-.log-feed{height:110px;overflow:hidden;position:relative;font-family:'Share Tech Mono',monospace;font-size:.58rem;border:1px solid var(--border);border-radius:3px;padding:8px 10px;background:rgba(0,0,0,.3);margin-top:10px;}
-.log-feed::after{content:'';position:absolute;bottom:0;left:0;right:0;height:28px;background:linear-gradient(transparent,var(--surface));pointer-events:none;}
-.log-feed-inner{animation:logScroll 18s linear infinite;}
-.log-line{padding:2px 0;color:var(--muted);line-height:1.6;display:flex;gap:8px;}
-.log-line .log-time{color:var(--cyan-dim);min-width:56px;}
-.log-line .log-type{min-width:46px;}
-.log-line.info .log-type{color:var(--cyan);}
-.log-line.warn .log-type{color:var(--orange);}
-.log-line.ok   .log-type{color:var(--green);}
-.log-line.err  .log-type{color:var(--red);}
-
-/* ── HOLO RINGS ── */
-.holo-rings{display:flex;align-items:center;justify-content:center;height:70px;position:relative;}
-.holo-ring{position:absolute;border:1px solid var(--cyan-dim);border-radius:50%;opacity:.4;}
-.holo-ring:nth-child(1){width:26px;height:26px;animation:spinSlow 4s linear infinite;}
-.holo-ring:nth-child(2){width:44px;height:44px;animation:spinSlow 7s linear infinite reverse;border-color:var(--cyan);}
-.holo-ring:nth-child(3){width:62px;height:62px;animation:spinSlow 12s linear infinite;border-style:dashed;}
-.holo-center{width:10px;height:10px;background:var(--cyan);border-radius:50%;box-shadow:0 0 12px var(--cyan);z-index:1;}
-
-/* ── CSS CHART BARS ── */
-.chart-container{height:90px;display:flex;align-items:flex-end;gap:3px;margin-top:10px;}
-.chart-bar{flex:1;background:linear-gradient(180deg,var(--cyan),var(--cyan-dim));border-radius:1px 1px 0 0;opacity:.65;position:relative;transition:.3s;cursor:pointer;transform-origin:bottom;animation:waveGrow .6s ease both;}
-.chart-bar:hover{opacity:1;box-shadow:0 0 8px var(--cyan-glow);}
-.chart-bar::after{content:attr(data-val);position:absolute;bottom:100%;left:50%;transform:translateX(-50%);font-family:'Share Tech Mono',monospace;font-size:.48rem;color:var(--cyan);opacity:0;transition:.2s;white-space:nowrap;padding-bottom:3px;}
-.chart-bar:hover::after{opacity:1;}
-.chart-label{display:flex;justify-content:space-between;font-family:'Share Tech Mono',monospace;font-size:.48rem;color:var(--muted);margin-top:5px;}
-
-/* ── SECTION HEADER ── */
-.section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--border);}
-.section-title{font-family:'Orbitron',sans-serif;font-size:.72rem;color:var(--cyan);letter-spacing:3px;text-transform:uppercase;}
-.section-title::before{content:'▶ ';color:var(--cyan-dim);font-size:.58rem;}
-
-/* ── ANALYTICS GRID ── */
-.analytics-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:24px;}
-@media(max-width:900px){.analytics-grid{grid-template-columns:1fr 1fr;}}
 @media(max-width:600px){.analytics-grid{grid-template-columns:1fr;}}
 .analytics-panel{background:var(--surface);border:1px solid var(--border-bright);border-radius:4px;padding:18px 20px;backdrop-filter:blur(12px);position:relative;overflow:hidden;animation:floatCard 8s ease-in-out infinite;}
 .analytics-panel.span2{grid-column:span 2;}
@@ -769,7 +687,6 @@ body::after {
 
 <!-- APP -->
 <div id="adminApp">
-
   <!-- HOLO CLOCK -->
   <div class="holo-clock" id="holoClock">
     <div class="holo-clock-seg"><span id="hc-h">00</span><span class="holo-clock-sub">HRS</span></div>
