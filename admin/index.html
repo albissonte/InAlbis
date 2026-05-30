@@ -1071,24 +1071,86 @@ function toggleBalance() {
 }
 
 // ── BIOMETRIC ─────────────────────────────────────────────
-async function doBiometric() {
-  if (!window.PublicKeyCredential) {
-    document.getElementById('loginErr').textContent = '⚠ BIOMETRÍA NO DISPONIBLE';
-    document.getElementById('loginErr').style.display = 'block';
-    return;
-  }
+// ── BIOMETRÍA via Cloudflare Pages Function ─────────────────────────────────
+const BIO_API = '/api/bio';
+
+function bioMsg(msg, isErr = true) {
+  const el = document.getElementById('loginErr');
+  el.textContent = msg;
+  el.style.display = 'block';
+  el.style.color = isErr ? 'var(--red)' : 'var(--cyan)';
+}
+
+function credToJSON(cred) {
+  const r = cred.response;
+  const enc = buf => btoa(String.fromCharCode(...new Uint8Array(buf)))
+    .replace(/\+/g,'-').replace(/\//g,'_').replace(/=/g,'');
+  return {
+    id: cred.id, type: cred.type,
+    response: {
+      clientDataJSON:    enc(r.clientDataJSON),
+      attestationObject: r.attestationObject ? enc(r.attestationObject) : undefined,
+      authenticatorData: r.authenticatorData ? enc(r.authenticatorData) : undefined,
+      signature:         r.signature         ? enc(r.signature)         : undefined,
+    }
+  };
+}
+
+function b64urlToBuffer(str) {
+  str = str.replace(/-/g,'+').replace(/_/g,'/');
+  while (str.length % 4) str += '=';
+  return Uint8Array.from(atob(str), c => c.charCodeAt(0)).buffer;
+}
+
+async function bioRegister() {
+  const pass = prompt('Introduce tu contraseña para registrar la huella:');
+  if (!pass) return;
   try {
-    const cred = await navigator.credentials.get({
-      publicKey: {
-        challenge: crypto.getRandomValues(new Uint8Array(32)),
-        timeout: 60000,
-        userVerification: 'required',
-      }
+    bioMsg('⟳ REGISTRANDO HUELLA...', false);
+    const r1 = await fetch(BIO_API + '/register/start', {
+      method: 'POST', headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ user: 'admin', pass })
     });
-    if (cred) doLoginSuccess();
+    if (!r1.ok) { bioMsg('⚠ CONTRASEÑA INCORRECTA'); return; }
+    const { challengeId, publicKey } = await r1.json();
+    publicKey.challenge = b64urlToBuffer(publicKey.challenge);
+    publicKey.user.id   = b64urlToBuffer(publicKey.user.id);
+    if (publicKey.excludeCredentials)
+      publicKey.excludeCredentials = publicKey.excludeCredentials.map(c => ({...c, id: b64urlToBuffer(c.id)}));
+    const cred = await navigator.credentials.create({ publicKey });
+    const r2 = await fetch(BIO_API + '/register/finish', {
+      method: 'POST', headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ challengeId, credential: credToJSON(cred) })
+    });
+    bioMsg(r2.ok ? '✓ HUELLA REGISTRADA' : '⚠ ERROR AL GUARDAR HUELLA', !r2.ok);
   } catch(e) {
-    document.getElementById('loginErr').textContent = '⚠ BIOMETRÍA CANCELADA';
-    document.getElementById('loginErr').style.display = 'block';
+    bioMsg(e.name === 'NotAllowedError' ? '⚠ REGISTRO CANCELADO' : '⚠ ' + e.message);
+  }
+}
+
+async function doBiometric() {
+  if (!window.PublicKeyCredential) return bioMsg('⚠ BIOMETRÍA NO DISPONIBLE');
+  try {
+    bioMsg('⟳ VERIFICANDO...', false);
+    const r1 = await fetch(BIO_API + '/auth/start', { method: 'POST' });
+    if (!r1.ok) {
+      if (confirm('No hay huella registrada.\n¿Registrar ahora?')) bioRegister();
+      else document.getElementById('loginErr').style.display = 'none';
+      return;
+    }
+    const { challengeId, publicKey } = await r1.json();
+    publicKey.challenge = b64urlToBuffer(publicKey.challenge);
+    if (publicKey.allowCredentials)
+      publicKey.allowCredentials = publicKey.allowCredentials.map(c => ({...c, id: b64urlToBuffer(c.id)}));
+    const cred = await navigator.credentials.get({ publicKey });
+    const r2 = await fetch(BIO_API + '/auth/finish', {
+      method: 'POST', headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ challengeId, credential: credToJSON(cred) })
+    });
+    if (r2.ok) doLoginSuccess();
+    else bioMsg('⚠ HUELLA NO RECONOCIDA');
+  } catch(e) {
+    bioMsg(e.name === 'NotAllowedError' ? '⚠ CANCELADO' : '⚠ ' + e.message);
   }
 }
 
