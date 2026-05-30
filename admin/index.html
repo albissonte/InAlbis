@@ -1107,7 +1107,7 @@ async function bioRegister() {
   if (!pass) return;
   try {
     bioMsg('⟳ REGISTRANDO HUELLA...', false);
-    const r1 = await fetch(BIO_API + '/register/start', {
+    const r1 = await fetch('/api/bio/register/start', {
       method: 'POST', headers: {'Content-Type':'application/json'},
       body: JSON.stringify({ user: 'admin', pass })
     });
@@ -1118,7 +1118,7 @@ async function bioRegister() {
     if (publicKey.excludeCredentials)
       publicKey.excludeCredentials = publicKey.excludeCredentials.map(c => ({...c, id: b64urlToBuffer(c.id)}));
     const cred = await navigator.credentials.create({ publicKey });
-    const r2 = await fetch(BIO_API + '/register/finish', {
+    const r2 = await fetch('/api/bio/register/finish', {
       method: 'POST', headers: {'Content-Type':'application/json'},
       body: JSON.stringify({ challengeId, credential: credToJSON(cred) })
     });
@@ -1132,7 +1132,7 @@ async function doBiometric() {
   if (!window.PublicKeyCredential) return bioMsg('⚠ BIOMETRÍA NO DISPONIBLE');
   try {
     bioMsg('⟳ VERIFICANDO...', false);
-    const r1 = await fetch(BIO_API + '/auth/start', { method: 'POST' });
+    const r1 = await fetch('/api/bio/auth/start', { method: 'POST' });
     if (!r1.ok) {
       if (confirm('No hay huella registrada.\n¿Registrar ahora?')) bioRegister();
       else document.getElementById('loginErr').style.display = 'none';
@@ -1143,7 +1143,7 @@ async function doBiometric() {
     if (publicKey.allowCredentials)
       publicKey.allowCredentials = publicKey.allowCredentials.map(c => ({...c, id: b64urlToBuffer(c.id)}));
     const cred = await navigator.credentials.get({ publicKey });
-    const r2 = await fetch(BIO_API + '/auth/finish', {
+    const r2 = await fetch('/api/bio/auth/finish', {
       method: 'POST', headers: {'Content-Type':'application/json'},
       body: JSON.stringify({ challengeId, credential: credToJSON(cred) })
     });
