@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Páginas inAlbis · Tu página web</title>
+<title>Páginas inAlbis · Modern Web Solutions</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -359,57 +359,20 @@ footer{
 /* REVEAL ANIMATION */
 .reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s ease}
 .reveal.visible{opacity:1;transform:none}
-/* FLOATING TABS */
-.float-tabs {
-  position: fixed; left: 0px; top: 75%; transform: translateY(-50%); z-index: 200; display: flex; 
-  flex-direction: column; gap: 10px;
-}
-.float-tab {
-  width: 46px;
-  height: 46px;
-  background: linear-gradient(45deg,rgba(8,17,32,0.2),rgba(56,212,245,0.2));
-  border: 0px solid rgba(56,212,245,0.25);
-  border-left: none;
-  border-radius: 0 10px 10px 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  backdrop-filter: blur(1px);
-  transition: all .1s;
-  text-decoration: none;
-  box-shadow: -2px 0 16px rgba(56,212,245,0.2);
-}
-.float-tab:hover {
-  width: 54px;
-  background: rgba(56,212,245,0.12);
-  border-color: rgba(56,212,245,0.6);
-  box-shadow: -4px 0 24px rgba(56,212,245,0.3), 0 0 12px rgba(56,212,245,0.2);
-}
-.float-tab svg {
-  width: 22px;
-  height: 22px;
-  fill: rgba(56,212,245,0.65);
-  filter: drop-shadow(0 0 4px rgba(56,212,245,0.4));
-  transition: fill .25s, filter .25s;
-}
-.float-tab:hover svg {
-  fill: #38d4f5;
-  filter: drop-shadow(0 0 8px rgba(56,212,245,0.9)) drop-shadow(0 0 16px rgba(56,212,245,0.5));
-}
+
 /* CUADRO CAROUSEL CONTINUO */
 .float-carousel {
   position: fixed;
   left: 0;
-  bottom:10px;
+  top:87px;
   transform: translateY(-50%);
   z-index: 200;
   width: 46px;
   height: 46px;
-  background: linear-gradient(45deg,rgba(8,17,32,0.2),rgba(56,212,245,0.2));
+  background: linear-gradient(135deg,rgba(8,17,32,0.2),rgba(56,212,245,0.2));
   border: 0px solid rgba(56,212,245,0.25);
   border-left: none;
-  border-radius: 0px 10px 10px 0px;
+  border-radius: 0px 0px 20px 0px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -422,7 +385,7 @@ footer{
   display: flex;
   flex-direction: row;
   align-items: center;
-  animation: carousel-scroll 12s linear infinite;
+  animation: carousel-scroll 24s linear infinite;
   /* 12s / número de iconos = tiempo por icono */
 }
 
@@ -471,7 +434,13 @@ footer{
 <!-- NAV -->
 <nav id="navbar">
   <div class="nav-logo">
-    <img src="iA.png" alt="inAlbis logo" style="height:44px;width:auto;object-fit:contain;filter:drop-shadow(0 0 8px rgba(56,212,245,0.5));display:block;">
+    <img src="iA.png" alt="iA logo" style="height:44px;width:44px;object-fit:contain;filter:drop-shadow(0 0 8px rgba(56,212,245,0.5));display:block;">
+  <div class="nav-logo-text" style="position:relative;z-index:2">
+    <span>Páginas</span>
+    </div>
+  <div class="nav-logo">
+    <img src="inAlbis.png" alt="inAlbis logo" style="height:44px;width:auto;object-fit:contain;filter:drop-shadow(0 0 8px rgba(56,212,245,0.5));display:block;">
+  </div>
   </div>
   <ul class="nav-links">
     <li><a href="#paquetes">Paquetes</a></li>
@@ -491,7 +460,7 @@ footer{
     <div class="pulse-ring"></div>
     <div class="pulse-ring"></div>
     <div class="pulse-ring"></div>
-    <img class="logo-hero-img" src="inAlbis.png"  alt="inAlbis logo">
+    <img class="logo-hero-img" src="image-6.jpg"  alt="inAlbis logo">
   </div>
 
   <div class="hero-badge" style="position:relative;z-index:2">
@@ -815,7 +784,7 @@ footer{
 /* ── EMBED LOGO AS BASE64 ── */
 (function(){
   const img = document.querySelector('.logo-hero-img');
-  img.src = 'inAlbis.png';
+  img.src = 'image-6.jpg';
 })();
 
 /* ── STARFIELD ── */
