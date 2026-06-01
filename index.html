@@ -172,7 +172,7 @@ nav{
   display:flex;align-items:center;gap:10px;
   font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(0,241,247,0.48);flex-shrink:0;
 }
-.ticker-item .t-dot{width:5px;height:5px;background:var(--cyan);border-radius:50%;flex-shrink:0animation:blink 1.6s ease-in-out infinite}
+.ticker-item .t-dot{width:5px;height:5px;background:var(--cyan);border-radius:50%; animation:blink 1s ease-in-out infinite}
 
 /* SECTION COMMONS */
 .section{
@@ -461,8 +461,9 @@ footer{
     <div class="pulse-ring"></div>
     <div class="pulse-ring"></div>
     
-    <img src="iA.png" alt="iA logo">
-    <img src="inAlbis.png"  alt="inAlbis logo">
+    <img class=logo-hero-img alt="iA logo">
+    <img class=logo-hero-img src="inAlbis.png"  alt="inAlbis logo">
+  
   </div>
   </div>
   <div class="hero-badge" style="position:relative;z-index:2">
@@ -785,6 +786,12 @@ footer{
 </div>
 
 <script>
+/* ── EMBED LOGO ── */
+(function(){
+  const img = document.querySelector('.logo-hero-img');
+  img.src = 'iA.png';
+})();
+  
 /* ── STARFIELD ── */
 (function(){
   const canvas=document.getElementById('starfield'),ctx=canvas.getContext('2d');
