@@ -3,183 +3,195 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Onboarding — Mi Negocio Web</title>
+  <title>Onboarding — Páginas inAlbis</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg:       #f8f6f2;
-      --bg2:      #f0ede6;
-      --surface:  #ffffff;
-      --border:   #e0dbd0;
-      --accent:   #b8924a;
-      --accent2:  #d4a96a;
-      --dark:     #1a1814;
-      --text:     #2d2926;
-      --text2:    #6b6455;
-      --muted:    #a09880;
-      --danger:   #dc2626;
+      --sky:        #e4f2fb;
+      --surface:    #ffffff;
+      --border:     rgba(26,143,209,0.2);
+      --azure:      #1a8fd1;
+      --azure2:     #0b6fa8;
+      --dark:       #0f2942;
+      --dark2:      #1a3a5c;
+      --text:       #0f2942;
+      --text2:      #3a6080;
+      --muted:      #7aaac8;
+      --danger:     #dc2626;
+      --storm:      #3a4a5c;
+      --storm2:     #232d3a;
     }
 
     html { font-size: 16px; scroll-behavior: smooth; }
 
     body {
-      background: var(--bg);
+      background: var(--sky);
       color: var(--text);
-      font-family: 'DM Sans', sans-serif;
+      font-family: 'Plus Jakarta Sans', sans-serif;
       min-height: 100vh;
+      overflow-x: hidden;
     }
 
-    /* ── Grain overlay ── */
-    body::after {
-      content: '';
-      position: fixed; inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
-      pointer-events: none;
-      z-index: 0;
-    }
+    #sky-bg { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
 
-    /* ── Hero header ── */
+    /* ── LOGO FLOTANTE ── */
+    .logo-pin {
+      position: fixed;
+      top: 14px; left: 14px;
+      z-index: 300;
+      display: block;
+    }
+    .logo-pin img {
+      height: 48px;
+      width: auto;
+      display: block;
+      filter: drop-shadow(0 2px 10px rgba(26,143,209,0.35)) drop-shadow(0 1px 3px rgba(255,255,255,0.8));
+      transition: transform 0.2s;
+    }
+    .logo-pin:hover img { transform: scale(1.06); }
+
+    /* ── HERO ── */
     .hero {
-      background: var(--dark);
-      color: #f0ede6;
-      padding: 4rem 2rem 3rem;
-      position: relative;
+      background: linear-gradient(160deg, #0f2942 0%, #1a4a72 60%, #1a8fd1 100%);
+      color: #f0f8ff;
+      padding: 5rem 2rem 4rem;
       overflow: hidden;
+      position: relative; z-index: 1;
     }
-
     .hero::before {
       content: '';
       position: absolute; inset: 0;
       background:
-        radial-gradient(ellipse 70% 80% at 80% 50%, rgba(180,140,70,0.12) 0%, transparent 60%),
-        radial-gradient(ellipse 50% 60% at 10% 80%, rgba(80,60,160,0.08) 0%, transparent 60%);
+        radial-gradient(ellipse 60% 80% at 85% 40%, rgba(255,255,255,0.07) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 50% at 5% 90%, rgba(26,143,209,0.15) 0%, transparent 55%);
+      pointer-events: none;
     }
-
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: -2px; left: 0; right: 0; height: 64px;
+      background: var(--sky);
+      clip-path: ellipse(55% 100% at 50% 100%);
+      pointer-events: none;
+    }
     .hero-inner {
       position: relative; z-index: 1;
-      max-width: 720px;
-      margin: 0 auto;
+      max-width: 720px; margin: 0 auto;
     }
-
     .hero-eyebrow {
       display: inline-flex; align-items: center; gap: 0.5rem;
-      font-size: 0.78rem;
-      font-weight: 500;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: var(--accent2);
+      font-size: 0.78rem; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.12em;
+      color: rgba(255,255,255,0.7);
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.15);
+      padding: 5px 14px; border-radius: 100px;
       margin-bottom: 1.25rem;
+      backdrop-filter: blur(4px);
     }
-
     .hero h1 {
-      font-family: 'DM Serif Display', serif;
+      font-family: 'Playfair Display', serif;
       font-size: clamp(2rem, 5vw, 3rem);
-      line-height: 1.12;
-      letter-spacing: -0.02em;
-      margin-bottom: 1rem;
+      line-height: 1.12; letter-spacing: -0.02em; margin-bottom: 1rem;
     }
+    .hero h1 em { font-style: italic; color: #7dd3f7; }
+    .hero p { color: rgba(240,248,255,0.65); font-size: 1rem; line-height: 1.65; max-width: 560px; }
 
-    .hero h1 em {
-      font-style: italic;
-      color: var(--accent2);
-    }
-
-    .hero p {
-      color: rgba(240,237,230,0.65);
-      font-size: 1rem;
-      line-height: 1.65;
-      max-width: 560px;
-    }
-
-    /* ── Steps indicator ── */
+    /* ── STEPS ── */
     .steps-bar {
-      background: var(--dark);
+      background: linear-gradient(90deg, #0f2942, #1a3a5c);
       border-top: 1px solid rgba(255,255,255,0.06);
       padding: 1rem 2rem;
       display: flex; justify-content: center;
+      box-shadow: 0 4px 20px rgba(15,41,66,0.2);
+      position: relative; z-index: 1;
     }
-
-    .steps {
-      display: flex; align-items: center; gap: 0;
-      max-width: 720px; width: 100%;
-    }
-
+    .steps { display: flex; align-items: center; max-width: 720px; width: 100%; }
     .step {
       display: flex; align-items: center; gap: 0.5rem;
-      font-size: 0.75rem;
-      color: rgba(240,237,230,0.35);
-      flex: 1;
+      font-size: 0.75rem; color: rgba(240,248,255,0.35); flex: 1;
     }
-
-    .step.active { color: var(--accent2); }
-    .step.done   { color: rgba(240,237,230,0.55); }
-
+    .step.active { color: #7dd3f7; }
+    .step.done   { color: rgba(240,248,255,0.55); }
     .step-num {
-      width: 22px; height: 22px;
-      border-radius: 50%;
+      width: 22px; height: 22px; border-radius: 50%;
       border: 1.5px solid currentColor;
       display: grid; place-items: center;
-      font-size: 0.7rem;
-      font-weight: 600;
-      flex-shrink: 0;
+      font-size: 0.7rem; font-weight: 700; flex-shrink: 0;
     }
-
-    .step.active .step-num { background: var(--accent); border-color: var(--accent); color: #1a1814; }
-    .step.done   .step-num { background: rgba(240,237,230,0.15); }
-
-    .step-line {
-      flex: 1;
-      height: 1px;
-      background: rgba(255,255,255,0.08);
-      margin: 0 0.5rem;
+    .step.active .step-num {
+      background: var(--azure); border-color: var(--azure); color: #fff;
+      box-shadow: 0 0 12px rgba(26,143,209,0.6);
     }
+    .step.done .step-num { background: rgba(240,248,255,0.15); }
+    .step-line { flex: 1; height: 1px; background: rgba(255,255,255,0.1); margin: 0 0.5rem; }
 
-    /* ── Formulario ── */
+    /* ── FORM WRAPPER ── */
     .form-wrapper {
+      max-width: 720px; margin: 0 auto;
+      padding: 2.5rem 1.5rem 5rem;
       position: relative; z-index: 1;
-      max-width: 720px;
-      margin: 0 auto;
-      padding: 2.5rem 1.5rem 4rem;
     }
-
-    .form-page {
-      display: none;
-      animation: fadeIn 0.35s ease;
-    }
-
+    .form-page { display: none; animation: fadeIn 0.35s ease; }
     .form-page.active { display: block; }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
 
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    /* ── CLOUD CARD ── */
+    /* SVG clip-path nubes via filter */
+    .form-card {
+      background: rgba(255,255,255,0.82);
+      border: 1px solid rgba(26,143,209,0.15);
+      border-radius: 28px 32px 24px 30px / 24px 28px 32px 26px;
+      padding: 2rem 2rem 1.5rem;
+      backdrop-filter: blur(14px);
+      box-shadow:
+        0 8px 32px rgba(26,143,209,0.09),
+        0 1px 0 rgba(255,255,255,0.95) inset,
+        4px 0 0 rgba(255,255,255,0.4) inset;
+      margin-bottom: 1.5rem;
+      position: relative;
+      /* bumps superiores simulados con pseudo */
+    }
+    .form-card::before {
+      content: '';
+      position: absolute;
+      top: -18px; left: 40px;
+      width: 80px; height: 36px;
+      background: rgba(255,255,255,0.82);
+      border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+      border: 1px solid rgba(26,143,209,0.15);
+      border-bottom: none;
+      backdrop-filter: blur(14px);
+    }
+    .form-card::after {
+      content: '';
+      position: absolute;
+      top: -28px; left: 100px;
+      width: 60px; height: 30px;
+      background: rgba(255,255,255,0.82);
+      border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+      border: 1px solid rgba(26,143,209,0.15);
+      border-bottom: none;
+      backdrop-filter: blur(14px);
+    }
 
     .section-title {
-      font-family: 'DM Serif Display', serif;
-      font-size: 1.5rem;
-      letter-spacing: -0.01em;
-      margin-bottom: 0.4rem;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem; letter-spacing: -0.01em;
+      margin-bottom: 0.4rem; color: var(--dark);
     }
+    .section-desc { color: var(--text2); font-size: 0.9rem; margin-bottom: 2rem; line-height: 1.6; }
 
-    .section-desc {
-      color: var(--text2);
-      font-size: 0.9rem;
-      margin-bottom: 2rem;
-      line-height: 1.6;
-    }
-
-    /* ── Campos ── */
+    /* ── FIELDS ── */
     .field { margin-bottom: 1.4rem; }
-
-    .field label {
-      display: block;
-      font-size: 0.82rem;
-      font-weight: 600;
-      color: var(--text);
-      margin-bottom: 0.45rem;
-    }
-
-    .field label .required { color: var(--accent); }
+    .field label { display: block; font-size: 0.82rem; font-weight: 600; color: var(--dark); margin-bottom: 0.45rem; }
+    .field label .required { color: var(--azure); }
 
     .field input[type="text"],
     .field input[type="email"],
@@ -189,216 +201,187 @@
     .field textarea,
     .field select {
       width: 100%;
-      background: var(--surface);
+      background: rgba(255,255,255,0.95);
       border: 1.5px solid var(--border);
-      border-radius: 12px;
+      border-radius: 14px;
       padding: 0.85rem 1rem;
       color: var(--text);
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.95rem;
-      outline: none;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.95rem; outline: none;
       transition: border-color 0.2s, box-shadow 0.2s;
       -webkit-appearance: none;
     }
-
-    .field input:focus,
-    .field textarea:focus,
-    .field select:focus {
-      border-color: var(--accent);
-      box-shadow: 0 0 0 3px rgba(184,146,74,0.12);
+    .field input:focus, .field textarea:focus, .field select:focus {
+      border-color: var(--azure);
+      box-shadow: 0 0 0 3px rgba(26,143,209,0.12);
     }
-
     .field textarea { resize: vertical; min-height: 100px; line-height: 1.55; }
-
-    .field-hint {
-      font-size: 0.78rem;
-      color: var(--muted);
-      margin-top: 0.35rem;
-    }
-
-    .field-error {
-      font-size: 0.78rem;
-      color: var(--danger);
-      margin-top: 0.35rem;
-      display: none;
-    }
-
+    .field-hint { font-size: 0.78rem; color: var(--muted); margin-top: 0.35rem; }
+    .field-error { font-size: 0.78rem; color: var(--danger); margin-top: 0.35rem; display: none; }
     .field.error input, .field.error textarea { border-color: var(--danger); }
     .field.error .field-error { display: block; }
 
-    /* ── Dos columnas ── */
-    .field-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1rem;
-    }
-
+    .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
     @media (max-width: 540px) { .field-row { grid-template-columns: 1fr; } }
 
-    /* ── Upload drop zone ── */
+    /* ── DROPZONE ── */
     .dropzone {
-      background: var(--surface);
-      border: 2px dashed var(--border);
-      border-radius: 12px;
-      padding: 2rem;
-      text-align: center;
-      cursor: pointer;
-      transition: all 0.2s;
-      position: relative;
+      background: rgba(255,255,255,0.9);
+      border: 2px dashed rgba(26,143,209,0.3);
+      border-radius: 16px; padding: 2rem;
+      text-align: center; cursor: pointer; transition: all 0.2s; position: relative;
     }
-
-    .dropzone:hover,
-    .dropzone.drag-over { border-color: var(--accent); background: rgba(184,146,74,0.04); }
-
-    .dropzone input[type="file"] {
-      position: absolute; inset: 0;
-      width: 100%; height: 100%;
-      opacity: 0; cursor: pointer;
-    }
-
+    .dropzone:hover, .dropzone.drag-over { border-color: var(--azure); background: rgba(26,143,209,0.04); }
+    .dropzone input[type="file"] { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
     .dropzone-icon { font-size: 2rem; margin-bottom: 0.5rem; }
     .dropzone-text { font-size: 0.88rem; color: var(--text2); }
     .dropzone-sub  { font-size: 0.78rem; color: var(--muted); margin-top: 0.25rem; }
-
-    .file-preview {
-      display: flex; flex-wrap: wrap; gap: 0.5rem;
-      margin-top: 0.75rem;
-    }
-
+    .file-preview  { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.75rem; }
     .file-chip {
-      background: rgba(184,146,74,0.1);
-      border: 1px solid rgba(184,146,74,0.2);
-      border-radius: 8px;
-      padding: 0.3rem 0.7rem;
-      font-size: 0.78rem;
-      color: var(--accent);
+      background: rgba(26,143,209,0.1); border: 1px solid rgba(26,143,209,0.25);
+      border-radius: 8px; padding: 0.3rem 0.7rem; font-size: 0.78rem; color: var(--azure);
       display: flex; align-items: center; gap: 0.4rem;
     }
 
-    /* ── Checkboxes con diseño personalizado ── */
-    .checkbox-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-      gap: 0.6rem;
-    }
-
+    /* ── CHECKBOXES ── */
+    .checkbox-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 0.6rem; }
     .checkbox-item {
       display: flex; align-items: center; gap: 0.65rem;
-      background: var(--surface);
-      border: 1.5px solid var(--border);
-      border-radius: 10px;
-      padding: 0.7rem 0.9rem;
-      cursor: pointer;
-      transition: all 0.15s;
-      font-size: 0.88rem;
+      background: rgba(255,255,255,0.9); border: 1.5px solid rgba(26,143,209,0.18);
+      border-radius: 10px; padding: 0.7rem 0.9rem;
+      cursor: pointer; transition: all 0.15s; font-size: 0.88rem; color: var(--text2);
     }
+    .checkbox-item:has(input:checked) { border-color: var(--azure); background: rgba(26,143,209,0.08); color: var(--azure); }
+    .checkbox-item input { width: 16px; height: 16px; accent-color: var(--azure); flex-shrink: 0; }
 
-    .checkbox-item:has(input:checked) {
-      border-color: var(--accent);
-      background: rgba(184,146,74,0.07);
-      color: var(--accent);
-    }
-
-    .checkbox-item input { width: 16px; height: 16px; accent-color: var(--accent); flex-shrink: 0; }
-
-    /* ── Navegación entre pasos ── */
+    /* ── NAV BUTTONS ── */
     .form-nav {
       display: flex; justify-content: space-between; align-items: center;
-      margin-top: 2.5rem;
-      padding-top: 1.5rem;
-      border-top: 1px solid var(--border);
+      margin-top: 2rem; padding-top: 1.5rem;
+      border-top: 1px solid rgba(26,143,209,0.1);
     }
 
-    .btn-prev {
-      background: none;
-      border: 1.5px solid var(--border);
-      border-radius: 10px;
-      padding: 0.75rem 1.4rem;
-      color: var(--text2);
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.88rem;
-      cursor: pointer;
-      transition: all 0.15s;
+    /* Botón nube — base compartida */
+    .btn-cloud {
+      position: relative;
+      border: none; cursor: pointer;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.9rem; font-weight: 700;
+      padding: 0;
+      background: transparent;
+      transition: transform 0.2s, filter 0.2s;
     }
-    .btn-prev:hover { border-color: var(--text2); color: var(--text); }
+    .btn-cloud:hover { transform: translateY(-3px); }
+    .btn-cloud:active { transform: translateY(0); }
 
-    .btn-next, .btn-submit {
-      background: var(--dark);
-      border: none;
-      border-radius: 10px;
-      padding: 0.8rem 1.6rem;
-      color: var(--bg);
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.9rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.15s;
-      display: flex; align-items: center; gap: 0.5rem;
+    .btn-cloud .cloud-shape {
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+      padding: 14px 28px;
+      border-radius: 50px;
+      position: relative;
     }
-    .btn-next:hover, .btn-submit:hover { background: var(--accent); transform: translateY(-1px); }
-
-    .btn-submit {
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
-      color: var(--dark);
+    /* bumps de nube en los botones */
+    .btn-cloud .cloud-shape::before,
+    .btn-cloud .cloud-shape::after {
+      content: '';
+      position: absolute;
+      top: -12px;
+      border-radius: 50%;
     }
 
-    /* ── Pantalla de éxito ── */
-    .success-screen {
-      display: none;
-      text-align: center;
-      padding: 3rem 1rem;
+    /* ── NUBE TORMENTA (Siguiente / Enviar) ── */
+    .btn-storm .cloud-shape {
+      background: linear-gradient(160deg, #4a5a6e 0%, #2c3a4a 60%, #1e2a38 100%);
+      color: #c8dff0;
+      box-shadow:
+        0 6px 20px rgba(30,42,56,0.45),
+        0 1px 0 rgba(255,255,255,0.08) inset;
+    }
+    .btn-storm .cloud-shape::before {
+      left: 20px; width: 36px; height: 28px;
+      background: #3d4e60;
+      box-shadow: 0 -2px 6px rgba(0,0,0,0.15);
+    }
+    .btn-storm .cloud-shape::after {
+      left: 46px; width: 28px; height: 22px;
+      background: #465869;
+      box-shadow: 0 -2px 4px rgba(0,0,0,0.1);
+    }
+    .btn-storm:hover .cloud-shape {
+      box-shadow: 0 10px 28px rgba(30,42,56,0.55), 0 1px 0 rgba(255,255,255,0.1) inset;
+    }
+    /* rayito emoji pequeño */
+    .btn-storm .bolt {
+      font-size: 13px;
+      filter: drop-shadow(0 0 4px rgba(255,220,50,0.8));
     }
 
+    /* ── NUBE SOLEADA (Anterior) ── */
+    .btn-sunny .cloud-shape {
+      background: linear-gradient(160deg, #ffffff 0%, #e8f6ff 60%, #d0ecfa 100%);
+      color: var(--azure2);
+      border: 1.5px solid rgba(26,143,209,0.25);
+      box-shadow:
+        0 6px 20px rgba(26,143,209,0.15),
+        0 1px 0 rgba(255,255,255,0.95) inset;
+    }
+    .btn-sunny .cloud-shape::before {
+      left: 18px; width: 34px; height: 26px;
+      background: #f0f9ff;
+      border: 1.5px solid rgba(26,143,209,0.15);
+      box-shadow: 0 -1px 4px rgba(26,143,209,0.08);
+    }
+    .btn-sunny .cloud-shape::after {
+      left: 44px; width: 26px; height: 20px;
+      background: #f5fbff;
+      border: 1.5px solid rgba(26,143,209,0.12);
+    }
+    .btn-sunny:hover .cloud-shape {
+      background: linear-gradient(160deg, #ffffff 0%, #ddf0fb 100%);
+      box-shadow: 0 10px 28px rgba(26,143,209,0.22), 0 1px 0 rgba(255,255,255,1) inset;
+    }
+    .btn-sunny .sun {
+      font-size: 13px;
+      filter: drop-shadow(0 0 4px rgba(255,200,50,0.6));
+    }
+
+    /* ── SUCCESS ── */
+    .success-screen { display: none; text-align: center; padding: 4rem 1rem; }
     .success-screen.show { display: block; animation: fadeIn 0.5s ease; }
+    .success-icon { font-size: 4rem; margin-bottom: 1rem; display: block; filter: drop-shadow(0 4px 16px rgba(26,143,209,0.3)); }
+    .success-screen h2 { font-family: 'Playfair Display', serif; font-size: 2rem; margin-bottom: 0.75rem; color: var(--dark); }
+    .success-screen p { color: var(--text2); font-size: 1rem; line-height: 1.65; max-width: 440px; margin: 0 auto; }
 
-    .success-icon {
-      font-size: 4rem;
-      margin-bottom: 1rem;
-      display: block;
-    }
-
-    .success-screen h2 {
-      font-family: 'DM Serif Display', serif;
-      font-size: 2rem;
-      margin-bottom: 0.75rem;
-    }
-
-    .success-screen p {
-      color: var(--text2);
-      font-size: 1rem;
-      line-height: 1.65;
-      max-width: 440px;
-      margin: 0 auto;
-    }
-
-    /* ── Loading overlay ── */
+    /* ── LOADING ── */
     .loading-overlay {
-      display: none;
-      position: fixed; inset: 0; z-index: 9999;
-      background: rgba(248,246,242,0.85);
-      backdrop-filter: blur(6px);
-      align-items: center; justify-content: center;
-      flex-direction: column; gap: 1rem;
+      display: none; position: fixed; inset: 0; z-index: 9999;
+      background: rgba(228,242,251,0.88); backdrop-filter: blur(8px);
+      align-items: center; justify-content: center; flex-direction: column; gap: 1rem;
     }
     .loading-overlay.show { display: flex; }
-
-    .spinner {
-      width: 40px; height: 40px;
-      border: 3px solid var(--border);
-      border-top-color: var(--accent);
-      border-radius: 50%;
-      animation: spin 0.8s linear infinite;
-    }
+    .spinner { width: 40px; height: 40px; border: 3px solid rgba(26,143,209,0.2); border-top-color: var(--azure); border-radius: 50%; animation: spin 0.8s linear infinite; }
     @keyframes spin { to { transform: rotate(360deg); } }
+
+    @media (max-width: 600px) {
+      .form-card { padding: 1.5rem 1rem; }
+      .form-wrapper { padding: 1.5rem 1rem 3rem; }
+    }
   </style>
 </head>
 <body>
 
+<canvas id="sky-bg"></canvas>
+
+<!-- Logo flotante sin nav -->
+<a href="/" class="logo-pin">
+  <img src="inAlbis.png" alt="inAlbis">
+</a>
+
 <!-- Hero -->
 <div class="hero">
   <div class="hero-inner">
-    <div class="hero-eyebrow">⚡ Mi Negocio Web</div>
-    <h1>Contanos todo sobre<br>tu <em>negocio</em></h1>
+    <div class="hero-eyebrow">☁️ Páginas inAlbis</div>
+    <h1>Hablanos sobre<br>tu <em>negocio</em></h1>
     <p>Esta información nos permite entender tu marca a fondo y crear una web que realmente represente quiénes son. Tomáte el tiempo que necesites.</p>
   </div>
 </div>
@@ -406,25 +389,13 @@
 <!-- Steps bar -->
 <div class="steps-bar">
   <div class="steps">
-    <div class="step active" id="step-1">
-      <div class="step-num">1</div>
-      <span>Negocio</span>
-    </div>
+    <div class="step active" id="step-1"><div class="step-num">1</div><span>Negocio</span></div>
     <div class="step-line"></div>
-    <div class="step" id="step-2">
-      <div class="step-num">2</div>
-      <span>Diseño</span>
-    </div>
+    <div class="step" id="step-2"><div class="step-num">2</div><span>Diseño</span></div>
     <div class="step-line"></div>
-    <div class="step" id="step-3">
-      <div class="step-num">3</div>
-      <span>Objetivos</span>
-    </div>
+    <div class="step" id="step-3"><div class="step-num">3</div><span>Objetivos</span></div>
     <div class="step-line"></div>
-    <div class="step" id="step-4">
-      <div class="step-num">4</div>
-      <span>Técnico</span>
-    </div>
+    <div class="step" id="step-4"><div class="step-num">4</div><span>Técnico</span></div>
   </div>
 </div>
 
@@ -432,212 +403,212 @@
 <div class="form-wrapper">
   <form id="onboarding-form" enctype="multipart/form-data">
 
-    <!-- ── PÁGINA 1: Información del negocio ── -->
+    <!-- PÁGINA 1 -->
     <div class="form-page active" data-page="1">
-      <div class="section-title">Tu negocio</div>
-      <div class="section-desc">Empecemos por lo básico. Cuanto más detallado, mejor podemos representarte.</div>
+      <div class="form-card">
+        <div class="section-title">Tu negocio</div>
+        <div class="section-desc">Empecemos por lo básico. Cuanto más detallado, mejor podemos representarte.</div>
 
-      <div class="field" data-required>
-        <label>Nombre del negocio <span class="required">*</span></label>
-        <input type="text" name="business_name" placeholder="Ej: Café El Rincón">
-        <div class="field-error">Este campo es obligatorio</div>
-      </div>
-
-      <div class="field-row">
         <div class="field" data-required>
-          <label>Rubro <span class="required">*</span></label>
-          <input type="text" name="business_type" placeholder="Ej: Gastronomía, Moda, Salud...">
-          <div class="field-error">Obligatorio</div>
+          <label>Nombre del negocio <span class="required">*</span></label>
+          <input type="text" name="business_name" placeholder="Ej: Café El Rincón">
+          <div class="field-error">Este campo es obligatorio</div>
         </div>
-        <div class="field" data-required>
-          <label>Teléfono / WhatsApp <span class="required">*</span></label>
-          <input type="tel" name="phone" placeholder="+54 9 11 1234-5678">
-          <div class="field-error">Obligatorio</div>
-        </div>
-      </div>
-
-      <div class="field">
-        <label>Descripción del negocio</label>
-        <textarea name="description" placeholder="¿Qué hacen? ¿Cuál es su propuesta de valor? ¿Qué los hace únicos?"></textarea>
-      </div>
-
-      <div class="field-row">
-        <div class="field">
-          <label>Email de contacto</label>
-          <input type="email" name="email" placeholder="hola@negocio.com">
+        <div class="field-row">
+          <div class="field" data-required>
+            <label>Rubro <span class="required">*</span></label>
+            <input type="text" name="business_type" placeholder="Ej: Gastronomía, Moda, Salud...">
+            <div class="field-error">Obligatorio</div>
+          </div>
+          <div class="field" data-required>
+            <label>Teléfono / WhatsApp <span class="required">*</span></label>
+            <input type="tel" name="phone" placeholder="+54 9 11 1234-5678">
+            <div class="field-error">Obligatorio</div>
+          </div>
         </div>
         <div class="field">
-          <label>Dirección / Zona</label>
-          <input type="text" name="address" placeholder="Ej: Palermo, Buenos Aires">
+          <label>Descripción del negocio</label>
+          <textarea name="description" placeholder="¿Qué hacen? ¿Cuál es su propuesta de valor? ¿Qué los hace únicos?"></textarea>
         </div>
-      </div>
-
-      <div class="field">
-        <label>Horarios de atención</label>
-        <input type="text" name="hours" placeholder="Ej: Lun–Vie 9 a 18 h / Sáb 10 a 14 h">
-      </div>
-
-      <div class="field-row">
-        <div class="field">
-          <label>Instagram</label>
-          <input type="text" name="instagram" placeholder="@tu_negocio">
+        <div class="field-row">
+          <div class="field">
+            <label>Email de contacto</label>
+            <input type="email" name="email" placeholder="hola@negocio.com">
+          </div>
+          <div class="field">
+            <label>Dirección / Zona</label>
+            <input type="text" name="address" placeholder="Ej: Palermo, Buenos Aires">
+          </div>
         </div>
         <div class="field">
-          <label>Otras redes sociales</label>
-          <input type="text" name="other_social" placeholder="Facebook, TikTok, LinkedIn...">
+          <label>Horarios de atención</label>
+          <input type="text" name="hours" placeholder="Ej: Lun–Vie 9 a 18 h / Sáb 10 a 14 h">
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label>Instagram</label>
+            <input type="text" name="instagram" placeholder="@tu_negocio">
+          </div>
+          <div class="field">
+            <label>Otras redes sociales</label>
+            <input type="text" name="other_social" placeholder="Facebook, TikTok, LinkedIn...">
+          </div>
         </div>
       </div>
-
       <div class="form-nav">
         <div></div>
-        <button type="button" class="btn-next" onclick="nextPage(1)">Siguiente →</button>
+        <button type="button" class="btn-cloud btn-sunny" onclick="nextPage(1)">
+          <div class="cloud-shape">Siguiente <span class="sun">☀️</span></div>
+        </button>
       </div>
     </div>
 
-    <!-- ── PÁGINA 2: Diseño y marca ── -->
+    <!-- PÁGINA 2 -->
     <div class="form-page" data-page="2">
-      <div class="section-title">Identidad y diseño</div>
-      <div class="section-desc">Esta info nos ayuda a capturar la esencia visual de tu marca.</div>
+      <div class="form-card">
+        <div class="section-title">Identidad y diseño</div>
+        <div class="section-desc">Esta info nos ayuda a capturar la esencia visual de tu marca.</div>
 
-      <div class="field">
-        <label>Logo</label>
-        <div class="dropzone" id="logo-zone">
-          <input type="file" name="logo" accept="image/*" onchange="previewFiles(this, 'logo-preview')">
-          <div class="dropzone-icon">🖼</div>
-          <div class="dropzone-text">Arrastrá tu logo acá o hacé clic para seleccionar</div>
-          <div class="dropzone-sub">JPG, PNG, SVG · máx 10 MB</div>
+        <div class="field">
+          <label>Logo</label>
+          <div class="dropzone" id="logo-zone">
+            <input type="file" name="logo" accept="image/*" onchange="previewFiles(this, 'logo-preview')">
+            <div class="dropzone-icon">🖼</div>
+            <div class="dropzone-text">Arrastrá tu logo acá o hacé clic para seleccionar</div>
+            <div class="dropzone-sub">JPG, PNG, SVG · máx 10 MB</div>
+          </div>
+          <div class="file-preview" id="logo-preview"></div>
         </div>
-        <div class="file-preview" id="logo-preview"></div>
-      </div>
-
-      <div class="field">
-        <label>Fotos del negocio / productos</label>
-        <div class="dropzone" id="photos-zone">
-          <input type="file" name="photos[]" accept="image/*" multiple onchange="previewFiles(this, 'photos-preview')">
-          <div class="dropzone-icon">📸</div>
-          <div class="dropzone-text">Podés subir varias fotos a la vez</div>
-          <div class="dropzone-sub">JPG, PNG, WebP · máx 10 MB c/u</div>
+        <div class="field">
+          <label>Fotos del negocio / productos</label>
+          <div class="dropzone" id="photos-zone">
+            <input type="file" name="photos[]" accept="image/*" multiple onchange="previewFiles(this, 'photos-preview')">
+            <div class="dropzone-icon">📸</div>
+            <div class="dropzone-text">Podés subir varias fotos a la vez</div>
+            <div class="dropzone-sub">JPG, PNG, WebP · máx 10 MB c/u</div>
+          </div>
+          <div class="file-preview" id="photos-preview"></div>
         </div>
-        <div class="file-preview" id="photos-preview"></div>
+        <div class="field">
+          <label>Servicios o productos que ofrecen</label>
+          <textarea name="services" placeholder="Listá tus principales servicios o productos. Ej: Corte de cabello, coloración, mechas..."></textarea>
+        </div>
+        <div class="field">
+          <label>Referencias de diseño</label>
+          <input type="text" name="design_references" placeholder="Links a webs que te gustan: https://ejemplo.com, https://otro.com">
+          <div class="field-hint">Pueden ser de competidores o de cualquier rubro que te inspire visualmente</div>
+        </div>
+        <div class="field">
+          <label>Colores de la marca</label>
+          <input type="text" name="brand_colors" placeholder="Ej: azul marino, blanco, dorado — o códigos HEX #1A2B3C">
+        </div>
+        <div class="field">
+          <label>Texto para sección "Nosotros"</label>
+          <textarea name="about_us" placeholder="Contanos la historia del negocio, su misión, sus valores..."></textarea>
+        </div>
       </div>
-
-      <div class="field">
-        <label>Servicios o productos que ofrecen</label>
-        <textarea name="services" placeholder="Listá tus principales servicios o productos. Ej: Corte de cabello, coloración, mechas..."></textarea>
-      </div>
-
-      <div class="field">
-        <label>Referencias de diseño</label>
-        <input type="text" name="design_references" placeholder="Links a webs que te gustan: https://ejemplo.com, https://otro.com">
-        <div class="field-hint">Pueden ser de competidores o de cualquier rubro que te inspire visualmente</div>
-      </div>
-
-      <div class="field">
-        <label>Colores de la marca</label>
-        <input type="text" name="brand_colors" placeholder="Ej: azul marino, blanco, dorado — o códigos HEX #1A2B3C">
-      </div>
-
-      <div class="field">
-        <label>Texto para sección "Nosotros" / "Sobre nosotros"</label>
-        <textarea name="about_us" placeholder="Contanos la historia del negocio, su misión, sus valores..."></textarea>
-      </div>
-
       <div class="form-nav">
-        <button type="button" class="btn-prev" onclick="prevPage(2)">← Anterior</button>
-        <button type="button" class="btn-next" onclick="nextPage(2)">Siguiente →</button>
+        <button type="button" class="btn-cloud btn-storm" onclick="prevPage(2)">
+          <div class="cloud-shape"><span class="bolt">⚡</span> Anterior</div>
+        </button>
+        <button type="button" class="btn-cloud btn-sunny" onclick="nextPage(2)">
+          <div class="cloud-shape">Siguiente <span class="sun">☀️</span></div>
+        </button>
       </div>
     </div>
 
-    <!-- ── PÁGINA 3: Objetivos y funcionalidades ── -->
+    <!-- PÁGINA 3 -->
     <div class="form-page" data-page="3">
-      <div class="section-title">¿Qué necesita tu web?</div>
-      <div class="section-desc">Contanos qué querés lograr y qué funciones son clave para tu negocio.</div>
+      <div class="form-card">
+        <div class="section-title">¿Qué necesita tu web?</div>
+        <div class="section-desc">Contanos qué querés lograr y qué funciones son clave para tu negocio.</div>
 
-      <div class="field">
-        <label>Objetivo principal del sitio web</label>
-        <div class="checkbox-grid">
-          <label class="checkbox-item"><input type="checkbox" name="main_goals[]" value="Conseguir clientes"> Conseguir clientes</label>
-          <label class="checkbox-item"><input type="checkbox" name="main_goals[]" value="Vender online"> Vender online</label>
-          <label class="checkbox-item"><input type="checkbox" name="main_goals[]" value="Mostrar trabajos"> Mostrar trabajos / Portfolio</label>
-          <label class="checkbox-item"><input type="checkbox" name="main_goals[]" value="Gestionar reservas"> Gestionar reservas</label>
-          <label class="checkbox-item"><input type="checkbox" name="main_goals[]" value="Dar credibilidad"> Dar credibilidad</label>
-          <label class="checkbox-item"><input type="checkbox" name="main_goals[]" value="Otro"> Otro</label>
+        <div class="field">
+          <label>Objetivo principal del sitio web</label>
+          <div class="checkbox-grid">
+            <label class="checkbox-item"><input type="checkbox" name="main_goals[]" value="Conseguir clientes"> Conseguir clientes</label>
+            <label class="checkbox-item"><input type="checkbox" name="main_goals[]" value="Vender online"> Vender online</label>
+            <label class="checkbox-item"><input type="checkbox" name="main_goals[]" value="Mostrar trabajos"> Mostrar trabajos / Portfolio</label>
+            <label class="checkbox-item"><input type="checkbox" name="main_goals[]" value="Gestionar reservas"> Gestionar reservas</label>
+            <label class="checkbox-item"><input type="checkbox" name="main_goals[]" value="Dar credibilidad"> Dar credibilidad</label>
+            <label class="checkbox-item"><input type="checkbox" name="main_goals[]" value="Otro"> Otro</label>
+          </div>
+        </div>
+        <div class="field">
+          <label>Funciones especiales que necesita</label>
+          <div class="checkbox-grid">
+            <label class="checkbox-item"><input type="checkbox" name="special_functions[]" value="Sistema de turnos"> Sistema de turnos</label>
+            <label class="checkbox-item"><input type="checkbox" name="special_functions[]" value="Tienda online"> Tienda online</label>
+            <label class="checkbox-item"><input type="checkbox" name="special_functions[]" value="Formulario de contacto"> Formulario de contacto</label>
+            <label class="checkbox-item"><input type="checkbox" name="special_functions[]" value="Botón WhatsApp"> Botón WhatsApp</label>
+            <label class="checkbox-item"><input type="checkbox" name="special_functions[]" value="Mapa de ubicación"> Mapa de ubicación</label>
+            <label class="checkbox-item"><input type="checkbox" name="special_functions[]" value="Blog o noticias"> Blog / Noticias</label>
+            <label class="checkbox-item"><input type="checkbox" name="special_functions[]" value="Galería de fotos"> Galería de fotos</label>
+            <label class="checkbox-item"><input type="checkbox" name="special_functions[]" value="Otro"> Otro</label>
+          </div>
+        </div>
+        <div class="field">
+          <label>Métodos de pago que aceptan</label>
+          <input type="text" name="payment_methods" placeholder="Ej: Efectivo, transferencia, Mercado Pago, tarjetas...">
+        </div>
+        <div class="field">
+          <label>¿A quién le apuntan? (público objetivo)</label>
+          <textarea name="target_audience" placeholder="Ej: Mujeres de 25–45 años, profesionales de Buenos Aires que buscan..."></textarea>
         </div>
       </div>
-
-      <div class="field">
-        <label>Funciones especiales que necesita</label>
-        <div class="checkbox-grid">
-          <label class="checkbox-item"><input type="checkbox" name="special_functions[]" value="Sistema de turnos"> Sistema de turnos</label>
-          <label class="checkbox-item"><input type="checkbox" name="special_functions[]" value="Tienda online"> Tienda online</label>
-          <label class="checkbox-item"><input type="checkbox" name="special_functions[]" value="Formulario de contacto"> Formulario de contacto</label>
-          <label class="checkbox-item"><input type="checkbox" name="special_functions[]" value="Botón WhatsApp"> Botón WhatsApp</label>
-          <label class="checkbox-item"><input type="checkbox" name="special_functions[]" value="Mapa de ubicación"> Mapa de ubicación</label>
-          <label class="checkbox-item"><input type="checkbox" name="special_functions[]" value="Blog o noticias"> Blog / Noticias</label>
-          <label class="checkbox-item"><input type="checkbox" name="special_functions[]" value="Galería de fotos"> Galería de fotos</label>
-          <label class="checkbox-item"><input type="checkbox" name="special_functions[]" value="Otro"> Otro</label>
-        </div>
-      </div>
-
-      <div class="field">
-        <label>Métodos de pago que aceptan</label>
-        <input type="text" name="payment_methods" placeholder="Ej: Efectivo, transferencia, Mercado Pago, tarjetas...">
-      </div>
-
-      <div class="field">
-        <label>¿A quién le apuntan? (público objetivo)</label>
-        <textarea name="target_audience" placeholder="Ej: Mujeres de 25–45 años, profesionales de Buenos Aires que buscan..."></textarea>
-      </div>
-
       <div class="form-nav">
-        <button type="button" class="btn-prev" onclick="prevPage(3)">← Anterior</button>
-        <button type="button" class="btn-next" onclick="nextPage(3)">Siguiente →</button>
+        <button type="button" class="btn-cloud btn-storm" onclick="prevPage(3)">
+          <div class="cloud-shape"><span class="bolt">⚡</span> Anterior</div>
+        </button>
+        <button type="button" class="btn-cloud btn-sunny" onclick="nextPage(3)">
+          <div class="cloud-shape">Siguiente <span class="sun">☀️</span></div>
+        </button>
       </div>
     </div>
 
-    <!-- ── PÁGINA 4: Info técnica y cierre ── -->
+    <!-- PÁGINA 4 -->
     <div class="form-page" data-page="4">
-      <div class="section-title">Detalles finales</div>
-      <div class="section-desc">Casi terminamos. Estos últimos datos nos ayudan a planificar bien el proyecto.</div>
+      <div class="form-card">
+        <div class="section-title">Detalles finales</div>
+        <div class="section-desc">Casi terminamos. Estos últimos datos nos ayudan a planificar bien el proyecto.</div>
 
-      <div class="field">
-        <label>Competencia o referentes del rubro</label>
-        <textarea name="competitors" placeholder="Webs de competidores o negocios similares que admiran"></textarea>
-      </div>
-
-      <div class="field">
-        <label>Dominio y hosting</label>
-        <input type="text" name="domain_hosting" placeholder="Ej: Ya tengo sunegocio.com en Nic.ar — o no sé qué tengo">
-        <div class="field-hint">Si no sabés, no hay problema, lo vemos juntos</div>
-      </div>
-
-      <div class="field-row">
         <div class="field">
-          <label>¿Quién aprueba el diseño final?</label>
-          <input type="text" name="approver" placeholder="Nombre y cargo">
+          <label>Competencia o referentes del rubro</label>
+          <textarea name="competitors" placeholder="Webs de competidores o negocios similares que admiran"></textarea>
         </div>
         <div class="field">
-          <label>Fecha límite ideal del proyecto</label>
-          <input type="date" name="deadline">
+          <label>Dominio y hosting</label>
+          <input type="text" name="domain_hosting" placeholder="Ej: Ya tengo sunegocio.com en Nic.ar — o no sé qué tengo">
+          <div class="field-hint">Si no sabés, no hay problema, lo vemos juntos</div>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label>¿Quién aprueba el diseño final?</label>
+            <input type="text" name="approver" placeholder="Nombre y cargo">
+          </div>
+          <div class="field">
+            <label>Fecha límite ideal del proyecto</label>
+            <input type="date" name="deadline">
+          </div>
+        </div>
+        <div class="field">
+          <label>¿Algo más que quieras contarnos?</label>
+          <textarea name="extra_notes" placeholder="Cualquier detalle importante que no hayamos preguntado..."></textarea>
         </div>
       </div>
-
-      <div class="field">
-        <label>¿Algo más que quieras contarnos?</label>
-        <textarea name="extra_notes" placeholder="Cualquier detalle importante que no hayamos preguntado..."></textarea>
-      </div>
-
       <div class="form-nav">
-        <button type="button" class="btn-prev" onclick="prevPage(4)">← Anterior</button>
-        <button type="submit" class="btn-submit">
-          <span>Enviar formulario</span> ✓
+        <button type="button" class="btn-cloud btn-storm" onclick="prevPage(2)">
+          <div class="cloud-shape"><span class="bolt">⚡</span> Anterior</div>
+        </button>
+        <button type="submit" class="btn-cloud btn-sunny">
+          <div class="cloud-shape">Enviar formulario <span class="sun">☀️</span></div>
         </button>
       </div>
     </div>
 
   </form>
 
-  <!-- Pantalla éxito -->
+  <!-- Éxito -->
   <div class="success-screen" id="success-screen">
     <span class="success-icon">🎉</span>
     <h2>¡Recibimos todo!</h2>
@@ -652,16 +623,87 @@
 </div>
 
 <script>
+/* ── SKY CANVAS ── */
+(function(){
+  const canvas = document.getElementById('sky-bg');
+  const ctx = canvas.getContext('2d');
+  let W, H;
+
+  function resize(){
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+
+  function drawSky(){
+    const g = ctx.createLinearGradient(0, 0, 0, H);
+    g.addColorStop(0,    '#b8dff4');
+    g.addColorStop(0.4,  '#cce6f7');
+    g.addColorStop(0.75, '#ddf0fb');
+    g.addColorStop(1,    '#f0f8ff');
+    ctx.fillStyle = g;
+    ctx.fillRect(0, 0, W, H);
+  }
+
+  const clouds = [];
+  function initClouds(){
+    clouds.length = 0;
+    const count = Math.floor(W / 110) + 5;
+    for(let i = 0; i < count; i++){
+      clouds.push({
+        x:     Math.random() * W * 1.5,
+        y:     50 + Math.random() * H * 0.6,
+        w:     90 + Math.random() * 270,
+        h:     32 + Math.random() * 70,
+        alpha: 0.45 + Math.random() * 0.45,
+        speed: 0.08 + Math.random() * 0.2,
+        layer: Math.floor(Math.random() * 3)
+      });
+    }
+  }
+
+  function drawCloud(x, y, w, h, alpha){
+    ctx.save();
+    ctx.globalAlpha = alpha;
+    const gr = ctx.createRadialGradient(x, y - h*0.1, h*0.05, x, y, w*0.55);
+    gr.addColorStop(0,   'rgba(255,255,255,1)');
+    gr.addColorStop(0.6, 'rgba(240,250,255,0.92)');
+    gr.addColorStop(1,   'rgba(200,232,250,0)');
+    ctx.fillStyle = gr;
+    ctx.beginPath(); ctx.ellipse(x, y, w*0.5, h*0.5, 0, 0, Math.PI*2); ctx.fill();
+    [[-0.28,-0.22,0.3,0.62],[0.22,-0.24,0.34,0.67],[-0.04,-0.36,0.24,0.56]].forEach(([dx,dy,rw,rh])=>{
+      ctx.beginPath(); ctx.ellipse(x+w*dx, y+h*dy, w*rw, h*rh, 0, 0, Math.PI*2); ctx.fill();
+    });
+    ctx.restore();
+  }
+
+  let scrollY = 0;
+  window.addEventListener('scroll', () => { scrollY = window.scrollY; }, { passive: true });
+  const PAR = [0.025, 0.06, 0.11];
+
+  function loop(){
+    ctx.clearRect(0, 0, W, H);
+    drawSky();
+    clouds.forEach(c => {
+      c.x += c.speed;
+      if(c.x - c.w*0.6 > W) c.x = -c.w*0.6;
+      drawCloud(c.x, c.y - scrollY * PAR[c.layer], c.w, c.h, c.alpha);
+    });
+    requestAnimationFrame(loop);
+  }
+
+  resize(); initClouds();
+  window.addEventListener('resize', () => { resize(); initClouds(); });
+  requestAnimationFrame(loop);
+})();
+
+/* ── NAVIGATION ── */
 let currentPage = 1;
 const totalPages = 4;
 
-// ── Navegación entre pasos ──────────────────────────────────
 function goToPage(page) {
   document.querySelectorAll('.form-page').forEach(p => p.classList.remove('active'));
   const target = document.querySelector(`.form-page[data-page="${page}"]`);
   if (target) target.classList.add('active');
-
-  // Steps
   for (let i = 1; i <= totalPages; i++) {
     const s = document.getElementById('step-' + i);
     if (!s) continue;
@@ -669,39 +711,24 @@ function goToPage(page) {
     if (i === page) s.classList.add('active');
     if (i < page)  s.classList.add('done');
   }
-
   currentPage = page;
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-function nextPage(page) {
-  if (!validatePage(page)) return;
-  goToPage(page + 1);
-}
+function nextPage(page) { if (!validatePage(page)) return; goToPage(page + 1); }
+function prevPage(page) { goToPage(page - 1); }
 
-function prevPage(page) {
-  goToPage(page - 1);
-}
-
-// ── Validación básica ────────────────────────────────────────
 function validatePage(page) {
   const p = document.querySelector(`.form-page[data-page="${page}"]`);
   let valid = true;
-
   p.querySelectorAll('[data-required]').forEach(wrapper => {
     const input = wrapper.querySelector('input, textarea, select');
-    if (!input || !input.value.trim()) {
-      wrapper.classList.add('error');
-      valid = false;
-    } else {
-      wrapper.classList.remove('error');
-    }
+    if (!input || !input.value.trim()) { wrapper.classList.add('error'); valid = false; }
+    else { wrapper.classList.remove('error'); }
   });
-
   return valid;
 }
 
-// ── Preview de archivos ──────────────────────────────────────
 function previewFiles(input, previewId) {
   const preview = document.getElementById(previewId);
   preview.innerHTML = '';
@@ -713,34 +740,26 @@ function previewFiles(input, previewId) {
   });
 }
 
-// ── Drag over en dropzones ───────────────────────────────────
 document.querySelectorAll('.dropzone').forEach(zone => {
   zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('drag-over'); });
   zone.addEventListener('dragleave', () => zone.classList.remove('drag-over'));
-  zone.addEventListener('drop',      () => zone.classList.remove('drag-over'));
+  zone.addEventListener('drop', () => zone.classList.remove('drag-over'));
 });
 
-// ── Submit ───────────────────────────────────────────────────
 document.getElementById('onboarding-form').addEventListener('submit', async function(e) {
   e.preventDefault();
   if (!validatePage(4)) return;
-
   document.getElementById('loading').classList.add('show');
-
   try {
     const formData = new FormData(this);
     const r = await fetch('/api/submit-form', { method: 'POST', body: formData });
     const d = await r.json();
-
     document.getElementById('loading').classList.remove('show');
-
     if (d.success) {
       this.style.display = 'none';
       document.getElementById('success-screen').classList.add('show');
       document.querySelector('.steps-bar').style.display = 'none';
-    } else {
-      alert('Error: ' + d.message);
-    }
+    } else { alert('Error: ' + d.message); }
   } catch (err) {
     document.getElementById('loading').classList.remove('show');
     alert('Hubo un error al enviar. Por favor intentá de nuevo.');
