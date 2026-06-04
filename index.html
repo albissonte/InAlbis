@@ -429,25 +429,51 @@ footer{
     display:block;
     margin:auto;
     position:absolute;
-    bottom:60px;
+    bottom:40px;
     right:-30px;
     transition:all .3s ease;
     animation:float 4s ease-in-out infinite;
-}   z-index:10;
+    z-index:5;
+  }
 #chat-box{
-    background:rgba(5,15,35,.45);
+    position: relative;
+    width: 320px;
 
-    backdrop-filter:blur(20px);
-    -webkit-backdrop-filter:blur(20px);
+    background:rgba(10,30,60,.20);
 
-    border:1px solid rgba(80,200,255,.35);
+    backdrop-filter:blur(25px);
+    -webkit-backdrop-filter:blur(25px);
+
+    border:1px solid rgba(80,200,255,.45);
 
     box-shadow:
-        0 0 20px rgba(0,180,255,.15),
-        inset 0 0 20px rgba(0,180,255,.05);
+        0 0 25px rgba(0,200,255,.25),
+        inset 0 0 25px rgba(0,200,255,.08);
 
     border-radius:24px;
 }
+  #chat-box::before{
+    content:"";
+
+    position:absolute;
+
+    top:0;
+    left:0;
+
+    width:100%;
+    height:100%;
+
+    border-radius:24px;
+
+    background:
+    linear-gradient(
+        135deg,
+        rgba(255,255,255,.15),
+        rgba(255,255,255,0)
+    );
+
+    pointer-events:none;
+  }
 
 #messages{
     background: transparent;
