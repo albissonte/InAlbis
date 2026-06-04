@@ -419,18 +419,20 @@ footer{
   bottom:28px;
   right:28px;
   z-index:9999;
-  display:flex;
-  flex-direction:column;
-  align-items:flex-end;
-  gap:14px;
+  width:62px;
+  height:62px;
+  pointer-events:none;
 }
 
-/* Botón toggle */
+/* Botón toggle — siempre visible encima del chat */
 #albi-toggle{
-  position:relative;
+  position:absolute;
+  bottom:0;
+  right:0;
   width:62px;height:62px;
   cursor:pointer;
-  flex-shrink:0;
+  z-index:10;
+  pointer-events:all;
 }
 #albi-toggle img{
   width:62px;height:62px;
@@ -469,21 +471,27 @@ footer{
 #chat-box{
   opacity:0;
   visibility:hidden;
+  pointer-events:none;
   transform:translateY(16px) scale(.97);
-  transition:all .3s cubic-bezier(.4,0,.2,1);
+  transition:opacity .3s,visibility .3s,transform .3s cubic-bezier(.4,0,.2,1);
+  position:absolute;
+  bottom:76px;
+  right:0;
   width:320px;
-  background:rgba(8,17,32,.82);
+  background:rgba(8,17,32,.41);
   backdrop-filter:blur(18px);
   -webkit-backdrop-filter:blur(18px);
-  border:1px solid rgba(56,212,245,.35);
-  box-shadow:0 0 40px rgba(56,212,245,.18),inset 0 0 30px rgba(56,212,245,.05);
+  border:1px solid rgba(56,212,245,.18);
+  box-shadow:0 0 40px rgba(56,212,245,.09),inset 0 0 30px rgba(56,212,245,.025);
   border-radius:20px;
   overflow:hidden;
 }
 #chat-box.open{
   opacity:1;
   visibility:visible;
+  pointer-events:all;
   transform:translateY(0) scale(1);
+  z-index:5;
 }
 
 /* Header */
@@ -492,8 +500,8 @@ footer{
   align-items:center;
   justify-content:space-between;
   padding:14px 18px;
-  background:rgba(56,212,245,.08);
-  border-bottom:1px solid rgba(56,212,245,.18);
+  background:rgba(56,212,245,.04);
+  border-bottom:1px solid rgba(56,212,245,.09);
   font-size:13px;
   font-weight:600;
   color:var(--cyan);
@@ -524,9 +532,9 @@ footer{
   align-items:center;
   gap:10px;
   padding:10px 16px;
-  border-top:1px solid rgba(56,212,245,.1);
-  border-bottom:1px solid rgba(56,212,245,.1);
-  background:rgba(56,212,245,.04);
+  border-top:1px solid rgba(56,212,245,.05);
+  border-bottom:1px solid rgba(56,212,245,.05);
+  background:rgba(56,212,245,.02);
 }
 #chat-albi-img{
   width:36px;height:36px;
@@ -546,7 +554,7 @@ footer{
   display:flex;
 }
 #chat-input{
-  background:rgba(255,255,255,.06);
+  background:rgba(255,255,255,.03);
   color:var(--white);
   flex:1;
   border:none;
@@ -555,8 +563,9 @@ footer{
   font-size:13px;
   font-family:inherit;
 }
-#chat-input::placeholder{ color:rgba(255,255,255,.35) }
+#chat-input::placeholder{ color:rgba(255,255,255,.2) }
 #send-btn{
+  border-radius:0 0 20px 0;
   background:var(--cyan);
   color:var(--bg);
   font-weight:700;
@@ -899,13 +908,6 @@ footer{
 </footer>
 <!-- CHATBOT WIDGET -->
 <div id="albi-wrap">
-  <!-- Botón flotante con halo cian -->
-  <div id="albi-toggle" title="Hablar con Albi">
-    <div class="albi-halo"></div>
-    <div class="albi-halo albi-halo2"></div>
-    <img id="albi-avatar" src="/avatars/idle.png" alt="Albi">
-  </div>
-
   <!-- Chat expandible -->
   <div id="chat-box">
     <div id="chat-header">
@@ -922,6 +924,12 @@ footer{
       <input id="chat-input" type="text" placeholder="Contame sobre tu negocio...">
       <button id="send-btn">Enviar</button>
     </div>
+  </div>
+  <!-- Botón flotante con halo cian — encima del chat -->
+  <div id="albi-toggle" title="Hablar con Albi">
+    <div class="albi-halo"></div>
+    <div class="albi-halo albi-halo2"></div>
+    <img id="albi-avatar" src="/avatars/idle.png" alt="Albi">
   </div>
 </div>
 
