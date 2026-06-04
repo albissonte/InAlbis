@@ -1043,6 +1043,16 @@ document.getElementById("messages");
 
 const sendBtn =
 document.getElementById("send-btn");
+
+  const chatBox =
+    document.getElementById("chat-box");
+
+    avatar.addEventListener("click", () => {
+
+        chatBox.classList.toggle("open");
+
+    });
+  
 messages.innerHTML =
 `<p><b>Albi:</b> 👋 Hola, soy Albi. Contame sobre tu negocio y te ayudaré a encontrar la mejor web para vos.</p>`;
 input.addEventListener("input", () => {
@@ -1157,8 +1167,7 @@ sendBtn.addEventListener("click",()=>{
     svgs[current].classList.add('active');
   }, 2000); // cambia cada 2 segundos
 })();
-  const chatBox =
-document.getElementById("chat-box");
+  
 
 avatar.addEventListener("click",()=>{
 
