@@ -433,15 +433,15 @@ footer{
     right:-30px;
     transition:all .3s ease;
     animation:float 4s ease-in-out infinite;
-    z-index:1 }
+    z-index:0 }
 #chat-box{
     position: relative;
     width: 320px;
 
     background:rgba(10,30,60,.20);
 
-    backdrop-filter:blur(10px);
-    -webkit-backdrop-filter:blur(5px);
+    backdrop-filter:blur(5px);
+    -webkit-backdrop-filter:blur(15px);
 
     border:1px solid rgba(80,200,255,.45);
 
@@ -490,7 +490,7 @@ footer{
     background:rgba(255,255,255,.08);
     color:white;
     flex:1;
-    border:none;
+    border:0 0 24px 0;
     padding:14px;
     outline:none;
     backdrop-filter:blur(10px);
@@ -512,7 +512,7 @@ footer{
     cursor:pointer;
 
     transition:.3s;
-    z-index:10;
+    z-index:100;
 }
 
 #send-btn:hover{
@@ -540,11 +540,11 @@ footer{
 .btn-whatsapp svg {
   width: 24px;
   height: 24px;
-  flex-shrink: 0;      /* Evita que se encoja */
+  flex-shrink:none     /* Evita que se encoja */
 }
 /* WA BUTTON */
 .wa{
-  position:fixed;bottom:280px;left:28px;z-index:200;
+  position:fixed;bottom:28px;left:28px;z-index:200;
   width:54px;height:54px;background:linear-gradient(135deg,#00dde281,#00d5677d);border-radius:50%;
   display:flex;align-items:center;justify-content:center;
   box-shadow:0 4px 20px rgba(56,248,203,0.45);text-decoration:none;
