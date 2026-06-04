@@ -48,7 +48,21 @@
       #fffbeb 100%
     );
   }
-
+    /* ── LOGO FLOTANTE ── */
+    .logo-pin {
+      position: fixed;
+      top: 14px; left: 14px;
+      z-index: 300;
+      display: block;
+    }
+    .logo-pin img {
+      height: 48px;
+      width: auto;
+      display: block;
+      filter: drop-shadow(0 2px 10px rgba(26,143,209,0.35)) drop-shadow(0 1px 3px rgba(255,255,255,0.8));
+      transition: transform 0.2s;
+    }
+    .logo-pin:hover img { transform: scale(1.06); }
   /* Sol animado */
   .sun {
     position: fixed;
@@ -408,7 +422,18 @@
   .loading-spinner { display:none; width:32px;height:32px; border:3px solid rgba(245,158,11,0.2); border-top-color:var(--sun); border-radius:50%; animation:spin 0.7s linear infinite; margin:1rem auto; }
   .loading-spinner.show { display:block; }
   @keyframes spin { to { transform:rotate(360deg); } }
-
+/* FOOTER */
+footer{
+  border-top:0px solid white;padding:48px;
+  display:flex;justify-content:space-between;align-items:center;
+  flex-wrap:wrap;gap:20px;position:relative;z-index:2;
+}
+.footer-logo{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:var(--green)}
+.footer-logo span{color:var(--sun3)}
+.footer-text{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--sun2);text-align:center;line-height:1.8}
+.footer-links{display:flex;gap:20px;font-size:13px;color:var(--storm)}
+.footer-links a{color:var(--muted);text-decoration:none}
+.footer-links a:hover{color:var(--sun)}
   @media (max-width:480px) {
     .plans { grid-template-columns:1fr; }
     .tracker-line { width:28px; }
@@ -417,6 +442,10 @@
 </head>
 <body>
 
+<!-- Logo flotante sin nav -->
+<a href="/" class="logo-pin">
+  <img src="inAlbis.png" alt="inAlbis">
+</a>
 <div class="sky-bg"></div>
 <div class="sun-rays"></div>
 <div class="sun"></div>
@@ -618,10 +647,19 @@
 
   </div>
 </div>
+<footer>
+  <div class="footer-logo">Páginas <span>inAlbis</span></div>
+  <div class="footer-links">
+    <a href="https://wa.me/541168115491">WhatsApp</a>
+    <a href="https://inalbis.pages.dev/#portfolio">Portafolio</a>
+    <a href="mailto:albissonte@gmail.com">Email</a>
+  </div>
+  <div class="footer-text">© 2026 Páginas inAlbis · Modern Web Solutions · Todos los derechos reservados</div>
+</footer>
 
 <script src="https://sdk.mercadopago.com/js/v2"></script>
 <script>
-  const MP_PUBLIC_KEY = 'TEST-0439866b-9b0a-44b3-809b-32fe6b3cffc5';
+const MP_PUBLIC_KEY = 'APP_USR-45152c1c-03e0-479f-b86d-6e13918177ce';
   const mp = new MercadoPago(MP_PUBLIC_KEY, { locale: 'es-AR' });
 
   let selectedPlan  = null;
