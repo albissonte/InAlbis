@@ -413,125 +413,165 @@ footer{
   0%   { transform: translateX(0); }
   100% { transform: translateX(-50%); }
 }
-  #albi-chat{
-    position:fixed;
-    bottom:20px;
-    right:20px;
-    z-index:9999;
-  }
-  #albi-container{
-    position:fixed;
-    bottom:20px;
-    right:20px;
-  }
-  #albi-avatar{
-    cursor:pointer;
-    width:120px;
-    display:block;
-    margin:auto;
-    position:absolute;
-    bottom:280px;  right:-30px;
-    transition:all .3s ease;
-    animation:float 4s ease-in-out infinite;
-    z-index:0 }
-#chat-box{
-    opacity:0;
-    visibility:hidden;
-    transform:translateY(20px);
-    transition:all .3s ease;
-    position: relative;
-    width: 320px;
-
-    background:rgba(10,30,60,.20);
-
-    backdrop-filter:blur(5px);
-    -webkit-backdrop-filter:blur(15px);
-
-    border:1px solid rgba(80,200,255,.45);
-
-    box-shadow:
-        0 0 25px rgba(0,200,255,.25),
-        inset 0 0 25px rgba(0,200,255,.08);
-
-    border-radius:24px;
-    z-index:0;
-}  }
-  #chat-box.open{
-    opacity:1;
-    visibility:visible;
-    transform:translateY(0);
-  }
-  #chat-box::before{
-    content:"";
-
-    position:absolute;
-
-    top:0;
-    left:0;
-
-    width:100%;
-    height:100%;
-
-    border-radius:24px;
-
-    background:
-    linear-gradient(
-        135deg,
-        rgba(255,255,255,.15),
-        rgba(255,255,255,0)
-    );
-
-    pointer-events:none;
-  }
-
-#messages{
-    background: transparent;
-    height:250px;
-    padding:15px;
-    overflow-y:auto;
-    color:white;
+/* ── CHATBOT WIDGET ── */
+#albi-wrap{
+  position:fixed;
+  bottom:28px;
+  right:28px;
+  z-index:9999;
+  display:flex;
+  flex-direction:column;
+  align-items:flex-end;
+  gap:14px;
 }
 
+/* Botón toggle */
+#albi-toggle{
+  position:relative;
+  width:62px;height:62px;
+  cursor:pointer;
+  flex-shrink:0;
+}
+#albi-toggle img{
+  width:62px;height:62px;
+  border-radius:50%;
+  object-fit:cover;
+  border:2px solid rgba(56,212,245,.7);
+  box-shadow:0 0 18px rgba(56,212,245,.55),0 0 40px rgba(56,212,245,.25);
+  transition:transform .3s,box-shadow .3s;
+  display:block;
+  position:relative;z-index:2;
+  animation:float 4s ease-in-out infinite;
+}
+#albi-toggle:hover img{
+  transform:scale(1.07);
+  box-shadow:0 0 28px rgba(56,212,245,.85),0 0 60px rgba(56,212,245,.4);
+}
+/* Halos cian */
+.albi-halo{
+  position:absolute;
+  top:50%;left:50%;
+  transform:translate(-50%,-50%) scale(0.7);
+  width:62px;height:62px;
+  border-radius:50%;
+  border:1.5px solid rgba(56,212,245,.5);
+  animation:albi-pulse 2.4s ease-out infinite;
+  pointer-events:none;
+  z-index:1;
+}
+.albi-halo2{ animation-delay:1.2s; }
+@keyframes albi-pulse{
+  0%{transform:translate(-50%,-50%) scale(.85);opacity:.7}
+  100%{transform:translate(-50%,-50%) scale(2.2);opacity:0}
+}
+
+/* Chat box */
+#chat-box{
+  opacity:0;
+  visibility:hidden;
+  transform:translateY(16px) scale(.97);
+  transition:all .3s cubic-bezier(.4,0,.2,1);
+  width:320px;
+  background:rgba(8,17,32,.82);
+  backdrop-filter:blur(18px);
+  -webkit-backdrop-filter:blur(18px);
+  border:1px solid rgba(56,212,245,.35);
+  box-shadow:0 0 40px rgba(56,212,245,.18),inset 0 0 30px rgba(56,212,245,.05);
+  border-radius:20px;
+  overflow:hidden;
+}
+#chat-box.open{
+  opacity:1;
+  visibility:visible;
+  transform:translateY(0) scale(1);
+}
+
+/* Header */
+#chat-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:14px 18px;
+  background:rgba(56,212,245,.08);
+  border-bottom:1px solid rgba(56,212,245,.18);
+  font-size:13px;
+  font-weight:600;
+  color:var(--cyan);
+}
+#chat-close{
+  background:none;border:none;color:var(--muted);
+  cursor:pointer;font-size:16px;line-height:1;
+  transition:color .2s;
+}
+#chat-close:hover{color:var(--white)}
+
+/* Mensajes */
+#messages{
+  height:220px;
+  padding:14px 16px;
+  overflow-y:auto;
+  color:var(--white2);
+  font-size:13px;
+  line-height:1.6;
+  background:transparent;
+}
+#messages p{ margin-bottom:8px }
+#messages b{ color:var(--cyan) }
+
+/* Avatar bar entre mensajes y input */
+#chat-avatar-bar{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:10px 16px;
+  border-top:1px solid rgba(56,212,245,.1);
+  border-bottom:1px solid rgba(56,212,245,.1);
+  background:rgba(56,212,245,.04);
+}
+#chat-albi-img{
+  width:36px;height:36px;
+  border-radius:50%;
+  object-fit:cover;
+  border:1.5px solid rgba(56,212,245,.5);
+  box-shadow:0 0 10px rgba(56,212,245,.35);
+}
+#chat-albi-status{
+  font-size:11px;
+  color:var(--muted);
+  font-style:italic;
+}
+
+/* Input area */
 #chat-input-area{
-    display:flex;
+  display:flex;
 }
 #chat-input{
-    background:rgba(255,255,255,.08);
-    color:white;
-    flex:1;
-    border:none;
-    border-radius:0 0 0 24px;
-    padding:14px;
-    outline:none;
-    backdrop-filter:blur(10px);
+  background:rgba(255,255,255,.06);
+  color:var(--white);
+  flex:1;
+  border:none;
+  padding:13px 16px;
+  outline:none;
+  font-size:13px;
+  font-family:inherit;
 }
-
-
+#chat-input::placeholder{ color:rgba(255,255,255,.35) }
 #send-btn{
-
-    background:#29c5ff;
-
-    color:#00101f;
-
-    font-weight:700;
-
-    border:none;
-
-    padding:0 20px;
-
-    cursor:pointer;
-
-    transition:.3s;
-    z-index:100;
+  background:var(--cyan);
+  color:var(--bg);
+  font-weight:700;
+  font-size:13px;
+  border:none;
+  padding:0 18px;
+  cursor:pointer;
+  transition:.25s;
+  font-family:inherit;
 }
+#send-btn:hover{ background:#5de0f7;transform:scale(1.04) }
 
-#send-btn:hover{
-    transform:scale(1.05);
-}
 @keyframes float{
-    0%{transform:translateY(0px);}
-    50%{transform:translateY(-8px);}
-    100%{transform:translateY(0px);}
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-7px)}
 }
 .btn-whatsapp {
   display: inline-flex;
@@ -857,48 +897,34 @@ footer{
     <a href="mailto:albissonte@gmail.com">Email</a>
   </div>
 </footer>
-  <div id="albi-chat">
-
-    <img
-        id="albi-avatar"
-        src="/avatars/idle.png"
-        alt="Albi"
-    >
-
-    <div id="chat-box">
-
-        <div id="messages"></div>
-
-        <div id="chat-input-area">
-
-            <input
-                id="chat-input"
-                type="text"
-                placeholder="Contame sobre tu negocio..."
-            >
-
-            <button id="send-btn">
-                Enviar
-            </button>
-
-        </div>
-
-    </div>
-
+<!-- CHATBOT WIDGET -->
+<div id="albi-wrap">
+  <!-- Botón flotante con halo cian -->
+  <div id="albi-toggle" title="Hablar con Albi">
+    <div class="albi-halo"></div>
+    <div class="albi-halo albi-halo2"></div>
+    <img id="albi-avatar" src="/avatars/idle.png" alt="Albi">
   </div>
-<div id="albi-container">
-    <img
-        id="albi-avatar"
-        src="/avatars/idle.png"
-        alt="Albi"
-      >
+
+  <!-- Chat expandible -->
+  <div id="chat-box">
+    <div id="chat-header">
+      <span>💬 Albi · Asistente inAlbis</span>
+      <button id="chat-close">✕</button>
+    </div>
+    <div id="messages"></div>
+    <!-- Avatar entre mensajes y el input -->
+    <div id="chat-avatar-bar">
+      <img id="chat-albi-img" src="/avatars/idle.png" alt="Albi">
+      <span id="chat-albi-status">Esperando tu consulta…</span>
+    </div>
+    <div id="chat-input-area">
+      <input id="chat-input" type="text" placeholder="Contame sobre tu negocio...">
+      <button id="send-btn">Enviar</button>
+    </div>
+  </div>
 </div>
 
-<input
-    id="chat-input"
-    type="text"
-    placeholder="Escribí tu mensaje..."
->
 <a href="https://wa.me/541168115491" target="_blank" class="wa" title="WhatsApp">
   <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
     <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
@@ -1031,127 +1057,67 @@ footer{
 window.addEventListener('scroll',()=>{
   document.getElementById('navbar').style.background=window.scrollY>40?'rgba(6,15,30,0.92)':'rgba(6,15,30,0.7)';
 });
-  /* ── CHATBOT AVATAR ALBI ── */
-const avatar =
-document.getElementById("albi-avatar");
+  /* ── CHATBOT ALBI ── */
+(function(){
+  const toggle   = document.getElementById("albi-toggle");
+  const avatarBtn= document.getElementById("albi-avatar");
+  const chatBox  = document.getElementById("chat-box");
+  const closeBtn = document.getElementById("chat-close");
+  const input    = document.getElementById("chat-input");
+  const messages = document.getElementById("messages");
+  const sendBtn  = document.getElementById("send-btn");
+  const albiImg  = document.getElementById("chat-albi-img");
+  const albiStat = document.getElementById("chat-albi-status");
 
-const input =
-document.getElementById("chat-input");
+  // Mensaje inicial
+  messages.innerHTML = `<p><b>Albi:</b> 👋 Hola, soy Albi. Contame sobre tu negocio y te ayudaré a encontrar la mejor web para vos.</p>`;
 
-const messages =
-document.getElementById("messages");
+  function setAvatar(state){
+    const map={idle:"/avatars/idle.png",writing:"/avatars/writing.png",thinking:"/avatars/thinking.png",happy:"/avatars/happy.png"};
+    const src = map[state]||map.idle;
+    avatarBtn.src = src;
+    albiImg.src   = src;
+    albiStat.textContent = state==="thinking"?"Pensando…":state==="writing"?"Escribiendo…":state==="happy"?"¡Listo!":"Esperando tu consulta…";
+  }
 
-const sendBtn =
-document.getElementById("send-btn");
+  // Abrir/cerrar
+  toggle.addEventListener("click",()=>{
+    chatBox.classList.toggle("open");
+    if(chatBox.classList.contains("open")) input.focus();
+  });
+  closeBtn.addEventListener("click",()=> chatBox.classList.remove("open"));
 
-  const chatBox =
-    document.getElementById("chat-box");
+  // Typing indicator
+  input.addEventListener("input",()=> setAvatar("writing"));
+  input.addEventListener("blur", ()=> setAvatar("idle"));
 
-    avatar.addEventListener("click", () => {
-
-        chatBox.classList.toggle("open");
-
-    });
-  
-messages.innerHTML =
-`<p><b>Albi:</b> 👋 Hola, soy Albi. Contame sobre tu negocio y te ayudaré a encontrar la mejor web para vos.</p>`;
-input.addEventListener("input", () => {
-
-    avatar.src =
-    "/avatars/writing.png";
-
-});
-
-input.addEventListener("blur", () => {
-
-    avatar.src =
-    "/avatars/idle.png";
-
-});
-
-document.addEventListener(
-"mousemove",
-(e)=>{
-
-    const x =
-    (e.clientX/window.innerWidth-0.5)*8;
-
-    const y =
-    (e.clientY/window.innerHeight-0.5)*8;
-
-    avatar.style.transform =
-    `translate(${x}px,${y}px)`;
-
-});
-sendBtn.addEventListener("click",()=>{
-
-    const text =
-    input.value.trim();
-
+  // Enviar
+  function enviar(){
+    const text = input.value.trim();
     if(!text) return;
-
-    messages.innerHTML +=
-    `<p><b>Cliente:</b> ${text}</p>`;
-
-    input.value = "";
-
-    avatar.src =
-    "/avatars/thinking.png";
+    messages.innerHTML += `<p><b>Vos:</b> ${text}</p>`;
+    input.value="";
+    messages.scrollTop = messages.scrollHeight;
+    setAvatar("thinking");
 
     setTimeout(()=>{
+      let r="Contame más sobre tu negocio para poder ayudarte mejor.";
+      const t=text.toLowerCase();
+      if(t.includes("precio")||t.includes("costo")||t.includes("cuánto")) r="Los precios arrancan en $250 USD. Tenemos tres paquetes: Presencia, Negocio y Autoridad. ¿Cuál se adapta mejor a tu negocio?";
+      else if(t.includes("seo")||t.includes("google"))  r="Todos los paquetes incluyen SEO básico. El plan Negocio y Autoridad incluyen posicionamiento local y Google Maps. ¿Querés aparecer en búsquedas de tu zona?";
+      else if(t.includes("tienda")||t.includes("ecommerce")) r="Podemos crear una tienda online completa con catálogo y pagos. Esto entra en el plan Autoridad. ¿Tu negocio vende productos o servicios?";
+      else if(t.includes("landing")) r="Una landing page es ideal para captar clientes rápidamente. El plan Presencia incluye una página completa y lista en 7-14 días.";
+      else if(t.includes("tiempo")||t.includes("plazo")||t.includes("cuándo")) r="El tiempo de entrega es de 7 a 14 días hábiles desde que confirmamos el proyecto.";
+      else if(t.includes("pago")||t.includes("cuota")||t.includes("mercado")) r="Aceptamos transferencia, Mercado Pago y pagos en cuotas. El esquema es 50% al inicio y 50% al finalizar.";
+      messages.innerHTML += `<p><b>Albi:</b> ${r}</p>`;
+      messages.scrollTop = messages.scrollHeight;
+      setAvatar("happy");
+    },1400);
+  }
 
-    let respuesta = "";
-
-    if(text.toLowerCase().includes("precio")){
-
-        respuesta =
-        "Nuestros sitios se adaptan a las necesidades de cada negocio.";
-
-    }
-    else if(text.toLowerCase().includes("seo")){
-
-        respuesta =
-        "Incluimos optimización para buscadores y Google Maps.";
-
-    }
-    else if(text.toLowerCase().includes("tienda")){
-
-        respuesta =
-        "Podemos crear una tienda online completa para tu negocio.";
-
-    }
-    else if(text.toLowerCase().includes("landing")){
-
-        respuesta =
-        "Una landing page es ideal para captar clientes rápidamente.";
-
-    }
-    else{
-
-        respuesta =
-        "Contame más sobre tu negocio para poder ayudarte mejor.";
-
-    }
-
-    messages.innerHTML +=
-    `<p><b>Albi:</b> ${respuesta}</p>`;
-    messages.scrollTop = messages.scrollHeight;
-    avatar.src =
-    "/avatars/happy.png";
-
-},1500);
-
-});
-
-  input.addEventListener("keypress",(e)=>{
-
-    if(e.key === "Enter"){
-
-        sendBtn.click();
-
-    }
-
-});
+  sendBtn.addEventListener("click", enviar);
+  input.addEventListener("keypress",(e)=>{ if(e.key==="Enter") enviar(); });
+})();
 /* ── CAROUSEL SVGs ── */
 (function(){
   const svgs = document.querySelectorAll('.float-carousel svg');
@@ -1169,25 +1135,7 @@ sendBtn.addEventListener("click",()=>{
 })();
   
 
-avatar.addEventListener("click",()=>{
 
-    if(chatBox.style.display === "none" ||
-       chatBox.style.display === ""){
-
-        chatBox.style.display = "block";
-
-    }else{
-
-        chatBox.style.display = "none";
-
-    }
-
-});
-  avatar.addEventListener("click",()=>{
-
-    chatBox.classList.toggle("open");
-
-});
 </script>
 </body>
 </html>
