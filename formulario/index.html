@@ -40,15 +40,15 @@
     /* ── LOGO FLOTANTE ── */
     .logo-pin {
       position: fixed;
-      top: 0px; left: 5px;
+      top: 14px; left: 14px;
       z-index: 300;
       display: block;
     }
     .logo-pin img {
-      height: 80px;
+      height: 48px;
       width: auto;
       display: block;
-      filter: drop-shadow(0 4px 20px rgba(26,143,209,0.35)) drop-shadow(0 2px 6px rgba(255,255,255,0.8));
+      filter: drop-shadow(0 2px 10px rgba(26,143,209,0.35)) drop-shadow(0 1px 3px rgba(255,255,255,0.8));
       transition: transform 0.2s;
     }
     .logo-pin:hover img { transform: scale(1.06); }
@@ -361,6 +361,17 @@
     .loading-overlay.show { display: flex; }
     .spinner { width: 40px; height: 40px; border: 3px solid rgba(26,143,209,0.2); border-top-color: var(--azure); border-radius: 50%; animation: spin 0.8s linear infinite; }
     @keyframes spin { to { transform: rotate(360deg); } }
+/* FOOTER */
+footer{
+  border-top:0px solid white;padding:48px;
+  display:flex;justify-content:space-between;align-items:center;
+  flex-wrap:wrap;gap:20px;position:relative;z-index:2;
+}
+.footer-logo{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:var(--dark2)}
+.footer-logo span{color:var(--azure)}
+.footer-text{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--dark2);text-align:center;line-height:1.8}
+.footer-links{display:flex;gap:20px;font-size:13px;color:var(--storm)}
+.footer-links a:hover{color:var(--storm2);transition:color .2s}
 
     @media (max-width: 600px) {
       .form-card { padding: 1.5rem 1rem; }
@@ -621,6 +632,15 @@
   <div class="spinner"></div>
   <p style="font-size:0.9rem;color:var(--text2)">Enviando tu formulario...</p>
 </div>
+<footer>
+  <div class="footer-logo">Páginas <span>inAlbis</span></div>
+  <div class="footer-text">© 2026 Páginas inAlbis · Modern Web Solutions · Todos los derechos reservados</div>
+  <div class="footer-links">
+    <a href="https://wa.me/541168115491">WhatsApp</a>
+    <a href="https://inalbis.pages.dev/#portfolio">Portafolio</a>
+    <a href="mailto:albissonte@gmail.com">Email</a>
+  </div>
+</footer>
 
 <script>
 /* ── SKY CANVAS ── */
