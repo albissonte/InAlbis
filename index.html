@@ -413,6 +413,64 @@ footer{
   0%   { transform: translateX(0); }
   100% { transform: translateX(-50%); }
 }
+  #albi-chat{
+    position:fixed;
+    bottom:20px;
+    right:20px;
+    z-index:9999;
+  }
+  #albi-container{
+    position:fixed;
+    bottom:20px;
+    right:20px;
+  }
+  #albi-avatar{
+    width:120px;
+    display:block;
+    margin:auto;
+    position:fixed;
+    bottom:20px;
+    right:20px;
+    transition:all .3s ease;
+    animation:float 4s ease-in-out infinite;
+}
+  #chat-box{
+    width:320px;
+    background:#081320;
+    border:1px solid #1e3a5f;
+    border-radius:16px;
+    overflow:hidden;
+}
+
+#messages{
+    height:250px;
+    padding:15px;
+    overflow-y:auto;
+    color:white;
+}
+
+#chat-input-area{
+    display:flex;
+}
+
+#chat-input{
+    flex:1;
+    border:none;
+    padding:12px;
+    outline:none;
+}
+
+#send-btn{
+    border:none;
+    padding:12px 16px;
+    cursor:pointer;
+}
+
+@keyframes float{
+    0%{transform:translateY(0px);}
+    50%{transform:translateY(-8px);}
+    100%{transform:translateY(0px);}
+}
 .btn-whatsapp {
   display: inline-flex;
   align-items: center;
@@ -737,7 +795,48 @@ footer{
     <a href="mailto:albissonte@gmail.com">Email</a>
   </div>
 </footer>
+  <div id="albi-chat">
 
+    <img
+        id="albi-avatar"
+        src="/avatars/idle.png"
+        alt="Albi"
+    >
+
+    <div id="chat-box">
+
+        <div id="messages"></div>
+
+        <div id="chat-input-area">
+
+            <input
+                id="chat-input"
+                type="text"
+                placeholder="Contame sobre tu negocio..."
+            >
+
+            <button id="send-btn">
+                Enviar
+            </button>
+
+        </div>
+
+    </div>
+
+  </div>
+<div id="albi-container">
+    <img
+        id="albi-avatar"
+        src="/avatars/idle.png"
+        alt="Albi"
+      >
+</div>
+
+<input
+    id="chat-input"
+    type="text"
+    placeholder="Escribí tu mensaje..."
+>
 <a href="https://wa.me/541168115491" target="_blank" class="wa" title="WhatsApp">
   <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
     <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
@@ -870,6 +969,73 @@ footer{
 window.addEventListener('scroll',()=>{
   document.getElementById('navbar').style.background=window.scrollY>40?'rgba(6,15,30,0.92)':'rgba(6,15,30,0.7)';
 });
+  /* ── CHATBOT AVATAR ALBI ── */
+const avatar =
+document.getElementById("albi-avatar");
+
+const input =
+document.getElementById("chat-input");
+
+const messages =
+document.getElementById("messages");
+
+const sendBtn =
+document.getElementById("send-btn");
+
+input.addEventListener("input", () => {
+
+    avatar.src =
+    "/avatars/writing.png";
+
+});
+
+input.addEventListener("blur", () => {
+
+    avatar.src =
+    "/avatars/idle.png";
+
+});
+
+document.addEventListener(
+"mousemove",
+(e)=>{
+
+    const x =
+    (e.clientX/window.innerWidth-0.5)*8;
+
+    const y =
+    (e.clientY/window.innerHeight-0.5)*8;
+
+    avatar.style.transform =
+    `translate(${x}px,${y}px)`;
+
+});
+sendBtn.addEventListener("click",()=>{
+
+    const text =
+    input.value.trim();
+
+    if(!text) return;
+
+    messages.innerHTML +=
+    `<p><b>Cliente:</b> ${text}</p>`;
+
+    input.value = "";
+
+    avatar.src =
+    "/avatars/thinking.png";
+
+    setTimeout(()=>{
+
+        messages.innerHTML +=
+        `<p><b>Albi:</b> Gracias por tu consulta.</p>`;
+
+        avatar.src =
+        "/avatars/happy.png";
+
+    },1500);
+
+});
 /* ── CAROUSEL SVGs ── */
 (function(){
   const svgs = document.querySelectorAll('.float-carousel svg');
@@ -885,6 +1051,7 @@ window.addEventListener('scroll',()=>{
     svgs[current].classList.add('active');
   }, 2000); // cambia cada 2 segundos
 })();
+  
 </script>
 </body>
 </html>
