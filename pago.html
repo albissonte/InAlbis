@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pago Seguro — Páginas inAlbis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Space+Mono&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --sky:    #e4f2fb;
+    --azure:  #1a8fd1;
+    --azure2: #0b6fa8;
+    --dark:   #0f2942;
+    --dark2:  #1a3a5c;
+    --text:   #0f2942;
+    --text2:  #3a6080;
+    --muted:  #7aaac8;
+    --border: rgba(26,143,209,0.18);
+    --surface:#ffffff;
+    --green:  #16a34a;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background: var(--sky);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    background: linear-gradient(135deg, #0f2942 0%, #1a4a72 60%, #1a8fd1 100%);
+    padding: 2rem 1.5rem 3.5rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::after {
+    content: '';
+    position: absolute;
+    bottom: -2px; left: 0; right: 0; height: 48px;
+    background: var(--sky);
+    clip-path: ellipse(55% 100% at 50% 100%);
+  }
+  .header-logo {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 1rem;
+  }
+  .header-logo span { color: #7dd3f7; }
+  .header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 5vw, 2.6rem);
+    color: #fff;
+    line-height: 1.15;
+    margin-bottom: 0.75rem;
+  }
+  .header h1 em { font-style: italic; color: #7dd3f7; }
+  .header p {
+    color: rgba(255,255,255,0.65);
+    font-size: 0.95rem;
+    max-width: 420px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  /* ── WRAPPER ── */
+  .wrapper {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 2rem 1.25rem 4rem;
+  }
+
+  /* ── STEP INDICATOR ── */
+  .steps {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-bottom: 2.5rem;
+  }
+  .step-dot {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.78rem; font-weight: 700;
+    border: 2px solid var(--border);
+    background: var(--surface);
+    color: var(--muted);
+    transition: all 0.3s;
+  }
+  .step-dot.active {
+    background: var(--azure);
+    border-color: var(--azure);
+    color: #fff;
+  }
+  .step-dot.done {
+    background: var(--green);
+    border-color: var(--green);
+    color: #fff;
+  }
+  .step-line {
+    flex: 1; max-width: 60px;
+    height: 2px;
+    background: var(--border);
+    border-radius: 2px;
+  }
+  .step-label {
+    font-size: 0.72rem;
+    color: var(--muted);
+    text-align: center;
+    margin-top: 6px;
+  }
+  .steps-wrap {
+    display: flex;
+    justify-content: center;
+    gap: 0;
+    margin-bottom: 2.5rem;
+  }
+  .step-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+  }
+  .step-item:not(:last-child) .step-line-h {
+    display: block;
+    width: 48px; height: 2px;
+    background: var(--border);
+    margin-top: 15px;
+  }
+
+  /* ── PLAN CARDS ── */
+  .section-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--azure);
+    margin-bottom: 0.75rem;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    color: var(--dark);
+    margin-bottom: 0.4rem;
+  }
+  .section-sub {
+    color: var(--text2);
+    font-size: 0.9rem;
+    margin-bottom: 1.75rem;
+    line-height: 1.5;
+  }
+
+  .plans {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .plan-card {
+    background: var(--surface);
+    border: 2px solid var(--border);
+    border-radius: 16px;
+    padding: 1.5rem 1.25rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+    user-select: none;
+  }
+  .plan-card:hover { border-color: var(--azure); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(26,143,209,0.12); }
+  .plan-card.selected { border-color: var(--azure); background: rgba(26,143,209,0.04); box-shadow: 0 0 0 4px rgba(26,143,209,0.1); }
+  .plan-card.featured { border-color: var(--azure2); }
+
+  .plan-badge {
+    display: inline-block;
+    background: var(--azure);
+    color: #fff;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 100px;
+    margin-bottom: 0.75rem;
+  }
+
+  .plan-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.35rem;
+    color: var(--dark);
+    margin-bottom: 0.3rem;
+  }
+  .plan-desc {
+    font-size: 0.8rem;
+    color: var(--text2);
+    line-height: 1.5;
+    margin-bottom: 1rem;
+  }
+  .plan-price {
+    display: flex;
+    align-items: baseline;
+    gap: 0.25rem;
+    margin-bottom: 0.25rem;
+  }
+  .plan-price .symbol { font-size: 1rem; color: var(--azure); font-weight: 600; }
+  .plan-price .amount { font-size: 2rem; font-weight: 800; color: var(--dark); line-height: 1; }
+  .plan-price .currency { font-size: 0.75rem; color: var(--muted); }
+  .plan-adelanto {
+    font-size: 0.78rem;
+    color: var(--muted);
+    margin-bottom: 1.25rem;
+  }
+  .plan-adelanto strong { color: var(--azure); }
+
+  .plan-features {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+  .plan-features li {
+    font-size: 0.8rem;
+    color: var(--text2);
+    display: flex;
+    align-items: flex-start;
+    gap: 0.4rem;
+    line-height: 1.4;
+  }
+  .plan-features li::before {
+    content: '✓';
+    color: var(--azure);
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .plan-select-indicator {
+    position: absolute;
+    top: 1rem; right: 1rem;
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    border: 2px solid var(--border);
+    background: #fff;
+    transition: all 0.2s;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .plan-card.selected .plan-select-indicator {
+    background: var(--azure);
+    border-color: var(--azure);
+  }
+  .plan-card.selected .plan-select-indicator::after {
+    content: '';
+    width: 6px; height: 6px;
+    background: #fff;
+    border-radius: 50%;
+  }
+
+  /* ── TIPO DE PAGO ── */
+  .payment-type {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+    margin-bottom: 2rem;
+  }
+  .type-card {
+    background: var(--surface);
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    padding: 1rem 1.25rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+  }
+  .type-card:hover { border-color: var(--azure); }
+  .type-card.selected { border-color: var(--azure); background: rgba(26,143,209,0.04); }
+  .type-card .type-icon { font-size: 1.5rem; margin-bottom: 0.4rem; }
+  .type-card .type-name { font-size: 0.88rem; font-weight: 700; color: var(--dark); margin-bottom: 0.2rem; }
+  .type-card .type-desc { font-size: 0.75rem; color: var(--muted); line-height: 1.4; }
+  .type-card .type-amount { font-size: 1rem; font-weight: 800; color: var(--azure); margin-top: 0.4rem; }
+
+  /* ── RESUMEN ── */
+  .summary-box {
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: 14px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  .summary-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0;
+    font-size: 0.88rem;
+  }
+  .summary-row:not(:last-child) { border-bottom: 1px solid var(--border); }
+  .summary-row .label { color: var(--text2); }
+  .summary-row .value { font-weight: 600; color: var(--dark); }
+  .summary-row.total .label { font-weight: 700; color: var(--dark); font-size: 0.95rem; }
+  .summary-row.total .value { font-size: 1.1rem; color: var(--azure); }
+
+  /* ── BRICKS CONTAINER ── */
+  #bricks-container {
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: 14px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    min-height: 120px;
+    display: none;
+  }
+  #bricks-container.show { display: block; }
+
+  /* ── BTN ── */
+  .btn-pay {
+    width: 100%;
+    background: linear-gradient(135deg, var(--azure2), var(--azure));
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    padding: 1rem 1.5rem;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+  .btn-pay:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(26,143,209,0.3); }
+  .btn-pay:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+  /* ── SECURITY NOTE ── */
+  .security-note {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    font-size: 0.75rem;
+    color: var(--muted);
+    margin-bottom: 2rem;
+  }
+
+  /* ── STEP SECTIONS ── */
+  .step-section { display: none; }
+  .step-section.active { display: block; animation: fadeUp 0.35s ease; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── SUCCESS ── */
+  .success-screen {
+    display: none;
+    text-align: center;
+    padding: 3rem 1rem;
+    animation: fadeUp 0.5s ease;
+  }
+  .success-screen.show { display: block; }
+  .success-icon { font-size: 3.5rem; margin-bottom: 1rem; }
+  .success-screen h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    color: var(--dark);
+    margin-bottom: 0.75rem;
+  }
+  .success-screen p { color: var(--text2); font-size: 0.95rem; line-height: 1.6; max-width: 400px; margin: 0 auto 1.5rem; }
+
+  /* ── NAV BUTTONS ── */
+  .form-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1.5rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--border);
+  }
+  .btn-back {
+    background: none;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    padding: 0.7rem 1.2rem;
+    color: var(--text2);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 0.88rem;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .btn-back:hover { border-color: var(--text2); }
+  .btn-next {
+    background: var(--dark);
+    border: none;
+    border-radius: 10px;
+    padding: 0.75rem 1.5rem;
+    color: #fff;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .btn-next:hover { background: var(--azure); }
+  .btn-next:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  /* ── EXTRAS ── */
+  .extras-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+  }
+  .extra-item {
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    padding: 0.85rem 1rem;
+    cursor: pointer;
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+  }
+  .extra-item:hover { border-color: var(--azure); }
+  .extra-item.selected { border-color: var(--azure); background: rgba(26,143,209,0.05); }
+  .extra-item input { width: 16px; height: 16px; accent-color: var(--azure); flex-shrink: 0; }
+  .extra-info { flex: 1; }
+  .extra-name { font-size: 0.83rem; font-weight: 600; color: var(--dark); }
+  .extra-price { font-size: 0.75rem; color: var(--azure); font-weight: 700; }
+
+  /* Loading */
+  .loading-spinner {
+    display: none;
+    width: 32px; height: 32px;
+    border: 3px solid var(--border);
+    border-top-color: var(--azure);
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    margin: 1rem auto;
+  }
+  .loading-spinner.show { display: block; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* Step tracker top */
+  .tracker {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0;
+    margin-bottom: 2rem;
+  }
+  .tracker-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+  .tracker-dot {
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    border: 2px solid var(--border);
+    background: var(--surface);
+    color: var(--muted);
+    font-size: 0.72rem;
+    font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.3s;
+  }
+  .tracker-dot.active { background: var(--azure); border-color: var(--azure); color: #fff; }
+  .tracker-dot.done { background: var(--green); border-color: var(--green); color: #fff; }
+  .tracker-label { font-size: 0.65rem; color: var(--muted); white-space: nowrap; }
+  .tracker-line { width: 40px; height: 2px; background: var(--border); margin-bottom: 18px; }
+
+  @media (max-width: 480px) {
+    .plans { grid-template-columns: 1fr; }
+    .payment-type { grid-template-columns: 1fr 1fr; }
+    .tracker-line { width: 24px; }
+    .tracker-label { font-size: 0.6rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+  <div class="header-logo">Páginas <span>inAlbis</span></div>
+  <h1>Comenzá tu <em>proyecto</em></h1>
+  <p>Pago seguro con Mercado Pago. 50% para arrancar, 50% al entregar.</p>
+</div>
+
+<div class="wrapper">
+
+  <!-- Tracker -->
+  <div class="tracker">
+    <div class="tracker-step">
+      <div class="tracker-dot active" id="t1">1</div>
+      <div class="tracker-label">Plan</div>
+    </div>
+    <div class="tracker-line"></div>
+    <div class="tracker-step">
+      <div class="tracker-dot" id="t2">2</div>
+      <div class="tracker-label">Extras</div>
+    </div>
+    <div class="tracker-line"></div>
+    <div class="tracker-step">
+      <div class="tracker-dot" id="t3">3</div>
+      <div class="tracker-label">Pago</div>
+    </div>
+  </div>
+
+  <!-- PASO 1: Elegir plan -->
+  <div class="step-section active" id="step1">
+    <div class="section-label">Paso 1 de 3</div>
+    <div class="section-title">Elegí tu plan</div>
+    <div class="section-sub">Precios en USD · 50% al inicio · 50% al finalizar</div>
+
+    <div class="plans">
+      <div class="plan-card" data-plan="presencia" data-price="250" onclick="selectPlan(this)">
+        <div class="plan-select-indicator"></div>
+        <div class="plan-name">Presencia</div>
+        <div class="plan-desc">Para negocios que necesitan existir en internet con lo esencial.</div>
+        <div class="plan-price">
+          <span class="symbol">$</span>
+          <span class="amount">250</span>
+          <span class="currency">USD</span>
+        </div>
+        <div class="plan-adelanto">Adelanto: <strong>$125 USD</strong></div>
+        <ul class="plan-features">
+          <li>Landing page de 1 página</li>
+          <li>Diseño mobile-first</li>
+          <li>Botón WhatsApp y redes</li>
+          <li>Formulario de contacto</li>
+          <li>Google Maps embed</li>
+          <li>SEO básico</li>
+          <li>Hosting gratuito</li>
+        </ul>
+      </div>
+
+      <div class="plan-card featured" data-plan="negocio" data-price="450" onclick="selectPlan(this)">
+        <div class="plan-select-indicator"></div>
+        <div class="plan-badge">⭐ Más elegido</div>
+        <div class="plan-name">Negocio</div>
+        <div class="plan-desc">Web completa con catálogo, SEO real y todo lo que necesita un negocio que quiere crecer.</div>
+        <div class="plan-price">
+          <span class="symbol">$</span>
+          <span class="amount">450</span>
+          <span class="currency">USD</span>
+        </div>
+        <div class="plan-adelanto">Adelanto: <strong>$225 USD</strong></div>
+        <ul class="plan-features">
+          <li>Web de 4–6 páginas</li>
+          <li>Diseño premium a medida</li>
+          <li>Catálogo de productos/servicios</li>
+          <li>SEO local completo</li>
+          <li>Google Maps + Search Console</li>
+          <li>WhatsApp multicanal</li>
+          <li>Dominio .com.ar (1 año)</li>
+          <li>2 meses de soporte gratuito</li>
+        </ul>
+      </div>
+
+      <div class="plan-card" data-plan="autoridad" data-price="700" onclick="selectPlan(this)">
+        <div class="plan-select-indicator"></div>
+        <div class="plan-name">Autoridad</div>
+        <div class="plan-desc">Para negocios establecidos que quieren ser los primeros en su zona.</div>
+        <div class="plan-price">
+          <span class="symbol">$</span>
+          <span class="amount">700</span>
+          <span class="currency">USD</span>
+        </div>
+        <div class="plan-adelanto">Adelanto: <strong>$350 USD</strong></div>
+        <ul class="plan-features">
+          <li>Todo lo del plan Negocio</li>
+          <li>Hasta 10 páginas</li>
+          <li>Blog o sección de novedades</li>
+          <li>Animaciones y efectos</li>
+          <li>SEO avanzado con palabras clave</li>
+          <li>Reporte de rendimiento mensual</li>
+          <li>Feed de Instagram integrado</li>
+          <li>3 meses de soporte gratuito</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="form-nav">
+      <div></div>
+      <button class="btn-next" id="btn-step1" onclick="goStep(2)" disabled>Siguiente →</button>
+    </div>
+  </div>
+
+  <!-- PASO 2: Extras -->
+  <div class="step-section" id="step2">
+    <div class="section-label">Paso 2 de 3</div>
+    <div class="section-title">¿Agregás algo más?</div>
+    <div class="section-sub">Opcionales — podés agregar ahora o después.</div>
+
+    <div class="extras-grid">
+      <label class="extra-item" onclick="toggleExtra(this)">
+        <input type="checkbox" value="200" data-name="Tienda online básica">
+        <div class="extra-info">
+          <div class="extra-name">Tienda online básica</div>
+          <div class="extra-price">+ $200 USD</div>
+        </div>
+      </label>
+      <label class="extra-item" onclick="toggleExtra(this)">
+        <input type="checkbox" value="150" data-name="Rediseño web existente">
+        <div class="extra-info">
+          <div class="extra-name">Rediseño web existente</div>
+          <div class="extra-price">+ $150 USD</div>
+        </div>
+      </label>
+      <label class="extra-item" onclick="toggleExtra(this)">
+        <input type="checkbox" value="120" data-name="Landing para campaña">
+        <div class="extra-info">
+          <div class="extra-name">Landing para campaña</div>
+          <div class="extra-price">+ $120 USD</div>
+        </div>
+      </label>
+      <label class="extra-item" onclick="toggleExtra(this)">
+        <input type="checkbox" value="60" data-name="Google Business Profile">
+        <div class="extra-info">
+          <div class="extra-name">Google Business Profile</div>
+          <div class="extra-price">+ $60 USD</div>
+        </div>
+      </label>
+    </div>
+
+    <div class="form-nav">
+      <button class="btn-back" onclick="goStep(1)">← Volver</button>
+      <button class="btn-next" onclick="goStep(3)">Siguiente →</button>
+    </div>
+  </div>
+
+  <!-- PASO 3: Pago -->
+  <div class="step-section" id="step3">
+    <div class="section-label">Paso 3 de 3</div>
+    <div class="section-title">Confirmá tu pago</div>
+    <div class="section-sub">50% para arrancar el proyecto.</div>
+
+    <!-- Tipo de pago -->
+    <div style="margin-bottom:1.25rem;">
+      <div style="font-size:0.8rem;font-weight:700;color:var(--text2);margin-bottom:0.75rem;text-transform:uppercase;letter-spacing:0.08em;">¿Qué pagás ahora?</div>
+      <div class="payment-type">
+        <div class="type-card selected" id="type-adelanto" onclick="selectType('adelanto')">
+          <div class="type-icon">🚀</div>
+          <div class="type-name">50% Adelanto</div>
+          <div class="type-desc">Para arrancar el proyecto</div>
+          <div class="type-amount" id="type-adelanto-amount">$0 USD</div>
+        </div>
+        <div class="type-card" id="type-total" onclick="selectType('total')">
+          <div class="type-icon">✅</div>
+          <div class="type-name">Total</div>
+          <div class="type-desc">Pago completo del proyecto</div>
+          <div class="type-amount" id="type-total-amount">$0 USD</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Resumen -->
+    <div class="summary-box">
+      <div class="summary-row">
+        <span class="label">Plan</span>
+        <span class="value" id="sum-plan">—</span>
+      </div>
+      <div class="summary-row" id="sum-extras-row" style="display:none">
+        <span class="label">Extras</span>
+        <span class="value" id="sum-extras">—</span>
+      </div>
+      <div class="summary-row">
+        <span class="label">Subtotal proyecto</span>
+        <span class="value" id="sum-subtotal">$0 USD</span>
+      </div>
+      <div class="summary-row total">
+        <span class="label" id="sum-type-label">Adelanto (50%)</span>
+        <span class="value" id="sum-total">$0 USD</span>
+      </div>
+    </div>
+
+    <!-- Bricks -->
+    <div id="bricks-container" class="show">
+      <div id="paymentBrick_container"></div>
+      <div class="loading-spinner show" id="bricks-loading"></div>
+    </div>
+
+    <div class="security-note">
+      🔒 Pago seguro con encriptación SSL · Powered by Mercado Pago
+    </div>
+
+    <div class="form-nav">
+      <button class="btn-back" onclick="goStep(2)">← Volver</button>
+      <div></div>
+    </div>
+  </div>
+
+  <!-- SUCCESS -->
+  <div class="success-screen" id="success">
+    <div class="success-icon">🎉</div>
+    <h2>¡Pago recibido!</h2>
+    <p>Gracias por confiar en Páginas inAlbis. En las próximas horas nos ponemos en contacto para arrancar con tu proyecto.</p>
+    <a href="/" style="display:inline-block;background:var(--azure);color:#fff;padding:0.8rem 1.8rem;border-radius:10px;text-decoration:none;font-weight:700;font-size:0.9rem;">Volver al inicio</a>
+  </div>
+
+</div><!-- /wrapper -->
+
+<!-- Mercado Pago SDK -->
+<script src="https://sdk.mercadopago.com/js/v2"></script>
+<script>
+  // ── Config ──────────────────────────────────────────────────
+  const MP_PUBLIC_KEY = 'TEST-0439866b-9b0a-44b3-809b-32fe6b3cffc5';
+  const mp = new MercadoPago(MP_PUBLIC_KEY, { locale: 'es-AR' });
+
+  // ── Estado ──────────────────────────────────────────────────
+  let selectedPlan  = null;
+  let selectedPrice = 0;
+  let extrasTotal   = 0;
+  let paymentType   = 'adelanto'; // 'adelanto' | 'total'
+  let bricksBuilder = null;
+  let currentStep   = 1;
+
+  // ── Seleccionar plan ─────────────────────────────────────────
+  function selectPlan(card) {
+    document.querySelectorAll('.plan-card').forEach(c => c.classList.remove('selected'));
+    card.classList.add('selected');
+    selectedPlan  = card.dataset.plan;
+    selectedPrice = parseInt(card.dataset.price);
+    document.getElementById('btn-step1').disabled = false;
+    updateSummary();
+  }
+
+  // ── Togglear extras ──────────────────────────────────────────
+  function toggleExtra(label) {
+    label.classList.toggle('selected');
+    const cb = label.querySelector('input');
+    cb.checked = !cb.checked;
+    recalcExtras();
+  }
+
+  function recalcExtras() {
+    extrasTotal = 0;
+    document.querySelectorAll('.extra-item.selected input').forEach(cb => {
+      extrasTotal += parseInt(cb.value);
+    });
+    updateSummary();
+  }
+
+  // ── Tipo de pago ─────────────────────────────────────────────
+  function selectType(type) {
+    paymentType = type;
+    document.getElementById('type-adelanto').classList.toggle('selected', type === 'adelanto');
+    document.getElementById('type-total').classList.toggle('selected', type === 'total');
+    updateSummary();
+    if (bricksBuilder) { bricksBuilder.unmount(); bricksBuilder = null; }
+    initBricks();
+  }
+
+  // ── Resumen ───────────────────────────────────────────────────
+  function updateSummary() {
+    const subtotal = selectedPrice + extrasTotal;
+    const toPay    = paymentType === 'adelanto' ? Math.ceil(subtotal * 0.5) : subtotal;
+    const planName = selectedPlan
+      ? selectedPlan.charAt(0).toUpperCase() + selectedPlan.slice(1)
+      : '—';
+
+    document.getElementById('sum-plan').textContent      = planName + ' — $' + selectedPrice + ' USD';
+    document.getElementById('sum-subtotal').textContent  = '$' + subtotal + ' USD';
+    document.getElementById('sum-total').textContent     = '$' + toPay + ' USD';
+    document.getElementById('type-adelanto-amount').textContent = '$' + Math.ceil(subtotal * 0.5) + ' USD';
+    document.getElementById('type-total-amount').textContent    = '$' + subtotal + ' USD';
+    document.getElementById('sum-type-label').textContent = paymentType === 'adelanto' ? 'Adelanto (50%)' : 'Total proyecto';
+
+    const extraNames = Array.from(document.querySelectorAll('.extra-item.selected input'))
+      .map(cb => cb.dataset.name).join(', ');
+    if (extrasTotal > 0) {
+      document.getElementById('sum-extras-row').style.display = '';
+      document.getElementById('sum-extras').textContent = extraNames + ' (+$' + extrasTotal + ' USD)';
+    } else {
+      document.getElementById('sum-extras-row').style.display = 'none';
+    }
+  }
+
+  // ── Navegación de pasos ───────────────────────────────────────
+  function goStep(n) {
+    document.querySelectorAll('.step-section').forEach(s => s.classList.remove('active'));
+    document.getElementById('step' + n).classList.add('active');
+
+    for (let i = 1; i <= 3; i++) {
+      const dot = document.getElementById('t' + i);
+      dot.classList.remove('active', 'done');
+      if (i < n)  dot.classList.add('done');
+      if (i === n) dot.classList.add('active');
+    }
+
+    currentStep = n;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    if (n === 3) {
+      updateSummary();
+      setTimeout(initBricks, 100);
+    }
+  }
+
+  // ── Mercado Pago Bricks ───────────────────────────────────────
+  async function initBricks() {
+    const subtotal = selectedPrice + extrasTotal;
+    const toPay    = paymentType === 'adelanto' ? Math.ceil(subtotal * 0.5) : subtotal;
+
+    document.getElementById('bricks-loading').classList.add('show');
+    document.getElementById('paymentBrick_container').innerHTML = '';
+
+    const settings = {
+      initialization: {
+        amount: toPay,
+        payer: { email: '' },
+      },
+      customization: {
+        paymentMethods: {
+          creditCard: 'all',
+          debitCard:  'all',
+          ticket:     'all',
+          bankTransfer: 'all',
+          atm: 'all',
+          maxInstallments: 12,
+        },
+        visual: {
+          style: {
+            theme: 'flat',
+            customVariables: {
+              textPrimaryColor:    '#0f2942',
+              textSecondaryColor:  '#3a6080',
+              inputBackgroundColor:'#f0f8ff',
+              formBackgroundColor: '#ffffff',
+              baseColor:           '#1a8fd1',
+            }
+          }
+        }
+      },
+      callbacks: {
+        onReady: () => {
+          document.getElementById('bricks-loading').classList.remove('show');
+        },
+        onSubmit: async ({ selectedPaymentMethod, formData }) => {
+          // Enviar al backend para crear el pago
+          const res = await fetch('/api/create-payment', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              formData,
+              plan:      selectedPlan,
+              extras:    extrasTotal,
+              totalPaid: toPay,
+              type:      paymentType,
+            }),
+          });
+          const result = await res.json();
+          if (result.success) {
+            document.querySelectorAll('.step-section').forEach(s => s.classList.remove('active'));
+            document.getElementById('success').classList.add('show');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          } else {
+            alert('Hubo un error procesando el pago. Intentá de nuevo.');
+          }
+        },
+        onError: (error) => {
+          console.error('Bricks error:', error);
+        },
+      },
+    };
+
+    try {
+      const bricksBuilder = mp.bricks();
+      await bricksBuilder.create('payment', 'paymentBrick_container', settings);
+    } catch (e) {
+      console.error('Error iniciando Bricks:', e);
+      document.getElementById('bricks-loading').classList.remove('show');
+    }
+  }
+
+  // Init
+  updateSummary();
+</script>
+</body>
+</html>
