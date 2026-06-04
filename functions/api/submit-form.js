@@ -31,7 +31,6 @@ export async function onRequest(context) {
   if (request.method === "OPTIONS") return new Response(null, { status: 204, headers: CORS });
   if (request.method !== "POST") return json({ error: "Method not allowed" }, 405);
 
-  // ── Parsear FormData (el HTML envía multipart, no JSON) ──
   let formData;
   try { formData = await request.formData(); }
   catch { return json({ success: false, message: "Datos inválidos." }, 400); }
@@ -64,9 +63,9 @@ export async function onRequest(context) {
     extra_notes:       get("extra_notes"),
   };
 
-  // ── Validación básica (solo campos realmente obligatorios en el HTML) ──
+  // ── Validación básica ──
   if (!data.business_name || !data.business_type || !data.phone) {
-    return json({ success: false, message: "Faltan campos obligatorios (negocio, rubro o teléfono)." }, 400);
+    return json({ success: false, message: "Faltan campos obligatorios." }, 400);
   }
 
   const clientName = data.business_name;
@@ -83,7 +82,7 @@ export async function onRequest(context) {
     const projectId = result.meta?.last_row_id || 0;
 
     // ── 2. WhatsApp ───────────────────────────────────────────
-    const goals = data.main_goals.length ? data.main_goals.join(", ") : "—";
+    const goals = Array.isArray(data.main_goals) ? data.main_goals.join(", ") : "—";
     const waMsg = encodeURIComponent(
       `🔔 *Nuevo cliente — in Albis*\n\n` +
       `👤 *Negocio:* ${clientName}\n` +
@@ -99,9 +98,7 @@ export async function onRequest(context) {
     await sendAdminEmail(data, projectId);
 
     // ── 4. Email de bienvenida al cliente ─────────────────────
-    if (data.email) {
-      await sendClientEmail(data);
-    }
+    if (data.email) await sendClientEmail(data);
 
     return json({
       success: true,
@@ -119,8 +116,8 @@ export async function onRequest(context) {
 // EMAIL AL ADMIN
 // ══════════════════════════════════════════════
 async function sendAdminEmail(data, projectId) {
-  const goals     = Array.isArray(data.main_goals)        ? data.main_goals.join(", ")        : (data.main_goals || "—");
-  const functions = Array.isArray(data.special_functions) ? data.special_functions.join(", ") : (data.special_functions || "—");
+  const goals     = Array.isArray(data.main_goals)        ? data.main_goals.join(", ")        : "—";
+  const functions = Array.isArray(data.special_functions) ? data.special_functions.join(", ") : "—";
   const now       = new Date().toLocaleString("es-AR", { timeZone: "America/Argentina/Buenos_Aires" });
 
   const html = `<!DOCTYPE html>
@@ -229,41 +226,67 @@ async function sendClientEmail(data) {
   const html = `<!DOCTYPE html>
 <html lang="es">
 <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
-<body style="margin:0;padding:0;background:#f3f4f6;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;">
-<table width="100%" cellpadding="0" cellspacing="0" style="background:#f3f4f6;padding:32px 16px;">
+<body style="margin:0;padding:0;background:#e4f2fb;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;">
+<table width="100%" cellpadding="0" cellspacing="0" style="background:#e4f2fb;padding:32px 16px;">
 <tr><td align="center">
-<table width="560" cellpadding="0" cellspacing="0" style="background:#fff;border-radius:8px;overflow:hidden;border:1px solid #e5e7eb;max-width:100%;">
+<table width="560" cellpadding="0" cellspacing="0" style="background:#ffffff;border-radius:12px;overflow:hidden;border:1px solid rgba(26,143,209,0.2);max-width:100%;">
 
+  <!-- Header con gradiente de marca -->
   <tr>
-    <td style="background:#0f172a;padding:28px;text-align:center;">
-      <p style="margin:0 0 6px;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#64748b;">in Albis Pages</p>
-      <h1 style="margin:0;font-size:22px;font-weight:700;color:#f8fafc;">¡Recibimos tu información! 🎉</h1>
+    <td style="background:linear-gradient(135deg,#0f2942 0%,#1a4a72 60%,#1a8fd1 100%);padding:36px 32px;text-align:center;">
+      <p style="margin:0 0 4px;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.5);">Páginas</p>
+      <p style="margin:0 0 20px;font-size:28px;font-weight:800;color:#ffffff;letter-spacing:-0.5px;">in<span style="color:#7dd3f7;">Albis</span></p>
+      <div style="display:inline-block;background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);border-radius:100px;padding:8px 20px;">
+        <p style="margin:0;font-size:13px;color:rgba(255,255,255,0.9);">✅ Información recibida</p>
+      </div>
     </td>
   </tr>
 
-  <tr><td style="padding:28px;">
-    <p style="margin:0 0 16px;font-size:15px;color:#374151;line-height:1.7;">
-      Hola, gracias por completar el formulario. Recibimos toda la información sobre <strong>${data.business_name}</strong> y ya estamos revisando los detalles con atención.
+  <!-- Cuerpo -->
+  <tr><td style="padding:36px 32px 24px;">
+    <h1 style="margin:0 0 16px;font-size:22px;font-weight:700;color:#0f2942;line-height:1.3;">
+      ¡Gracias, ${data.business_name}!
+    </h1>
+    <p style="margin:0 0 16px;font-size:15px;color:#3a6080;line-height:1.7;">
+      Recibimos toda la información sobre tu negocio y ya estamos revisando los detalles con atención.
     </p>
-    <p style="margin:0 0 20px;font-size:15px;color:#374151;line-height:1.7;">
-      En las próximas <strong>24 a 48 horas</strong> nos ponemos en contacto con vos para coordinar los próximos pasos.
+    <p style="margin:0 0 28px;font-size:15px;color:#3a6080;line-height:1.7;">
+      En las próximas <strong style="color:#0f2942;">24 a 48 horas</strong> nos ponemos en contacto con vos para coordinar los próximos pasos y arrancar con tu proyecto web.
     </p>
-    <div style="background:#f8fafc;border-left:3px solid #0f172a;border-radius:0 8px 8px 0;padding:16px 20px;margin-bottom:20px;">
-      <p style="margin:0 0 8px;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#64748b;">¿Qué sigue?</p>
-      <ul style="margin:0;padding:0 0 0 16px;color:#374151;font-size:14px;line-height:1.9;">
-        <li>Revisamos tu información en detalle</li>
-        <li>Preparamos una propuesta personalizada</li>
-        <li>Te contactamos para agendar una reunión</li>
-      </ul>
-    </div>
-    <p style="margin:0;font-size:13px;color:#6b7280;line-height:1.6;">
-      Si tenés alguna duda antes de que nos comuniquemos, podés responder este email o escribirnos directamente.
+
+    <!-- Caja pasos -->
+    <table width="100%" cellpadding="0" cellspacing="0" style="background:#f0f8ff;border:1.5px solid rgba(26,143,209,0.2);border-radius:10px;margin-bottom:28px;">
+      <tr><td style="padding:20px 24px;">
+        <p style="margin:0 0 14px;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#1a8fd1;">¿Qué sigue?</p>
+        <table width="100%" cellpadding="0" cellspacing="0">
+          <tr>
+            <td style="padding:6px 0;vertical-align:top;width:28px;font-size:16px;">☁️</td>
+            <td style="padding:6px 0;font-size:14px;color:#0f2942;line-height:1.5;">Revisamos tu información en detalle</td>
+          </tr>
+          <tr>
+            <td style="padding:6px 0;vertical-align:top;font-size:16px;">✏️</td>
+            <td style="padding:6px 0;font-size:14px;color:#0f2942;line-height:1.5;">Preparamos una propuesta personalizada para tu negocio</td>
+          </tr>
+          <tr>
+            <td style="padding:6px 0;vertical-align:top;font-size:16px;">📱</td>
+            <td style="padding:6px 0;font-size:14px;color:#0f2942;line-height:1.5;">Te contactamos para coordinar una reunión</td>
+          </tr>
+        </table>
+      </td></tr>
+    </table>
+
+    <p style="margin:0;font-size:13px;color:#7aaac8;line-height:1.6;">
+      Si tenés alguna duda antes de que nos comuniquemos, podés responder este email o escribirnos por WhatsApp al <a href="https://wa.me/541168115491" style="color:#1a8fd1;text-decoration:none;font-weight:600;">+54 11 6811-5491</a>.
     </p>
   </td></tr>
 
-  <tr><td style="background:#f9fafb;border-top:1px solid #e5e7eb;padding:16px 28px;text-align:center;">
-    <p style="margin:0;font-size:11px;color:#9ca3af;">in Albis Pages · inalbis.pages.dev · <a href="mailto:${ADMIN_EMAIL}" style="color:#9ca3af;">${ADMIN_EMAIL}</a></p>
-  </td></tr>
+  <!-- Footer -->
+  <tr>
+    <td style="background:linear-gradient(135deg,#0f2942,#1a3a5c);padding:20px 32px;text-align:center;">
+      <p style="margin:0 0 4px;font-size:16px;font-weight:800;color:#ffffff;">in<span style="color:#7dd3f7;">Albis</span></p>
+      <p style="margin:0;font-size:11px;color:rgba(255,255,255,0.4);">Diseño web profesional · inalbis.pages.dev</p>
+    </td>
+  </tr>
 
 </table>
 </td></tr></table>
@@ -271,14 +294,11 @@ async function sendClientEmail(data) {
 
   const res = await fetch("https://api.brevo.com/v3/smtp/email", {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "api-key": BREVO_KEY,
-    },
+    headers: { "Content-Type": "application/json", "api-key": BREVO_KEY },
     body: JSON.stringify({
       sender:      { name: FROM_NAME, email: FROM_EMAIL },
       to:          [{ email: data.email, name: data.business_name }],
-      subject:     `¡Recibimos tu información, ${data.business_name}!`,
+      subject:     `¡Recibimos tu información, ${data.business_name}! ☁️`,
       htmlContent: html,
     }),
   });
