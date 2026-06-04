@@ -5,20 +5,23 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Pago Seguro — Páginas inAlbis</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Space+Mono&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --sky:    #e4f2fb;
-    --azure:  #1a8fd1;
-    --azure2: #0b6fa8;
-    --dark:   #0f2942;
-    --dark2:  #1a3a5c;
-    --text:   #0f2942;
-    --text2:  #3a6080;
-    --muted:  #7aaac8;
-    --border: rgba(26,143,209,0.18);
-    --surface:#ffffff;
-    --green:  #16a34a;
+    --sun:      #f59e0b;
+    --sun2:     #d97706;
+    --sun3:     #fbbf24;
+    --sky-top:  #fed7aa;
+    --sky-mid:  #fef3c7;
+    --sky-bot:  #fffbeb;
+    --warm:     #7c2d12;
+    --text:     #451a03;
+    --text2:    #92400e;
+    --muted:    #b45309;
+    --border:   rgba(245,158,11,0.25);
+    --surface:  rgba(255,255,255,0.85);
+    --green:    #16a34a;
+    --glow:     rgba(251,191,36,0.35);
   }
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -26,711 +29,607 @@
 
   body {
     font-family: 'Plus Jakarta Sans', sans-serif;
-    background: var(--sky);
+    background: var(--sky-bot);
     color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── SKY BACKGROUND ── */
+  .sky-bg {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    background: linear-gradient(
+      180deg,
+      #fed7aa 0%,
+      #fde68a 30%,
+      #fef9c3 60%,
+      #fffbeb 100%
+    );
+  }
+
+  /* Sol animado */
+  .sun {
+    position: fixed;
+    top: -60px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 40% 40%, #fef08a, #f59e0b 50%, #d97706);
+    box-shadow:
+      0 0 60px 20px rgba(251,191,36,0.5),
+      0 0 120px 40px rgba(245,158,11,0.3),
+      0 0 200px 80px rgba(217,119,6,0.15);
+    animation: pulse-sun 4s ease-in-out infinite;
+    z-index: 1;
+  }
+  @keyframes pulse-sun {
+    0%, 100% { box-shadow: 0 0 60px 20px rgba(251,191,36,0.5), 0 0 120px 40px rgba(245,158,11,0.3), 0 0 200px 80px rgba(217,119,6,0.15); }
+    50%       { box-shadow: 0 0 80px 30px rgba(251,191,36,0.65), 0 0 160px 60px rgba(245,158,11,0.4), 0 0 260px 100px rgba(217,119,6,0.2); }
+  }
+
+  /* Rayos del sol */
+  .sun-rays {
+    position: fixed;
+    top: -120px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 500px;
+    height: 500px;
+    z-index: 0;
+    animation: rotate-rays 20s linear infinite;
+  }
+  .sun-rays::before,
+  .sun-rays::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: repeating-conic-gradient(
+      rgba(251,191,36,0.12) 0deg 10deg,
+      transparent 10deg 20deg
+    );
+  }
+  .sun-rays::after { transform: rotate(10deg); opacity: 0.7; }
+  @keyframes rotate-rays { to { transform: translateX(-50%) rotate(360deg); } }
+
+  /* Nubes decorativas */
+  .cloud {
+    position: fixed;
+    background: rgba(255,255,255,0.7);
+    border-radius: 100px;
+    filter: blur(2px);
+    z-index: 1;
+  }
+  .cloud::before, .cloud::after {
+    content: '';
+    position: absolute;
+    background: inherit;
+    border-radius: 50%;
+  }
+  .c1 { width:180px; height:50px; top:18%; left:-20px; animation: drift1 25s ease-in-out infinite; }
+  .c1::before { width:80px; height:80px; top:-40px; left:20px; }
+  .c1::after  { width:60px; height:60px; top:-30px; left:70px; }
+  .c2 { width:140px; height:40px; top:28%; right:-10px; animation: drift2 30s ease-in-out infinite; }
+  .c2::before { width:60px; height:60px; top:-30px; left:15px; }
+  .c2::after  { width:50px; height:50px; top:-25px; left:55px; }
+  .c3 { width:100px; height:30px; top:42%; left:10%; animation: drift1 35s ease-in-out infinite reverse; opacity:0.5; }
+  .c3::before { width:45px; height:45px; top:-22px; left:10px; }
+  .c3::after  { width:35px; height:35px; top:-18px; left:40px; }
+
+  @keyframes drift1 {
+    0%,100% { transform: translateX(0); }
+    50%      { transform: translateX(30px); }
+  }
+  @keyframes drift2 {
+    0%,100% { transform: translateX(0); }
+    50%      { transform: translateX(-25px); }
+  }
+
+  /* ── LAYOUT ── */
+  .page {
+    position: relative;
+    z-index: 2;
     min-height: 100vh;
   }
 
   /* ── HEADER ── */
   .header {
-    background: linear-gradient(135deg, #0f2942 0%, #1a4a72 60%, #1a8fd1 100%);
-    padding: 2rem 1.5rem 3.5rem;
     text-align: center;
-    position: relative;
-    overflow: hidden;
-  }
-  .header::after {
-    content: '';
-    position: absolute;
-    bottom: -2px; left: 0; right: 0; height: 48px;
-    background: var(--sky);
-    clip-path: ellipse(55% 100% at 50% 100%);
+    padding: 5rem 1.5rem 3rem;
   }
   .header-logo {
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    font-size: 0.85rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: rgba(255,255,255,0.6);
+    border: 1.5px solid rgba(245,158,11,0.3);
+    border-radius: 100px;
+    padding: 0.35rem 1rem;
+    font-size: 0.78rem;
     font-weight: 700;
-    letter-spacing: 0.15em;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: rgba(255,255,255,0.5);
-    margin-bottom: 1rem;
+    color: var(--sun2);
+    margin-bottom: 1.5rem;
+    backdrop-filter: blur(8px);
   }
-  .header-logo span { color: #7dd3f7; }
   .header h1 {
     font-family: 'Playfair Display', serif;
-    font-size: clamp(1.8rem, 5vw, 2.6rem);
-    color: #fff;
+    font-size: clamp(2rem, 6vw, 3rem);
+    color: var(--warm);
     line-height: 1.15;
     margin-bottom: 0.75rem;
+    text-shadow: 0 2px 20px rgba(245,158,11,0.2);
   }
-  .header h1 em { font-style: italic; color: #7dd3f7; }
+  .header h1 em { font-style: italic; color: var(--sun2); }
   .header p {
-    color: rgba(255,255,255,0.65);
+    color: var(--text2);
     font-size: 0.95rem;
-    max-width: 420px;
+    max-width: 400px;
     margin: 0 auto;
     line-height: 1.6;
   }
 
   /* ── WRAPPER ── */
   .wrapper {
-    max-width: 860px;
+    max-width: 840px;
     margin: 0 auto;
-    padding: 2rem 1.25rem 4rem;
+    padding: 0 1.25rem 5rem;
   }
 
-  /* ── STEP INDICATOR ── */
-  .steps {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    margin-bottom: 2.5rem;
-  }
-  .step-dot {
-    width: 32px; height: 32px;
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 0.78rem; font-weight: 700;
-    border: 2px solid var(--border);
-    background: var(--surface);
-    color: var(--muted);
-    transition: all 0.3s;
-  }
-  .step-dot.active {
-    background: var(--azure);
-    border-color: var(--azure);
-    color: #fff;
-  }
-  .step-dot.done {
-    background: var(--green);
-    border-color: var(--green);
-    color: #fff;
-  }
-  .step-line {
-    flex: 1; max-width: 60px;
-    height: 2px;
-    background: var(--border);
-    border-radius: 2px;
-  }
-  .step-label {
-    font-size: 0.72rem;
-    color: var(--muted);
-    text-align: center;
-    margin-top: 6px;
-  }
-  .steps-wrap {
-    display: flex;
-    justify-content: center;
-    gap: 0;
-    margin-bottom: 2.5rem;
-  }
-  .step-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0;
-  }
-  .step-item:not(:last-child) .step-line-h {
-    display: block;
-    width: 48px; height: 2px;
-    background: var(--border);
-    margin-top: 15px;
-  }
-
-  /* ── PLAN CARDS ── */
-  .section-label {
-    font-size: 0.72rem;
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--azure);
-    margin-bottom: 0.75rem;
-  }
-  .section-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.6rem;
-    color: var(--dark);
-    margin-bottom: 0.4rem;
-  }
-  .section-sub {
-    color: var(--text2);
-    font-size: 0.9rem;
-    margin-bottom: 1.75rem;
-    line-height: 1.5;
-  }
-
-  .plans {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-    gap: 1rem;
-    margin-bottom: 2.5rem;
-  }
-
-  .plan-card {
-    background: var(--surface);
-    border: 2px solid var(--border);
-    border-radius: 16px;
-    padding: 1.5rem 1.25rem;
-    cursor: pointer;
-    transition: all 0.2s;
-    position: relative;
-    user-select: none;
-  }
-  .plan-card:hover { border-color: var(--azure); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(26,143,209,0.12); }
-  .plan-card.selected { border-color: var(--azure); background: rgba(26,143,209,0.04); box-shadow: 0 0 0 4px rgba(26,143,209,0.1); }
-  .plan-card.featured { border-color: var(--azure2); }
-
-  .plan-badge {
-    display: inline-block;
-    background: var(--azure);
-    color: #fff;
-    font-size: 0.65rem;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    padding: 3px 10px;
-    border-radius: 100px;
-    margin-bottom: 0.75rem;
-  }
-
-  .plan-name {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.35rem;
-    color: var(--dark);
-    margin-bottom: 0.3rem;
-  }
-  .plan-desc {
-    font-size: 0.8rem;
-    color: var(--text2);
-    line-height: 1.5;
-    margin-bottom: 1rem;
-  }
-  .plan-price {
-    display: flex;
-    align-items: baseline;
-    gap: 0.25rem;
-    margin-bottom: 0.25rem;
-  }
-  .plan-price .symbol { font-size: 1rem; color: var(--azure); font-weight: 600; }
-  .plan-price .amount { font-size: 2rem; font-weight: 800; color: var(--dark); line-height: 1; }
-  .plan-price .currency { font-size: 0.75rem; color: var(--muted); }
-  .plan-adelanto {
-    font-size: 0.78rem;
-    color: var(--muted);
-    margin-bottom: 1.25rem;
-  }
-  .plan-adelanto strong { color: var(--azure); }
-
-  .plan-features {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 0.4rem;
-  }
-  .plan-features li {
-    font-size: 0.8rem;
-    color: var(--text2);
-    display: flex;
-    align-items: flex-start;
-    gap: 0.4rem;
-    line-height: 1.4;
-  }
-  .plan-features li::before {
-    content: '✓';
-    color: var(--azure);
-    font-weight: 700;
-    flex-shrink: 0;
-    margin-top: 1px;
-  }
-
-  .plan-select-indicator {
-    position: absolute;
-    top: 1rem; right: 1rem;
-    width: 20px; height: 20px;
-    border-radius: 50%;
-    border: 2px solid var(--border);
-    background: #fff;
-    transition: all 0.2s;
-    display: flex; align-items: center; justify-content: center;
-  }
-  .plan-card.selected .plan-select-indicator {
-    background: var(--azure);
-    border-color: var(--azure);
-  }
-  .plan-card.selected .plan-select-indicator::after {
-    content: '';
-    width: 6px; height: 6px;
-    background: #fff;
-    border-radius: 50%;
-  }
-
-  /* ── TIPO DE PAGO ── */
-  .payment-type {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0.75rem;
-    margin-bottom: 2rem;
-  }
-  .type-card {
-    background: var(--surface);
-    border: 2px solid var(--border);
-    border-radius: 12px;
-    padding: 1rem 1.25rem;
-    cursor: pointer;
-    transition: all 0.2s;
-    text-align: center;
-  }
-  .type-card:hover { border-color: var(--azure); }
-  .type-card.selected { border-color: var(--azure); background: rgba(26,143,209,0.04); }
-  .type-card .type-icon { font-size: 1.5rem; margin-bottom: 0.4rem; }
-  .type-card .type-name { font-size: 0.88rem; font-weight: 700; color: var(--dark); margin-bottom: 0.2rem; }
-  .type-card .type-desc { font-size: 0.75rem; color: var(--muted); line-height: 1.4; }
-  .type-card .type-amount { font-size: 1rem; font-weight: 800; color: var(--azure); margin-top: 0.4rem; }
-
-  /* ── RESUMEN ── */
-  .summary-box {
-    background: var(--surface);
-    border: 1.5px solid var(--border);
-    border-radius: 14px;
-    padding: 1.25rem 1.5rem;
-    margin-bottom: 1.5rem;
-  }
-  .summary-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0.5rem 0;
-    font-size: 0.88rem;
-  }
-  .summary-row:not(:last-child) { border-bottom: 1px solid var(--border); }
-  .summary-row .label { color: var(--text2); }
-  .summary-row .value { font-weight: 600; color: var(--dark); }
-  .summary-row.total .label { font-weight: 700; color: var(--dark); font-size: 0.95rem; }
-  .summary-row.total .value { font-size: 1.1rem; color: var(--azure); }
-
-  /* ── BRICKS CONTAINER ── */
-  #bricks-container {
-    background: var(--surface);
-    border: 1.5px solid var(--border);
-    border-radius: 14px;
-    padding: 1.5rem;
-    margin-bottom: 1.5rem;
-    min-height: 120px;
-    display: none;
-  }
-  #bricks-container.show { display: block; }
-
-  /* ── BTN ── */
-  .btn-pay {
-    width: 100%;
-    background: linear-gradient(135deg, var(--azure2), var(--azure));
-    color: #fff;
-    border: none;
-    border-radius: 12px;
-    padding: 1rem 1.5rem;
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    font-size: 1rem;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.2s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    margin-bottom: 1rem;
-  }
-  .btn-pay:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(26,143,209,0.3); }
-  .btn-pay:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
-
-  /* ── SECURITY NOTE ── */
-  .security-note {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    font-size: 0.75rem;
-    color: var(--muted);
-    margin-bottom: 2rem;
-  }
-
-  /* ── STEP SECTIONS ── */
-  .step-section { display: none; }
-  .step-section.active { display: block; animation: fadeUp 0.35s ease; }
-
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(12px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-
-  /* ── SUCCESS ── */
-  .success-screen {
-    display: none;
-    text-align: center;
-    padding: 3rem 1rem;
-    animation: fadeUp 0.5s ease;
-  }
-  .success-screen.show { display: block; }
-  .success-icon { font-size: 3.5rem; margin-bottom: 1rem; }
-  .success-screen h2 {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.8rem;
-    color: var(--dark);
-    margin-bottom: 0.75rem;
-  }
-  .success-screen p { color: var(--text2); font-size: 0.95rem; line-height: 1.6; max-width: 400px; margin: 0 auto 1.5rem; }
-
-  /* ── NAV BUTTONS ── */
-  .form-nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 1.5rem;
-    padding-top: 1.25rem;
-    border-top: 1px solid var(--border);
-  }
-  .btn-back {
-    background: none;
-    border: 1.5px solid var(--border);
-    border-radius: 10px;
-    padding: 0.7rem 1.2rem;
-    color: var(--text2);
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    font-size: 0.88rem;
-    cursor: pointer;
-    transition: all 0.15s;
-  }
-  .btn-back:hover { border-color: var(--text2); }
-  .btn-next {
-    background: var(--dark);
-    border: none;
-    border-radius: 10px;
-    padding: 0.75rem 1.5rem;
-    color: #fff;
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    font-size: 0.9rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.15s;
-  }
-  .btn-next:hover { background: var(--azure); }
-  .btn-next:disabled { opacity: 0.4; cursor: not-allowed; }
-
-  /* ── EXTRAS ── */
-  .extras-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 0.75rem;
-    margin-bottom: 1.5rem;
-  }
-  .extra-item {
-    background: var(--surface);
-    border: 1.5px solid var(--border);
-    border-radius: 10px;
-    padding: 0.85rem 1rem;
-    cursor: pointer;
-    transition: all 0.15s;
-    display: flex;
-    align-items: center;
-    gap: 0.65rem;
-  }
-  .extra-item:hover { border-color: var(--azure); }
-  .extra-item.selected { border-color: var(--azure); background: rgba(26,143,209,0.05); }
-  .extra-item input { width: 16px; height: 16px; accent-color: var(--azure); flex-shrink: 0; }
-  .extra-info { flex: 1; }
-  .extra-name { font-size: 0.83rem; font-weight: 600; color: var(--dark); }
-  .extra-price { font-size: 0.75rem; color: var(--azure); font-weight: 700; }
-
-  /* Loading */
-  .loading-spinner {
-    display: none;
-    width: 32px; height: 32px;
-    border: 3px solid var(--border);
-    border-top-color: var(--azure);
-    border-radius: 50%;
-    animation: spin 0.7s linear infinite;
-    margin: 1rem auto;
-  }
-  .loading-spinner.show { display: block; }
-  @keyframes spin { to { transform: rotate(360deg); } }
-
-  /* Step tracker top */
+  /* ── TRACKER ── */
   .tracker {
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 0;
-    margin-bottom: 2rem;
+    margin-bottom: 2.5rem;
   }
-  .tracker-step {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 4px;
-  }
+  .tracker-step { display: flex; flex-direction: column; align-items: center; gap: 4px; }
   .tracker-dot {
-    width: 30px; height: 30px;
+    width: 32px; height: 32px;
     border-radius: 50%;
-    border: 2px solid var(--border);
-    background: var(--surface);
+    border: 2px solid rgba(245,158,11,0.3);
+    background: rgba(255,255,255,0.7);
     color: var(--muted);
-    font-size: 0.72rem;
-    font-weight: 700;
+    font-size: 0.75rem; font-weight: 700;
     display: flex; align-items: center; justify-content: center;
     transition: all 0.3s;
+    backdrop-filter: blur(4px);
   }
-  .tracker-dot.active { background: var(--azure); border-color: var(--azure); color: #fff; }
-  .tracker-dot.done { background: var(--green); border-color: var(--green); color: #fff; }
+  .tracker-dot.active { background: var(--sun); border-color: var(--sun2); color: #fff; box-shadow: 0 0 16px var(--glow); }
+  .tracker-dot.done   { background: var(--green); border-color: var(--green); color: #fff; }
   .tracker-label { font-size: 0.65rem; color: var(--muted); white-space: nowrap; }
-  .tracker-line { width: 40px; height: 2px; background: var(--border); margin-bottom: 18px; }
+  .tracker-line  { width: 48px; height: 2px; background: rgba(245,158,11,0.2); margin-bottom: 18px; }
 
-  @media (max-width: 480px) {
-    .plans { grid-template-columns: 1fr; }
-    .payment-type { grid-template-columns: 1fr 1fr; }
-    .tracker-line { width: 24px; }
-    .tracker-label { font-size: 0.6rem; }
+  /* ── CARD BASE ── */
+  .card {
+    background: rgba(255,255,255,0.75);
+    border: 1.5px solid rgba(245,158,11,0.2);
+    border-radius: 20px;
+    backdrop-filter: blur(12px);
+    box-shadow: 0 4px 24px rgba(245,158,11,0.08), 0 1px 0 rgba(255,255,255,0.9) inset;
+  }
+
+  /* ── SECTION LABELS ── */
+  .section-label {
+    font-size: 0.7rem; font-weight: 700;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--sun2); margin-bottom: 0.5rem;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.55rem; color: var(--warm);
+    margin-bottom: 0.35rem;
+  }
+  .section-sub { color: var(--text2); font-size: 0.88rem; margin-bottom: 1.75rem; line-height: 1.5; }
+
+  /* ── PLAN CARDS ── */
+  .plans {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(225px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .plan-card {
+    background: rgba(255,255,255,0.7);
+    border: 2px solid rgba(245,158,11,0.2);
+    border-radius: 16px;
+    padding: 1.4rem 1.2rem;
+    cursor: pointer;
+    transition: all 0.22s;
+    position: relative;
+    backdrop-filter: blur(8px);
+    user-select: none;
+  }
+  .plan-card:hover   { border-color: var(--sun); transform: translateY(-3px); box-shadow: 0 12px 32px rgba(245,158,11,0.18); }
+  .plan-card.selected { border-color: var(--sun); background: rgba(254,243,199,0.7); box-shadow: 0 0 0 4px rgba(251,191,36,0.18), 0 8px 24px rgba(245,158,11,0.15); }
+  .plan-card.featured { border-color: rgba(245,158,11,0.4); }
+
+  .plan-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--sun), var(--sun2));
+    color: #fff;
+    font-size: 0.63rem; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    padding: 3px 10px; border-radius: 100px;
+    margin-bottom: 0.7rem;
+    box-shadow: 0 2px 8px rgba(245,158,11,0.3);
+  }
+
+  .plan-name { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: var(--warm); margin-bottom: 0.3rem; }
+  .plan-desc { font-size: 0.78rem; color: var(--text2); line-height: 1.5; margin-bottom: 0.9rem; }
+  .plan-price { display: flex; align-items: baseline; gap: 0.2rem; margin-bottom: 0.2rem; }
+  .plan-price .symbol  { font-size: 1rem; color: var(--sun2); font-weight: 700; }
+  .plan-price .amount  { font-size: 2rem; font-weight: 800; color: var(--warm); line-height: 1; }
+  .plan-price .currency{ font-size: 0.72rem; color: var(--muted); }
+  .plan-adelanto { font-size: 0.76rem; color: var(--muted); margin-bottom: 1rem; }
+  .plan-adelanto strong { color: var(--sun2); }
+
+  .plan-features { list-style: none; display: flex; flex-direction: column; gap: 0.38rem; }
+  .plan-features li {
+    font-size: 0.78rem; color: var(--text2);
+    display: flex; align-items: flex-start; gap: 0.4rem; line-height: 1.4;
+  }
+  .plan-features li::before { content: '☀'; font-size: 0.65rem; color: var(--sun); flex-shrink: 0; margin-top: 2px; }
+
+  .plan-select-indicator {
+    position: absolute; top: 1rem; right: 1rem;
+    width: 20px; height: 20px; border-radius: 50%;
+    border: 2px solid rgba(245,158,11,0.3);
+    background: rgba(255,255,255,0.8);
+    transition: all 0.2s;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .plan-card.selected .plan-select-indicator { background: var(--sun); border-color: var(--sun2); box-shadow: 0 0 8px var(--glow); }
+  .plan-card.selected .plan-select-indicator::after { content: ''; width: 6px; height: 6px; background: #fff; border-radius: 50%; }
+
+  /* ── EXTRAS ── */
+  .extras-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+  }
+  .extra-item {
+    background: rgba(255,255,255,0.65);
+    border: 1.5px solid rgba(245,158,11,0.2);
+    border-radius: 12px;
+    padding: 0.85rem 1rem;
+    cursor: pointer;
+    transition: all 0.15s;
+    display: flex; align-items: center; gap: 0.6rem;
+    backdrop-filter: blur(6px);
+  }
+  .extra-item:hover    { border-color: var(--sun); }
+  .extra-item.selected { border-color: var(--sun); background: rgba(254,243,199,0.7); }
+  .extra-item input    { width: 16px; height: 16px; accent-color: var(--sun2); flex-shrink: 0; }
+  .extra-name  { font-size: 0.82rem; font-weight: 600; color: var(--warm); }
+  .extra-price { font-size: 0.73rem; color: var(--sun2); font-weight: 700; }
+
+  /* ── TIPO PAGO ── */
+  .payment-type {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 0.75rem; margin-bottom: 1.5rem;
+  }
+  .type-card {
+    background: rgba(255,255,255,0.65);
+    border: 2px solid rgba(245,158,11,0.2);
+    border-radius: 14px; padding: 1rem 1.25rem;
+    cursor: pointer; transition: all 0.2s; text-align: center;
+    backdrop-filter: blur(6px);
+  }
+  .type-card:hover    { border-color: var(--sun); }
+  .type-card.selected { border-color: var(--sun); background: rgba(254,243,199,0.7); box-shadow: 0 0 0 3px rgba(251,191,36,0.15); }
+  .type-icon   { font-size: 1.5rem; margin-bottom: 0.4rem; }
+  .type-name   { font-size: 0.88rem; font-weight: 700; color: var(--warm); margin-bottom: 0.2rem; }
+  .type-desc   { font-size: 0.73rem; color: var(--muted); line-height: 1.4; }
+  .type-amount { font-size: 1rem; font-weight: 800; color: var(--sun2); margin-top: 0.4rem; }
+
+  /* ── RESUMEN ── */
+  .summary-box {
+    background: rgba(255,255,255,0.7);
+    border: 1.5px solid rgba(245,158,11,0.2);
+    border-radius: 14px; padding: 1.2rem 1.4rem;
+    margin-bottom: 1.25rem; backdrop-filter: blur(8px);
+  }
+  .summary-row {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 0.5rem 0; font-size: 0.86rem;
+  }
+  .summary-row:not(:last-child) { border-bottom: 1px solid rgba(245,158,11,0.12); }
+  .summary-row .label { color: var(--text2); }
+  .summary-row .value { font-weight: 600; color: var(--warm); }
+  .summary-row.total .label { font-weight: 700; color: var(--warm); font-size: 0.95rem; }
+  .summary-row.total .value { font-size: 1.1rem; color: var(--sun2); }
+
+  /* ── BRICKS ── */
+  #bricks-container {
+    background: rgba(255,255,255,0.75);
+    border: 1.5px solid rgba(245,158,11,0.2);
+    border-radius: 16px; padding: 1.5rem;
+    margin-bottom: 1.25rem;
+    backdrop-filter: blur(8px);
+    min-height: 80px;
+  }
+
+  /* ── SECURITY ── */
+  .security-note {
+    display: flex; align-items: center; justify-content: center;
+    gap: 0.5rem; font-size: 0.73rem; color: var(--muted);
+    margin-bottom: 2rem;
+  }
+
+  /* ── NAV BUTTONS ── */
+  .form-nav {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-top: 1.5rem; padding-top: 1.25rem;
+    border-top: 1px solid rgba(245,158,11,0.15);
+  }
+  .btn-back {
+    background: rgba(255,255,255,0.7);
+    border: 1.5px solid rgba(245,158,11,0.25);
+    border-radius: 10px; padding: 0.7rem 1.2rem;
+    color: var(--text2); font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 0.86rem; cursor: pointer; transition: all 0.15s;
+    backdrop-filter: blur(4px);
+  }
+  .btn-back:hover { border-color: var(--sun); color: var(--warm); }
+  .btn-next {
+    background: linear-gradient(135deg, var(--sun2), var(--sun));
+    border: none; border-radius: 10px;
+    padding: 0.75rem 1.6rem;
+    color: #fff; font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 0.9rem; font-weight: 700; cursor: pointer;
+    transition: all 0.18s;
+    box-shadow: 0 4px 16px rgba(245,158,11,0.3);
+  }
+  .btn-next:hover    { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(245,158,11,0.4); }
+  .btn-next:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+  /* ── STEPS ── */
+  .step-section { display: none; }
+  .step-section.active { display: block; animation: fadeUp 0.35s ease; }
+  @keyframes fadeUp { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
+
+  /* ── SUCCESS ── */
+  .success-screen { display: none; text-align: center; padding: 4rem 1rem; animation: fadeUp 0.5s ease; }
+  .success-screen.show { display: block; }
+  .success-icon  { font-size: 4rem; margin-bottom: 1rem; }
+  .success-screen h2 { font-family: 'Playfair Display', serif; font-size: 2rem; color: var(--warm); margin-bottom: 0.75rem; }
+  .success-screen p  { color: var(--text2); font-size: 0.95rem; line-height: 1.6; max-width: 380px; margin: 0 auto 1.5rem; }
+
+  /* Loading */
+  .loading-spinner { display:none; width:32px;height:32px; border:3px solid rgba(245,158,11,0.2); border-top-color:var(--sun); border-radius:50%; animation:spin 0.7s linear infinite; margin:1rem auto; }
+  .loading-spinner.show { display:block; }
+  @keyframes spin { to { transform:rotate(360deg); } }
+
+  @media (max-width:480px) {
+    .plans { grid-template-columns:1fr; }
+    .tracker-line { width:28px; }
   }
 </style>
 </head>
 <body>
 
-<!-- Header -->
-<div class="header">
-  <div class="header-logo">Páginas <span>inAlbis</span></div>
-  <h1>Comenzá tu <em>proyecto</em></h1>
-  <p>Pago seguro con Mercado Pago. 50% para arrancar, 50% al entregar.</p>
+<div class="sky-bg"></div>
+<div class="sun-rays"></div>
+<div class="sun"></div>
+<div class="cloud c1"></div>
+<div class="cloud c2"></div>
+<div class="cloud c3"></div>
+
+<div class="page">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="header-logo">☀️ Páginas inAlbis</div>
+    <h1>Tu proyecto bajo<br><em>el mismo sol</em></h1>
+    <p>Pago seguro con Mercado Pago · 50% para arrancar · 50% al entregar</p>
+  </div>
+
+  <div class="wrapper">
+
+    <!-- Tracker -->
+    <div class="tracker">
+      <div class="tracker-step">
+        <div class="tracker-dot active" id="t1">1</div>
+        <div class="tracker-label">Plan</div>
+      </div>
+      <div class="tracker-line"></div>
+      <div class="tracker-step">
+        <div class="tracker-dot" id="t2">2</div>
+        <div class="tracker-label">Extras</div>
+      </div>
+      <div class="tracker-line"></div>
+      <div class="tracker-step">
+        <div class="tracker-dot" id="t3">3</div>
+        <div class="tracker-label">Pago</div>
+      </div>
+    </div>
+
+    <!-- PASO 1 -->
+    <div class="step-section active" id="step1">
+      <div class="section-label">Paso 1 de 3</div>
+      <div class="section-title">Elegí tu plan</div>
+      <div class="section-sub">Precios en USD · 50% al inicio · 50% al finalizar</div>
+
+      <div class="plans">
+        <div class="plan-card" data-plan="presencia" data-price="250" onclick="selectPlan(this)">
+          <div class="plan-select-indicator"></div>
+          <div class="plan-name">Presencia</div>
+          <div class="plan-desc">Para negocios que necesitan existir en internet con lo esencial.</div>
+          <div class="plan-price"><span class="symbol">$</span><span class="amount">250</span><span class="currency">USD</span></div>
+          <div class="plan-adelanto">Adelanto: <strong>$125 USD</strong></div>
+          <ul class="plan-features">
+            <li>Landing page de 1 página</li>
+            <li>Diseño mobile-first</li>
+            <li>Botón WhatsApp y redes</li>
+            <li>Formulario de contacto</li>
+            <li>Google Maps embed</li>
+            <li>SEO básico</li>
+            <li>Hosting gratuito</li>
+          </ul>
+        </div>
+
+        <div class="plan-card featured" data-plan="negocio" data-price="450" onclick="selectPlan(this)">
+          <div class="plan-select-indicator"></div>
+          <div class="plan-badge">⭐ Más elegido</div>
+          <div class="plan-name">Negocio</div>
+          <div class="plan-desc">Web completa con catálogo, SEO real y todo para crecer.</div>
+          <div class="plan-price"><span class="symbol">$</span><span class="amount">450</span><span class="currency">USD</span></div>
+          <div class="plan-adelanto">Adelanto: <strong>$225 USD</strong></div>
+          <ul class="plan-features">
+            <li>Web de 4–6 páginas</li>
+            <li>Diseño premium a medida</li>
+            <li>Catálogo de productos/servicios</li>
+            <li>SEO local completo</li>
+            <li>Google Maps + Search Console</li>
+            <li>WhatsApp multicanal</li>
+            <li>Dominio .com.ar (1 año)</li>
+            <li>2 meses de soporte gratuito</li>
+          </ul>
+        </div>
+
+        <div class="plan-card" data-plan="autoridad" data-price="700" onclick="selectPlan(this)">
+          <div class="plan-select-indicator"></div>
+          <div class="plan-name">Autoridad</div>
+          <div class="plan-desc">Para negocios establecidos que quieren ser los primeros.</div>
+          <div class="plan-price"><span class="symbol">$</span><span class="amount">700</span><span class="currency">USD</span></div>
+          <div class="plan-adelanto">Adelanto: <strong>$350 USD</strong></div>
+          <ul class="plan-features">
+            <li>Todo lo del plan Negocio</li>
+            <li>Hasta 10 páginas</li>
+            <li>Blog o sección de novedades</li>
+            <li>Animaciones y efectos</li>
+            <li>SEO avanzado con palabras clave</li>
+            <li>Reporte de rendimiento mensual</li>
+            <li>Feed de Instagram integrado</li>
+            <li>3 meses de soporte gratuito</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="form-nav">
+        <div></div>
+        <button class="btn-next" id="btn-step1" onclick="goStep(2)" disabled>Siguiente →</button>
+      </div>
+    </div>
+
+    <!-- PASO 2 -->
+    <div class="step-section" id="step2">
+      <div class="section-label">Paso 2 de 3</div>
+      <div class="section-title">¿Agregás algo más?</div>
+      <div class="section-sub">Opcionales — podés agregar ahora o después.</div>
+
+      <div class="extras-grid">
+        <label class="extra-item" onclick="toggleExtra(this)">
+          <input type="checkbox" value="200" data-name="Tienda online básica">
+          <div><div class="extra-name">Tienda online básica</div><div class="extra-price">+ $200 USD</div></div>
+        </label>
+        <label class="extra-item" onclick="toggleExtra(this)">
+          <input type="checkbox" value="150" data-name="Rediseño web existente">
+          <div><div class="extra-name">Rediseño web existente</div><div class="extra-price">+ $150 USD</div></div>
+        </label>
+        <label class="extra-item" onclick="toggleExtra(this)">
+          <input type="checkbox" value="120" data-name="Landing para campaña">
+          <div><div class="extra-name">Landing para campaña</div><div class="extra-price">+ $120 USD</div></div>
+        </label>
+        <label class="extra-item" onclick="toggleExtra(this)">
+          <input type="checkbox" value="60" data-name="Google Business Profile">
+          <div><div class="extra-name">Google Business Profile</div><div class="extra-price">+ $60 USD</div></div>
+        </label>
+      </div>
+
+      <div class="form-nav">
+        <button class="btn-back" onclick="goStep(1)">← Volver</button>
+        <button class="btn-next" onclick="goStep(3)">Siguiente →</button>
+      </div>
+    </div>
+
+    <!-- PASO 3 -->
+    <div class="step-section" id="step3">
+      <div class="section-label">Paso 3 de 3</div>
+      <div class="section-title">Confirmá tu pago</div>
+      <div class="section-sub">50% para arrancar el proyecto.</div>
+
+      <div style="margin-bottom:1.25rem;">
+        <div style="font-size:0.75rem;font-weight:700;color:var(--muted);margin-bottom:0.75rem;text-transform:uppercase;letter-spacing:0.1em;">¿Qué pagás ahora?</div>
+        <div class="payment-type">
+          <div class="type-card selected" id="type-adelanto" onclick="selectType('adelanto')">
+            <div class="type-icon">🚀</div>
+            <div class="type-name">50% Adelanto</div>
+            <div class="type-desc">Para arrancar el proyecto</div>
+            <div class="type-amount" id="type-adelanto-amount">$0 USD</div>
+          </div>
+          <div class="type-card" id="type-total" onclick="selectType('total')">
+            <div class="type-icon">☀️</div>
+            <div class="type-name">Total</div>
+            <div class="type-desc">Pago completo del proyecto</div>
+            <div class="type-amount" id="type-total-amount">$0 USD</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="summary-box">
+        <div class="summary-row">
+          <span class="label">Plan</span>
+          <span class="value" id="sum-plan">—</span>
+        </div>
+        <div class="summary-row" id="sum-extras-row" style="display:none">
+          <span class="label">Extras</span>
+          <span class="value" id="sum-extras">—</span>
+        </div>
+        <div class="summary-row">
+          <span class="label">Subtotal proyecto</span>
+          <span class="value" id="sum-subtotal">$0 USD</span>
+        </div>
+        <div class="summary-row total">
+          <span class="label" id="sum-type-label">Adelanto (50%)</span>
+          <span class="value" id="sum-total">$0 USD</span>
+        </div>
+      </div>
+
+      <div id="bricks-container">
+        <div id="paymentBrick_container"></div>
+        <div class="loading-spinner show" id="bricks-loading"></div>
+      </div>
+
+      <div class="security-note">🔒 Pago seguro con encriptación SSL · Powered by Mercado Pago</div>
+
+      <div class="form-nav">
+        <button class="btn-back" onclick="goStep(2)">← Volver</button>
+        <div></div>
+      </div>
+    </div>
+
+    <!-- SUCCESS -->
+    <div class="success-screen" id="success">
+      <div class="success-icon">🌅</div>
+      <h2>¡Pago recibido!</h2>
+      <p>Gracias por confiar en Páginas inAlbis. En las próximas horas nos ponemos en contacto para arrancar con tu proyecto bajo el sol.</p>
+      <a href="/" style="display:inline-block;background:linear-gradient(135deg,var(--sun2),var(--sun));color:#fff;padding:0.85rem 2rem;border-radius:12px;text-decoration:none;font-weight:700;font-size:0.9rem;box-shadow:0 4px 16px rgba(245,158,11,0.35);">Volver al inicio</a>
+    </div>
+
+  </div>
 </div>
 
-<div class="wrapper">
-
-  <!-- Tracker -->
-  <div class="tracker">
-    <div class="tracker-step">
-      <div class="tracker-dot active" id="t1">1</div>
-      <div class="tracker-label">Plan</div>
-    </div>
-    <div class="tracker-line"></div>
-    <div class="tracker-step">
-      <div class="tracker-dot" id="t2">2</div>
-      <div class="tracker-label">Extras</div>
-    </div>
-    <div class="tracker-line"></div>
-    <div class="tracker-step">
-      <div class="tracker-dot" id="t3">3</div>
-      <div class="tracker-label">Pago</div>
-    </div>
-  </div>
-
-  <!-- PASO 1: Elegir plan -->
-  <div class="step-section active" id="step1">
-    <div class="section-label">Paso 1 de 3</div>
-    <div class="section-title">Elegí tu plan</div>
-    <div class="section-sub">Precios en USD · 50% al inicio · 50% al finalizar</div>
-
-    <div class="plans">
-      <div class="plan-card" data-plan="presencia" data-price="250" onclick="selectPlan(this)">
-        <div class="plan-select-indicator"></div>
-        <div class="plan-name">Presencia</div>
-        <div class="plan-desc">Para negocios que necesitan existir en internet con lo esencial.</div>
-        <div class="plan-price">
-          <span class="symbol">$</span>
-          <span class="amount">250</span>
-          <span class="currency">USD</span>
-        </div>
-        <div class="plan-adelanto">Adelanto: <strong>$125 USD</strong></div>
-        <ul class="plan-features">
-          <li>Landing page de 1 página</li>
-          <li>Diseño mobile-first</li>
-          <li>Botón WhatsApp y redes</li>
-          <li>Formulario de contacto</li>
-          <li>Google Maps embed</li>
-          <li>SEO básico</li>
-          <li>Hosting gratuito</li>
-        </ul>
-      </div>
-
-      <div class="plan-card featured" data-plan="negocio" data-price="450" onclick="selectPlan(this)">
-        <div class="plan-select-indicator"></div>
-        <div class="plan-badge">⭐ Más elegido</div>
-        <div class="plan-name">Negocio</div>
-        <div class="plan-desc">Web completa con catálogo, SEO real y todo lo que necesita un negocio que quiere crecer.</div>
-        <div class="plan-price">
-          <span class="symbol">$</span>
-          <span class="amount">450</span>
-          <span class="currency">USD</span>
-        </div>
-        <div class="plan-adelanto">Adelanto: <strong>$225 USD</strong></div>
-        <ul class="plan-features">
-          <li>Web de 4–6 páginas</li>
-          <li>Diseño premium a medida</li>
-          <li>Catálogo de productos/servicios</li>
-          <li>SEO local completo</li>
-          <li>Google Maps + Search Console</li>
-          <li>WhatsApp multicanal</li>
-          <li>Dominio .com.ar (1 año)</li>
-          <li>2 meses de soporte gratuito</li>
-        </ul>
-      </div>
-
-      <div class="plan-card" data-plan="autoridad" data-price="700" onclick="selectPlan(this)">
-        <div class="plan-select-indicator"></div>
-        <div class="plan-name">Autoridad</div>
-        <div class="plan-desc">Para negocios establecidos que quieren ser los primeros en su zona.</div>
-        <div class="plan-price">
-          <span class="symbol">$</span>
-          <span class="amount">700</span>
-          <span class="currency">USD</span>
-        </div>
-        <div class="plan-adelanto">Adelanto: <strong>$350 USD</strong></div>
-        <ul class="plan-features">
-          <li>Todo lo del plan Negocio</li>
-          <li>Hasta 10 páginas</li>
-          <li>Blog o sección de novedades</li>
-          <li>Animaciones y efectos</li>
-          <li>SEO avanzado con palabras clave</li>
-          <li>Reporte de rendimiento mensual</li>
-          <li>Feed de Instagram integrado</li>
-          <li>3 meses de soporte gratuito</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="form-nav">
-      <div></div>
-      <button class="btn-next" id="btn-step1" onclick="goStep(2)" disabled>Siguiente →</button>
-    </div>
-  </div>
-
-  <!-- PASO 2: Extras -->
-  <div class="step-section" id="step2">
-    <div class="section-label">Paso 2 de 3</div>
-    <div class="section-title">¿Agregás algo más?</div>
-    <div class="section-sub">Opcionales — podés agregar ahora o después.</div>
-
-    <div class="extras-grid">
-      <label class="extra-item" onclick="toggleExtra(this)">
-        <input type="checkbox" value="200" data-name="Tienda online básica">
-        <div class="extra-info">
-          <div class="extra-name">Tienda online básica</div>
-          <div class="extra-price">+ $200 USD</div>
-        </div>
-      </label>
-      <label class="extra-item" onclick="toggleExtra(this)">
-        <input type="checkbox" value="150" data-name="Rediseño web existente">
-        <div class="extra-info">
-          <div class="extra-name">Rediseño web existente</div>
-          <div class="extra-price">+ $150 USD</div>
-        </div>
-      </label>
-      <label class="extra-item" onclick="toggleExtra(this)">
-        <input type="checkbox" value="120" data-name="Landing para campaña">
-        <div class="extra-info">
-          <div class="extra-name">Landing para campaña</div>
-          <div class="extra-price">+ $120 USD</div>
-        </div>
-      </label>
-      <label class="extra-item" onclick="toggleExtra(this)">
-        <input type="checkbox" value="60" data-name="Google Business Profile">
-        <div class="extra-info">
-          <div class="extra-name">Google Business Profile</div>
-          <div class="extra-price">+ $60 USD</div>
-        </div>
-      </label>
-    </div>
-
-    <div class="form-nav">
-      <button class="btn-back" onclick="goStep(1)">← Volver</button>
-      <button class="btn-next" onclick="goStep(3)">Siguiente →</button>
-    </div>
-  </div>
-
-  <!-- PASO 3: Pago -->
-  <div class="step-section" id="step3">
-    <div class="section-label">Paso 3 de 3</div>
-    <div class="section-title">Confirmá tu pago</div>
-    <div class="section-sub">50% para arrancar el proyecto.</div>
-
-    <!-- Tipo de pago -->
-    <div style="margin-bottom:1.25rem;">
-      <div style="font-size:0.8rem;font-weight:700;color:var(--text2);margin-bottom:0.75rem;text-transform:uppercase;letter-spacing:0.08em;">¿Qué pagás ahora?</div>
-      <div class="payment-type">
-        <div class="type-card selected" id="type-adelanto" onclick="selectType('adelanto')">
-          <div class="type-icon">🚀</div>
-          <div class="type-name">50% Adelanto</div>
-          <div class="type-desc">Para arrancar el proyecto</div>
-          <div class="type-amount" id="type-adelanto-amount">$0 USD</div>
-        </div>
-        <div class="type-card" id="type-total" onclick="selectType('total')">
-          <div class="type-icon">✅</div>
-          <div class="type-name">Total</div>
-          <div class="type-desc">Pago completo del proyecto</div>
-          <div class="type-amount" id="type-total-amount">$0 USD</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Resumen -->
-    <div class="summary-box">
-      <div class="summary-row">
-        <span class="label">Plan</span>
-        <span class="value" id="sum-plan">—</span>
-      </div>
-      <div class="summary-row" id="sum-extras-row" style="display:none">
-        <span class="label">Extras</span>
-        <span class="value" id="sum-extras">—</span>
-      </div>
-      <div class="summary-row">
-        <span class="label">Subtotal proyecto</span>
-        <span class="value" id="sum-subtotal">$0 USD</span>
-      </div>
-      <div class="summary-row total">
-        <span class="label" id="sum-type-label">Adelanto (50%)</span>
-        <span class="value" id="sum-total">$0 USD</span>
-      </div>
-    </div>
-
-    <!-- Bricks -->
-    <div id="bricks-container" class="show">
-      <div id="paymentBrick_container"></div>
-      <div class="loading-spinner show" id="bricks-loading"></div>
-    </div>
-
-    <div class="security-note">
-      🔒 Pago seguro con encriptación SSL · Powered by Mercado Pago
-    </div>
-
-    <div class="form-nav">
-      <button class="btn-back" onclick="goStep(2)">← Volver</button>
-      <div></div>
-    </div>
-  </div>
-
-  <!-- SUCCESS -->
-  <div class="success-screen" id="success">
-    <div class="success-icon">🎉</div>
-    <h2>¡Pago recibido!</h2>
-    <p>Gracias por confiar en Páginas inAlbis. En las próximas horas nos ponemos en contacto para arrancar con tu proyecto.</p>
-    <a href="/" style="display:inline-block;background:var(--azure);color:#fff;padding:0.8rem 1.8rem;border-radius:10px;text-decoration:none;font-weight:700;font-size:0.9rem;">Volver al inicio</a>
-  </div>
-
-</div><!-- /wrapper -->
-
-<!-- Mercado Pago SDK -->
 <script src="https://sdk.mercadopago.com/js/v2"></script>
 <script>
-  // ── Config ──────────────────────────────────────────────────
   const MP_PUBLIC_KEY = 'TEST-0439866b-9b0a-44b3-809b-32fe6b3cffc5';
   const mp = new MercadoPago(MP_PUBLIC_KEY, { locale: 'es-AR' });
 
-  // ── Estado ──────────────────────────────────────────────────
   let selectedPlan  = null;
   let selectedPrice = 0;
   let extrasTotal   = 0;
-  let paymentType   = 'adelanto'; // 'adelanto' | 'total'
-  let bricksBuilder = null;
+  let paymentType   = 'adelanto';
   let currentStep   = 1;
 
-  // ── Seleccionar plan ─────────────────────────────────────────
   function selectPlan(card) {
     document.querySelectorAll('.plan-card').forEach(c => c.classList.remove('selected'));
     card.classList.add('selected');
@@ -740,7 +639,6 @@
     updateSummary();
   }
 
-  // ── Togglear extras ──────────────────────────────────────────
   function toggleExtra(label) {
     label.classList.toggle('selected');
     const cb = label.querySelector('input');
@@ -756,33 +654,29 @@
     updateSummary();
   }
 
-  // ── Tipo de pago ─────────────────────────────────────────────
   function selectType(type) {
     paymentType = type;
     document.getElementById('type-adelanto').classList.toggle('selected', type === 'adelanto');
     document.getElementById('type-total').classList.toggle('selected', type === 'total');
+    document.getElementById('sum-type-label').textContent = type === 'adelanto' ? 'Adelanto (50%)' : 'Total proyecto';
     updateSummary();
-    if (bricksBuilder) { bricksBuilder.unmount(); bricksBuilder = null; }
+    document.getElementById('paymentBrick_container').innerHTML = '';
+    document.getElementById('bricks-loading').classList.add('show');
     initBricks();
   }
 
-  // ── Resumen ───────────────────────────────────────────────────
   function updateSummary() {
     const subtotal = selectedPrice + extrasTotal;
     const toPay    = paymentType === 'adelanto' ? Math.ceil(subtotal * 0.5) : subtotal;
-    const planName = selectedPlan
-      ? selectedPlan.charAt(0).toUpperCase() + selectedPlan.slice(1)
-      : '—';
+    const planName = selectedPlan ? selectedPlan.charAt(0).toUpperCase() + selectedPlan.slice(1) : '—';
 
-    document.getElementById('sum-plan').textContent      = planName + ' — $' + selectedPrice + ' USD';
-    document.getElementById('sum-subtotal').textContent  = '$' + subtotal + ' USD';
-    document.getElementById('sum-total').textContent     = '$' + toPay + ' USD';
+    document.getElementById('sum-plan').textContent     = planName + ' — $' + selectedPrice + ' USD';
+    document.getElementById('sum-subtotal').textContent = '$' + subtotal + ' USD';
+    document.getElementById('sum-total').textContent    = '$' + toPay + ' USD';
     document.getElementById('type-adelanto-amount').textContent = '$' + Math.ceil(subtotal * 0.5) + ' USD';
     document.getElementById('type-total-amount').textContent    = '$' + subtotal + ' USD';
-    document.getElementById('sum-type-label').textContent = paymentType === 'adelanto' ? 'Adelanto (50%)' : 'Total proyecto';
 
-    const extraNames = Array.from(document.querySelectorAll('.extra-item.selected input'))
-      .map(cb => cb.dataset.name).join(', ');
+    const extraNames = Array.from(document.querySelectorAll('.extra-item.selected input')).map(cb => cb.dataset.name).join(', ');
     if (extrasTotal > 0) {
       document.getElementById('sum-extras-row').style.display = '';
       document.getElementById('sum-extras').textContent = extraNames + ' (+$' + extrasTotal + ' USD)';
@@ -791,28 +685,20 @@
     }
   }
 
-  // ── Navegación de pasos ───────────────────────────────────────
   function goStep(n) {
     document.querySelectorAll('.step-section').forEach(s => s.classList.remove('active'));
     document.getElementById('step' + n).classList.add('active');
-
     for (let i = 1; i <= 3; i++) {
       const dot = document.getElementById('t' + i);
       dot.classList.remove('active', 'done');
       if (i < n)  dot.classList.add('done');
       if (i === n) dot.classList.add('active');
     }
-
     currentStep = n;
     window.scrollTo({ top: 0, behavior: 'smooth' });
-
-    if (n === 3) {
-      updateSummary();
-      setTimeout(initBricks, 100);
-    }
+    if (n === 3) { updateSummary(); setTimeout(initBricks, 150); }
   }
 
-  // ── Mercado Pago Bricks ───────────────────────────────────────
   async function initBricks() {
     const subtotal = selectedPrice + extrasTotal;
     const toPay    = paymentType === 'adelanto' ? Math.ceil(subtotal * 0.5) : subtotal;
@@ -821,74 +707,56 @@
     document.getElementById('paymentBrick_container').innerHTML = '';
 
     const settings = {
-      initialization: {
-        amount: toPay,
-        payer: { email: '' },
-      },
+      initialization: { amount: toPay, payer: { email: '' } },
       customization: {
-        paymentMethods: {
-          creditCard: 'all',
-          debitCard:  'all',
-          ticket:     'all',
-          bankTransfer: 'all',
-          atm: 'all',
-          maxInstallments: 12,
-        },
+        paymentMethods: { creditCard:'all', debitCard:'all', ticket:'all', bankTransfer:'all', maxInstallments:12 },
         visual: {
           style: {
             theme: 'flat',
             customVariables: {
-              textPrimaryColor:    '#0f2942',
-              textSecondaryColor:  '#3a6080',
-              inputBackgroundColor:'#f0f8ff',
+              textPrimaryColor:    '#451a03',
+              textSecondaryColor:  '#92400e',
+              inputBackgroundColor:'#fffbeb',
               formBackgroundColor: '#ffffff',
-              baseColor:           '#1a8fd1',
+              baseColor:           '#f59e0b',
             }
           }
         }
       },
       callbacks: {
-        onReady: () => {
-          document.getElementById('bricks-loading').classList.remove('show');
-        },
-        onSubmit: async ({ selectedPaymentMethod, formData }) => {
-          // Enviar al backend para crear el pago
-          const res = await fetch('/api/create-payment', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              formData,
-              plan:      selectedPlan,
-              extras:    extrasTotal,
-              totalPaid: toPay,
-              type:      paymentType,
-            }),
-          });
-          const result = await res.json();
-          if (result.success) {
-            document.querySelectorAll('.step-section').forEach(s => s.classList.remove('active'));
-            document.getElementById('success').classList.add('show');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-          } else {
-            alert('Hubo un error procesando el pago. Intentá de nuevo.');
+        onReady: () => { document.getElementById('bricks-loading').classList.remove('show'); },
+        onSubmit: async ({ formData }) => {
+          try {
+            const res = await fetch('/api/create-payment', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ formData, plan: selectedPlan, extras: extrasTotal, totalPaid: toPay, type: paymentType }),
+            });
+            const result = await res.json();
+            if (result.success) {
+              document.querySelectorAll('.step-section').forEach(s => s.classList.remove('active'));
+              document.getElementById('success').classList.add('show');
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else {
+              alert('Hubo un error procesando el pago. Intentá de nuevo.');
+            }
+          } catch(e) {
+            alert('Error de conexión. Intentá de nuevo.');
           }
         },
-        onError: (error) => {
-          console.error('Bricks error:', error);
-        },
+        onError: (error) => { console.error('Bricks error:', error); },
       },
     };
 
     try {
-      const bricksBuilder = mp.bricks();
-      await bricksBuilder.create('payment', 'paymentBrick_container', settings);
-    } catch (e) {
+      const builder = mp.bricks();
+      await builder.create('payment', 'paymentBrick_container', settings);
+    } catch(e) {
       console.error('Error iniciando Bricks:', e);
       document.getElementById('bricks-loading').classList.remove('show');
     }
   }
 
-  // Init
   updateSummary();
 </script>
 </body>
