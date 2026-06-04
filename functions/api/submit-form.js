@@ -31,19 +31,45 @@ export async function onRequest(context) {
   if (request.method === "OPTIONS") return new Response(null, { status: 204, headers: CORS });
   if (request.method !== "POST") return json({ error: "Method not allowed" }, 405);
 
-  let data;
-  try { data = await request.json(); }
+  // ── Parsear FormData (el HTML envía multipart, no JSON) ──
+  let formData;
+  try { formData = await request.formData(); }
   catch { return json({ success: false, message: "Datos inválidos." }, 400); }
 
-  // ── Validación básica ──
-  const required = ["business_name", "email", "phone"];
-  for (const f of required) {
-    if (!data[f]?.trim()) {
-      return json({ success: false, message: `El campo ${f} es obligatorio.` }, 400);
-    }
+  const get    = (k) => (formData.get(k) || "").toString().trim();
+  const getAll = (k) => formData.getAll(k).map(v => v.toString().trim()).filter(Boolean);
+
+  const data = {
+    business_name:     get("business_name"),
+    business_type:     get("business_type"),
+    phone:             get("phone"),
+    email:             get("email"),
+    description:       get("description"),
+    address:           get("address"),
+    hours:             get("hours"),
+    instagram:         get("instagram"),
+    other_social:      get("other_social"),
+    services:          get("services"),
+    design_references: get("design_references"),
+    brand_colors:      get("brand_colors"),
+    about_us:          get("about_us"),
+    main_goals:        getAll("main_goals[]"),
+    special_functions: getAll("special_functions[]"),
+    payment_methods:   get("payment_methods"),
+    target_audience:   get("target_audience"),
+    competitors:       get("competitors"),
+    domain_hosting:    get("domain_hosting"),
+    approver:          get("approver"),
+    deadline:          get("deadline"),
+    extra_notes:       get("extra_notes"),
+  };
+
+  // ── Validación básica (solo campos realmente obligatorios en el HTML) ──
+  if (!data.business_name || !data.business_type || !data.phone) {
+    return json({ success: false, message: "Faltan campos obligatorios (negocio, rubro o teléfono)." }, 400);
   }
 
-  const clientName = data.business_name.trim();
+  const clientName = data.business_name;
   const clientSlug = slugify(clientName);
   const now        = new Date().toISOString();
 
@@ -57,7 +83,7 @@ export async function onRequest(context) {
     const projectId = result.meta?.last_row_id || 0;
 
     // ── 2. WhatsApp ───────────────────────────────────────────
-    const goals = Array.isArray(data.main_goals) ? data.main_goals.join(", ") : "—";
+    const goals = data.main_goals.length ? data.main_goals.join(", ") : "—";
     const waMsg = encodeURIComponent(
       `🔔 *Nuevo cliente — in Albis*\n\n` +
       `👤 *Negocio:* ${clientName}\n` +
@@ -71,6 +97,11 @@ export async function onRequest(context) {
 
     // ── 3. Email al admin (Brevo) ─────────────────────────────
     await sendAdminEmail(data, projectId);
+
+    // ── 4. Email de bienvenida al cliente ─────────────────────
+    if (data.email) {
+      await sendClientEmail(data);
+    }
 
     return json({
       success: true,
@@ -88,8 +119,8 @@ export async function onRequest(context) {
 // EMAIL AL ADMIN
 // ══════════════════════════════════════════════
 async function sendAdminEmail(data, projectId) {
-  const goals     = Array.isArray(data.main_goals)        ? data.main_goals.join(", ")        : "—";
-  const functions = Array.isArray(data.special_functions) ? data.special_functions.join(", ") : "—";
+  const goals     = Array.isArray(data.main_goals)        ? data.main_goals.join(", ")        : (data.main_goals || "—");
+  const functions = Array.isArray(data.special_functions) ? data.special_functions.join(", ") : (data.special_functions || "—");
   const now       = new Date().toLocaleString("es-AR", { timeZone: "America/Argentina/Buenos_Aires" });
 
   const html = `<!DOCTYPE html>
@@ -188,6 +219,73 @@ async function sendAdminEmail(data, projectId) {
   if (!res.ok) {
     const err = await res.text();
     console.error("Brevo error:", res.status, err);
+  }
+}
+
+// ══════════════════════════════════════════════
+// EMAIL AL CLIENTE (BIENVENIDA)
+// ══════════════════════════════════════════════
+async function sendClientEmail(data) {
+  const html = `<!DOCTYPE html>
+<html lang="es">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
+<body style="margin:0;padding:0;background:#f3f4f6;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;">
+<table width="100%" cellpadding="0" cellspacing="0" style="background:#f3f4f6;padding:32px 16px;">
+<tr><td align="center">
+<table width="560" cellpadding="0" cellspacing="0" style="background:#fff;border-radius:8px;overflow:hidden;border:1px solid #e5e7eb;max-width:100%;">
+
+  <tr>
+    <td style="background:#0f172a;padding:28px;text-align:center;">
+      <p style="margin:0 0 6px;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#64748b;">in Albis Pages</p>
+      <h1 style="margin:0;font-size:22px;font-weight:700;color:#f8fafc;">¡Recibimos tu información! 🎉</h1>
+    </td>
+  </tr>
+
+  <tr><td style="padding:28px;">
+    <p style="margin:0 0 16px;font-size:15px;color:#374151;line-height:1.7;">
+      Hola, gracias por completar el formulario. Recibimos toda la información sobre <strong>${data.business_name}</strong> y ya estamos revisando los detalles con atención.
+    </p>
+    <p style="margin:0 0 20px;font-size:15px;color:#374151;line-height:1.7;">
+      En las próximas <strong>24 a 48 horas</strong> nos ponemos en contacto con vos para coordinar los próximos pasos.
+    </p>
+    <div style="background:#f8fafc;border-left:3px solid #0f172a;border-radius:0 8px 8px 0;padding:16px 20px;margin-bottom:20px;">
+      <p style="margin:0 0 8px;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#64748b;">¿Qué sigue?</p>
+      <ul style="margin:0;padding:0 0 0 16px;color:#374151;font-size:14px;line-height:1.9;">
+        <li>Revisamos tu información en detalle</li>
+        <li>Preparamos una propuesta personalizada</li>
+        <li>Te contactamos para agendar una reunión</li>
+      </ul>
+    </div>
+    <p style="margin:0;font-size:13px;color:#6b7280;line-height:1.6;">
+      Si tenés alguna duda antes de que nos comuniquemos, podés responder este email o escribirnos directamente.
+    </p>
+  </td></tr>
+
+  <tr><td style="background:#f9fafb;border-top:1px solid #e5e7eb;padding:16px 28px;text-align:center;">
+    <p style="margin:0;font-size:11px;color:#9ca3af;">in Albis Pages · inalbis.pages.dev · <a href="mailto:${ADMIN_EMAIL}" style="color:#9ca3af;">${ADMIN_EMAIL}</a></p>
+  </td></tr>
+
+</table>
+</td></tr></table>
+</body></html>`;
+
+  const res = await fetch("https://api.brevo.com/v3/smtp/email", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "api-key": BREVO_KEY,
+    },
+    body: JSON.stringify({
+      sender:      { name: FROM_NAME, email: FROM_EMAIL },
+      to:          [{ email: data.email, name: data.business_name }],
+      subject:     `¡Recibimos tu información, ${data.business_name}!`,
+      htmlContent: html,
+    }),
+  });
+
+  if (!res.ok) {
+    const err = await res.text();
+    console.error("Brevo client email error:", res.status, err);
   }
 }
 
