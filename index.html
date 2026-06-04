@@ -429,7 +429,7 @@ footer{
     display:block;
     margin:auto;
     position:absolute;
-    bottom:120px;
+    bottom:60px;
     right:-30px;
     transition:all .3s ease;
     animation:float 4s ease-in-out infinite;
@@ -1006,7 +1006,8 @@ document.getElementById("messages");
 
 const sendBtn =
 document.getElementById("send-btn");
-
+messages.innerHTML =
+`<p><b>Albi:</b> 👋 Hola, soy Albi. Contame sobre tu negocio y te ayudaré a encontrar la mejor web para vos.</p>`;
 input.addEventListener("input", () => {
 
     avatar.src =
@@ -1087,11 +1088,21 @@ sendBtn.addEventListener("click",()=>{
 
     messages.innerHTML +=
     `<p><b>Albi:</b> ${respuesta}</p>`;
-
+    messages.scrollTop = messages.scrollHeight;
     avatar.src =
     "/avatars/happy.png";
 
 },1500);
+
+});
+
+  input.addEventListener("keypress",(e)=>{
+
+    if(e.key === "Enter"){
+
+        sendBtn.click();
+
+    }
 
 });
 /* ── CAROUSEL SVGs ── */
