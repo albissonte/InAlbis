@@ -18,12 +18,28 @@ export async function onRequestPost(context) {
       return new Response(JSON.stringify({ success: false, message: 'Datos incompletos.' }), { status: 400, headers });
     }
 
+    // ── Cotización USD → ARS en tiempo real (dolarapi.com) ───
+    let usdToArs = 1200; // fallback si la API falla
+    try {
+      const dolarRes = await fetch('https://dolarapi.com/v1/dolares/blue', {
+        headers: { 'Accept': 'application/json' }
+      });
+      if (dolarRes.ok) {
+        const dolarData = await dolarRes.json();
+        usdToArs = dolarData.venta || dolarData.compra || 1200;
+      }
+    } catch (e) {
+      console.warn('No se pudo obtener cotización, usando fallback:', usdToArs);
+    }
+
+    const totalPaidARS = Math.round(totalPaid * usdToArs);
+
     // ── Construir el pago para MP ────────────────────────────
     const planNames = { presencia: 'Plan Presencia', negocio: 'Plan Negocio', autoridad: 'Plan Autoridad' };
     const description = `${planNames[plan] || plan}${type === 'adelanto' ? ' — Adelanto 50%' : ' — Pago total'} · Páginas inAlbis`;
 
     const paymentPayload = {
-      transaction_amount: totalPaid,
+      transaction_amount: totalPaidARS,
       description,
       payment_method_id:  formData.payment_method_id,
       payer: {
@@ -33,16 +49,19 @@ export async function onRequestPost(context) {
       metadata: {
         plan,
         extras,
-        payment_type: type,
-        source: 'inalbis_pages',
+        payment_type:  type,
+        usd_amount:    totalPaid,
+        ars_amount:    totalPaidARS,
+        usd_to_ars:    usdToArs,
+        source:        'inalbis_pages',
       },
     };
 
     // Si es tarjeta, agregar token
     if (formData.token) {
-      paymentPayload.token           = formData.token;
-      paymentPayload.installments    = formData.installments || 1;
-      paymentPayload.issuer_id       = formData.issuer_id;
+      paymentPayload.token        = formData.token;
+      paymentPayload.installments = formData.installments || 1;
+      paymentPayload.issuer_id    = formData.issuer_id;
     }
 
     // ── Llamar a la API de MP ────────────────────────────────
@@ -71,7 +90,9 @@ export async function onRequestPost(context) {
           mp_payment_id TEXT,
           plan TEXT,
           extras INTEGER,
-          amount INTEGER,
+          amount_usd INTEGER,
+          amount_ars INTEGER,
+          usd_to_ars REAL,
           payment_type TEXT,
           status TEXT,
           payer_email TEXT,
@@ -80,13 +101,15 @@ export async function onRequestPost(context) {
       `).run();
 
       await env.DB.prepare(`
-        INSERT INTO payments (mp_payment_id, plan, extras, amount, payment_type, status, payer_email)
-        VALUES (?, ?, ?, ?, ?, ?, ?)
+        INSERT INTO payments (mp_payment_id, plan, extras, amount_usd, amount_ars, usd_to_ars, payment_type, status, payer_email)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
       `).bind(
         String(mpData.id),
         plan,
         extras || 0,
         totalPaid,
+        totalPaidARS,
+        usdToArs,
         type,
         mpData.status,
         formData.payer?.email || ''
