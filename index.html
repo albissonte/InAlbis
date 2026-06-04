@@ -429,18 +429,18 @@ footer{
     display:block;
     margin:auto;
     position:absolute;
-    bottom:30px;
+    bottom:35px;
     right:-30px;
     transition:all .3s ease;
     animation:float 4s ease-in-out infinite;
-    z-index:0  }
+    z-index:1 }
 #chat-box{
     position: relative;
     width: 320px;
 
     background:rgba(10,30,60,.20);
 
-    backdrop-filter:blur(10px);
+    backdrop-filter:blur(5px);
     -webkit-backdrop-filter:blur(10px);
 
     border:1px solid rgba(80,200,255,.45);
@@ -450,8 +450,7 @@ footer{
         inset 0 0 25px rgba(0,200,255,.08);
 
     border-radius:24px;
-}
-  #chat-box::before{
+  z-index28pxetion  #chat-box::before{
     content:"";
 
     position:absolute;
@@ -543,7 +542,7 @@ footer{
 }
 /* WA BUTTON */
 .wa{
-  position:fixed;bottom:28px;right:28px;z-index:200;
+  position:fixed;bottom:28px;left:28px;z-index:200;
   width:54px;height:54px;background:linear-gradient(135deg,#00dde281,#00d5677d);border-radius:50%;
   display:flex;align-items:center;justify-content:center;
   box-shadow:0 4px 20px rgba(56,248,203,0.45);text-decoration:none;
