@@ -767,17 +767,24 @@ body::after {
 .tabs {
   background: var(--surface); border-bottom: 1px solid var(--border);
   padding: 0 24px; display: flex; gap: 4px;
-  align-items: center; justify-content: space-between;
+  align-items: center;
   backdrop-filter: blur(12px) saturate(1.3);
+  overflow-x: auto; overflow-y: hidden;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
 }
+.tabs::-webkit-scrollbar { display: none; }
 .tab-btn {
   padding: 14px 18px; border: none; background: none;
   font-family: 'Share Tech Mono', monospace;
   font-size: .8rem; color: var(--muted); cursor: pointer;
   border-bottom: 2px solid transparent; margin-bottom: -1px; transition: .2s;
-  letter-spacing: 1px;
+  letter-spacing: 1px; white-space: nowrap; flex-shrink: 0;
 }
 .tab-btn:after {
+  content: '';
+}
+.tab-btn.active:after {
   content: '_';
   animation: blink 1.4s step-end infinite;
   color: var(--cyan); font-family: 'Share Tech Mono', monospace;
