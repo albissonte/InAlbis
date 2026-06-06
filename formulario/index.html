@@ -40,12 +40,12 @@
     /* ── LOGO FLOTANTE ── */
     .logo-pin {
       position: fixed;
-      top: 10px; left: 10px;
+      top: 14px; left: 14px;
       z-index: 300;
       display: block;
     }
     .logo-pin img {
-      height: 80px;
+      height: 48px;
       width: auto;
       display: block;
       filter: drop-shadow(0 2px 10px rgba(26,143,209,0.35)) drop-shadow(0 1px 3px rgba(255,255,255,0.8));
@@ -352,6 +352,68 @@
     .success-screen h2 { font-family: 'Playfair Display', serif; font-size: 2rem; margin-bottom: 0.75rem; color: var(--dark); }
     .success-screen p { color: var(--text2); font-size: 1rem; line-height: 1.65; max-width: 440px; margin: 0 auto; }
 
+    /* ── ÉXITO: botones y resumen ── */
+    .success-actions {
+      display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap;
+      margin: 1.75rem auto 0; max-width: 440px;
+    }
+    .btn-review, .btn-home {
+      display: inline-flex; align-items: center; gap: 0.45rem;
+      padding: 0.75rem 1.4rem; border-radius: 50px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.88rem; font-weight: 700; cursor: pointer;
+      border: none; transition: transform 0.2s, box-shadow 0.2s;
+      text-decoration: none;
+    }
+    .btn-review:hover, .btn-home:hover { transform: translateY(-2px); }
+    .btn-review {
+      background: linear-gradient(135deg, #0f2942, #1a8fd1);
+      color: #f0f8ff;
+      box-shadow: 0 4px 16px rgba(26,143,209,0.3);
+    }
+    .btn-home {
+      background: rgba(255,255,255,0.9);
+      color: var(--azure2);
+      border: 1.5px solid rgba(26,143,209,0.25);
+      box-shadow: 0 4px 12px rgba(26,143,209,0.1);
+    }
+    .review-panel {
+      display: none; text-align: left;
+      max-width: 600px; margin: 2rem auto 0;
+      background: rgba(255,255,255,0.88);
+      border: 1.5px solid rgba(26,143,209,0.18);
+      border-radius: 20px; overflow: hidden;
+      box-shadow: 0 8px 32px rgba(26,143,209,0.09);
+      animation: fadeIn 0.3s ease;
+    }
+    .review-panel.open { display: block; }
+    .review-panel-header {
+      background: linear-gradient(90deg, #0f2942, #1a3a5c);
+      padding: 0.85rem 1.4rem;
+      font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase; color: #7dd3f7;
+    }
+    .review-panel-body { padding: 1.4rem; }
+    .review-group { margin-bottom: 1.2rem; }
+    .review-group:last-child { margin-bottom: 0; }
+    .review-group-title {
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--azure);
+      margin-bottom: 0.6rem; padding-bottom: 0.4rem;
+      border-bottom: 1px solid rgba(26,143,209,0.12);
+    }
+    .review-row {
+      display: grid; grid-template-columns: 130px 1fr;
+      gap: 0.25rem 0.75rem; margin-bottom: 0.5rem;
+      font-size: 0.86rem;
+    }
+    .review-label { color: var(--muted); font-weight: 600; }
+    .review-value { color: var(--dark); line-height: 1.5; word-break: break-word; }
+    @media (max-width: 480px) {
+      .review-row { grid-template-columns: 1fr; }
+      .review-label { margin-bottom: 0; color: var(--azure2); font-size: 0.75rem; }
+    }
+
     /* ── LOADING ── */
     .loading-overlay {
       display: none; position: fixed; inset: 0; z-index: 9999;
@@ -625,6 +687,17 @@ footer{
     <span class="success-icon">🎉</span>
     <h2>¡Recibimos todo!</h2>
     <p>Gracias por completar el formulario. Vamos a revisar tu información y nos ponemos en contacto en las próximas 24–48 horas para arrancar con tu proyecto.</p>
+    <div class="success-actions">
+      <button class="btn-review" onclick="toggleReview()">
+        <span id="review-btn-icon">📋</span> Revisar información enviada
+      </button>
+      <a class="btn-home" href="https://inalbis.pages.dev">← Volver al inicio</a>
+    </div>
+    <!-- Panel de resumen — se puebla con JS al enviar -->
+    <div class="review-panel" id="review-panel">
+      <div class="review-panel-header">Información enviada</div>
+      <div class="review-panel-body" id="review-panel-body"></div>
+    </div>
   </div>
 </div>
 
@@ -767,19 +840,222 @@ document.querySelectorAll('.dropzone').forEach(zone => {
   zone.addEventListener('drop', () => zone.classList.remove('drag-over'));
 });
 
+/* ── GENERADOR DE PROMPT ── */
+function buildPrompt(fd) {
+  const get = k => (fd.get(k) || '').trim();
+  const getChecks = name => {
+    const boxes = document.querySelectorAll(`input[name="${name}"]:checked`);
+    return Array.from(boxes).map(b => b.value).join(', ') || 'No especificado';
+  };
+  const b = get('business_name') || 'Sin nombre';
+  const now = new Date();
+  const dateStr = now.toLocaleDateString('es-AR', { month: 'long', year: 'numeric' });
+  const pad = (s, n) => s.substring(0, n).padEnd(n);
+
+  return `╔══════════════════════════════════════════════════════════════════════╗
+║  PROMPT PARA CLAUDE — PÁGINA DEMO PARA ${pad(b.toUpperCase(), 29)}║
+║  Generado por inAlbis Pages · ${pad(dateStr, 38)}║
+╚══════════════════════════════════════════════════════════════════════╝
+
+Copiá todo el texto debajo de la línea y pegalo en Claude.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Necesito que construyas una página web de demostración profesional en
+un único archivo HTML para un cliente real. Seguí estas especificaciones
+al pie de la letra.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+1. DATOS DEL CLIENTE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+- Nombre del negocio : ${b}
+- Rubro              : ${get('business_type') || 'No especificado'}
+- Ubicación          : ${get('address') || 'No especificado'}
+- Contacto           : ${get('email') || 'No especificado'} · ${get('phone') || 'No especificado'}
+- Horarios           : ${get('hours') || 'No especificado'}
+- Instagram          : ${get('instagram') || 'No especificado'}
+- Otras redes        : ${get('other_social') || 'No especificado'}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2. DESCRIPCIÓN DEL NEGOCIO
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+${get('description') || 'No especificado'}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+3. SERVICIOS / PRODUCTOS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+${get('services') || 'No especificado'}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+4. OBJETIVOS DEL NEGOCIO
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  - Objetivos principales : ${getChecks('main_goals[]')}
+  - Funciones especiales  : ${getChecks('special_functions[]')}
+  - Público objetivo      : ${get('target_audience') || 'No especificado'}
+  - Métodos de pago       : ${get('payment_methods') || 'No especificado'}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+5. DISEÑO Y ESTILO VISUAL
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+- Colores de la marca : ${get('brand_colors') || 'Acorde al rubro'}
+- Estilo general      : moderno, profesional, mobile-first
+- Tipografía          : Google Fonts — 1 display + 1 cuerpo acorde al rubro
+- Referencias         : ${get('design_references') || 'No especificado'}
+- Imágenes            : placeholders de https://picsum.photos con seeds temáticos
+
+Logo del cliente  : ${document.querySelector('input[name="logo"]')?.files?.length > 0 ? 'Sí (adjunto)' : 'No (usar texto como logo)'}
+Fotos del negocio : ${document.querySelector('input[name="photos[]"]')?.files?.length > 0 ? `Sí (${document.querySelector('input[name="photos[]"]').files.length} archivos)` : 'No (usar placeholders)'}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+6. SECCIÓN "SOBRE NOSOTROS"
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+${get('about_us') || 'No especificado — inventar copy creíble para el rubro'}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+7. COMPETENCIA / REFERENTES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+${get('competitors') || 'No especificado'}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+8. DOMINIO Y HOSTING ACTUAL
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+${get('domain_hosting') || 'No especificado'}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+9. REQUISITOS TÉCNICOS (siempre aplicar)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+- Un solo archivo HTML (CSS y JS inline)
+- Sin frameworks externos
+- Google Fonts via @import
+- Responsive: 375px / 768px / 1200px
+- Animaciones CSS sutiles con IntersectionObserver
+- Navbar sticky, botón WhatsApp flotante, Google Maps embed, formulario de contacto
+- Footer completo con datos del negocio
+- Meta tags: title, description, og:title, og:description, og:image, viewport
+- Código limpio, comentado por secciones
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+10. CONTENIDO DE EJEMPLO
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+- NO usar lorem ipsum
+- Inventar: slogan, 3-6 items de menú/catálogo con precios ficticios
+- 2 testimonios de clientes ficticios con nombre y barrio
+- Copy específico y creíble para el rubro
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+11. NOTAS ADICIONALES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+${get('extra_notes') || 'Ninguna'}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ENTREGABLE: demo_${b.toLowerCase().replace(/\s+/g,'_')}.html
+Aprobador : ${get('approver') || 'No especificado'}
+Deadline  : ${get('deadline') || 'No especificado'}
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Generado automáticamente por el formulario de onboarding · inAlbis Pages`;
+}
+
+/* ── POBLAR PANEL DE REVISIÓN ── */
+function buildReviewPanel(fd) {
+  const get = k => fd.get(k) || '—';
+  const getChecks = name => {
+    const boxes = document.querySelectorAll(`input[name="${name}"]:checked`);
+    const vals = Array.from(boxes).map(b => b.value);
+    return vals.length ? vals.join(', ') : '—';
+  };
+
+  const sections = [
+    {
+      title: 'Tu negocio',
+      rows: [
+        ['Nombre',      get('business_name')],
+        ['Rubro',       get('business_type')],
+        ['Teléfono',    get('phone')],
+        ['Email',       get('email')],
+        ['Dirección',   get('address')],
+        ['Horarios',    get('hours')],
+        ['Instagram',   get('instagram')],
+        ['Otras redes', get('other_social')],
+        ['Descripción', get('description')],
+      ]
+    },
+    {
+      title: 'Identidad y diseño',
+      rows: [
+        ['Servicios',   get('services')],
+        ['Colores',     get('brand_colors')],
+        ['Referencias', get('design_references')],
+        ['Sobre nosotros', get('about_us')],
+      ]
+    },
+    {
+      title: 'Objetivos y funciones',
+      rows: [
+        ['Objetivos',      getChecks('main_goals[]')],
+        ['Funciones',      getChecks('special_functions[]')],
+        ['Público',        get('target_audience')],
+        ['Métodos de pago',get('payment_methods')],
+      ]
+    },
+    {
+      title: 'Detalles finales',
+      rows: [
+        ['Competencia',  get('competitors')],
+        ['Dominio',      get('domain_hosting')],
+        ['Aprobador',    get('approver')],
+        ['Deadline',     get('deadline')],
+        ['Notas extra',  get('extra_notes')],
+      ]
+    },
+  ];
+
+  return sections.map(s => `
+    <div class="review-group">
+      <div class="review-group-title">${s.title}</div>
+      ${s.rows.filter(([,v]) => v && v !== '—').map(([l, v]) => `
+        <div class="review-row">
+          <span class="review-label">${l}</span>
+          <span class="review-value">${v}</span>
+        </div>`).join('')}
+    </div>`).join('');
+}
+
+function toggleReview() {
+  const panel = document.getElementById('review-panel');
+  const icon  = document.getElementById('review-btn-icon');
+  panel.classList.toggle('open');
+  icon.textContent = panel.classList.contains('open') ? '🔼' : '📋';
+}
+
+/* ── SUBMIT ── */
 document.getElementById('onboarding-form').addEventListener('submit', async function(e) {
   e.preventDefault();
   if (!validatePage(4)) return;
   document.getElementById('loading').classList.add('show');
   try {
     const formData = new FormData(this);
+    // Generar prompt y adjuntarlo (invisible para el cliente)
+    formData.append('generated_prompt', buildPrompt(formData));
     const r = await fetch('/api/submit-form', { method: 'POST', body: formData });
     const d = await r.json();
     document.getElementById('loading').classList.remove('show');
     if (d.success) {
       this.style.display = 'none';
-      document.getElementById('success-screen').classList.add('show');
       document.querySelector('.steps-bar').style.display = 'none';
+      // Poblar panel de revisión con los datos antes de mostrar éxito
+      document.getElementById('review-panel-body').innerHTML = buildReviewPanel(formData);
+      document.getElementById('success-screen').classList.add('show');
     } else { alert('Error: ' + d.message); }
   } catch (err) {
     document.getElementById('loading').classList.remove('show');
