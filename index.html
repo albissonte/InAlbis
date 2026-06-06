@@ -728,7 +728,7 @@ footer{
         <div class="pc-badge">Esencial</div>
         <div class="pc-name">Presencia</div>
         <div class="pc-desc">Para negocios que necesitan existir en internet con lo esencial.</div>
-        <div class="pc-price"><span class="dollar">$</span>250</div>
+        <div class="pc-price"><span class="dollar">$</span>249</div>
         <div class="pc-period">USD · pago único</div>
         <div class="pc-divider"></div>
         <ul class="pc-features">
@@ -750,7 +750,7 @@ footer{
         <div class="pc-badge"><span class="pc-star">★</span> Más elegido</div>
         <div class="pc-name">Negocio</div>
         <div class="pc-desc">Web completa con catálogo, SEO real y todo lo que necesita un negocio que quiere crecer.</div>
-        <div class="pc-price"><span class="dollar">$</span>450</div>
+        <div class="pc-price"><span class="dollar">$</span>499</div>
         <div class="pc-period">USD · pago único</div>
         <div class="pc-divider"></div>
         <ul class="pc-features">
@@ -771,7 +771,7 @@ footer{
         <div class="pc-badge">Pro</div>
         <div class="pc-name">Autoridad</div>
         <div class="pc-desc">Para negocios establecidos que quieren ser los primeros en su zona.</div>
-        <div class="pc-price"><span class="dollar">$</span>700</div>
+        <div class="pc-price"><span class="dollar">$</span>899</div>
         <div class="pc-period">USD · pago único</div>
         <div class="pc-divider"></div>
         <ul class="pc-features">
@@ -1100,7 +1100,14 @@ window.addEventListener('scroll',()=>{
   input.addEventListener("blur", ()=> setAvatar("idle"));
 
   // Enviar
-  function enviar(){
+  // Generar o recuperar sessionId único por navegador
+  let sessionId = localStorage.getItem("albi_session");
+  if (!sessionId) {
+    sessionId = crypto.randomUUID();
+    localStorage.setItem("albi_session", sessionId);
+  }
+
+  async function enviar(){
     const text = input.value.trim();
     if(!text) return;
     messages.innerHTML += `<p><b>Vos:</b> ${text}</p>`;
@@ -1108,19 +1115,22 @@ window.addEventListener('scroll',()=>{
     messages.scrollTop = messages.scrollHeight;
     setAvatar("thinking");
 
-    setTimeout(()=>{
-      let r="Contame más sobre tu negocio para poder ayudarte mejor.";
-      const t=text.toLowerCase();
-      if(t.includes("precio")||t.includes("costo")||t.includes("cuánto")) r="Los precios arrancan en $250 USD. Tenemos tres paquetes: Presencia, Negocio y Autoridad. ¿Cuál se adapta mejor a tu negocio?";
-      else if(t.includes("seo")||t.includes("google"))  r="Todos los paquetes incluyen SEO básico. El plan Negocio y Autoridad incluyen posicionamiento local y Google Maps. ¿Querés aparecer en búsquedas de tu zona?";
-      else if(t.includes("tienda")||t.includes("ecommerce")) r="Podemos crear una tienda online completa con catálogo y pagos. Esto entra en el plan Autoridad. ¿Tu negocio vende productos o servicios?";
-      else if(t.includes("landing")) r="Una landing page es ideal para captar clientes rápidamente. El plan Presencia incluye una página completa y lista en 7-14 días.";
-      else if(t.includes("tiempo")||t.includes("plazo")||t.includes("cuándo")) r="El tiempo de entrega es de 7 a 14 días hábiles desde que confirmamos el proyecto.";
-      else if(t.includes("pago")||t.includes("cuota")||t.includes("mercado")) r="Aceptamos transferencia, Mercado Pago y pagos en cuotas. El esquema es 50% al inicio y 50% al finalizar.";
-      messages.innerHTML += `<p><b>Albi:</b> ${r}</p>`;
-      messages.scrollTop = messages.scrollHeight;
+    try {
+      const res = await fetch("https://wainalbot.gabrieldelaaalaz.workers.dev/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ sessionId, message: text }),
+      });
+      const data = await res.json();
+      const reply = data.reply || "Disculpá, hubo un error. Intentá de nuevo.";
+      messages.innerHTML += `<p><b>Albi:</b> ${reply.replace(/\n/g,"<br>")}</p>`;
       setAvatar("happy");
-    },1400);
+    } catch(e) {
+      messages.innerHTML += `<p><b>Albi:</b> Sin conexión, intentá de nuevo en un momento.</p>`;
+      setAvatar("idle");
+    }
+
+    messages.scrollTop = messages.scrollHeight;
   }
 
   sendBtn.addEventListener("click", enviar);
