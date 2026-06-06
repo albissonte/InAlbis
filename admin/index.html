@@ -247,7 +247,7 @@ body::after {
 /* ── HOLO CLOCK ── */
 .holo-clock {
   position: fixed;
-  top: 130px;
+  top: 115px;
   right: 20px;
   z-index: 50;
   display: flex;
@@ -366,7 +366,326 @@ body::after {
 .log-line.ok   .log-type{color:var(--green);}
 .log-line.err  .log-type{color:var(--red);}
 
-/* ── HOLO RINGS ── */
+
+/* ══ NEW TABS ══ */
+.tab-pane { display: none; padding: 20px; }
+.tab-pane.active { display: block; animation: cyberFadeIn .3s ease both; }
+
+/* ══ CALENDAR ══ */
+.cal-header {
+  display: flex; align-items: center; gap: 16px;
+  margin-bottom: 18px;
+}
+.cal-month-title {
+  font-family: 'Orbitron', sans-serif; font-size: 1rem;
+  color: var(--cyan); text-shadow: 0 0 10px var(--cyan-glow);
+  letter-spacing: 3px; flex: 1; text-align: center;
+}
+.cal-nav-btn {
+  background: transparent; border: 1px solid var(--border-bright);
+  color: var(--cyan); font-size: 1rem; padding: 6px 14px;
+  border-radius: 3px; cursor: pointer; transition: .2s;
+}
+.cal-nav-btn:hover { background: var(--cyan); color: var(--ink); }
+.cal-grid {
+  display: grid; grid-template-columns: repeat(7, 1fr);
+  gap: 4px; user-select: none;
+}
+.cal-day-label {
+  text-align: center; font-family: 'Share Tech Mono', monospace;
+  font-size: .6rem; color: var(--muted); padding: 6px 0;
+  text-transform: uppercase; letter-spacing: 2px;
+}
+.cal-cell {
+  min-height: 74px; background: var(--surface);
+  border: 1px solid var(--border); border-radius: 4px;
+  padding: 6px; cursor: pointer; transition: .2s;
+  position: relative;
+}
+.cal-cell:hover { border-color: var(--cyan-dim); background: var(--cyan-faint); }
+.cal-cell.today { border-color: var(--cyan); box-shadow: 0 0 8px var(--cyan-glow); }
+.cal-cell.other-month { opacity: .3; }
+.cal-cell.has-events { border-color: var(--blue); }
+.cal-cell-num {
+  font-family: 'Orbitron', sans-serif; font-size: .65rem;
+  color: var(--muted); margin-bottom: 4px;
+}
+.cal-cell.today .cal-cell-num { color: var(--cyan); font-weight: 900; }
+.cal-evt-chip {
+  background: rgba(0,180,255,.15); border: 1px solid rgba(0,180,255,.3);
+  border-radius: 2px; font-size: .52rem; color: var(--blue);
+  padding: 1px 4px; margin-bottom: 2px; white-space: nowrap;
+  overflow: hidden; text-overflow: ellipsis;
+  font-family: 'Share Tech Mono', monospace;
+  cursor: grab;
+}
+.cal-evt-chip.dragging { opacity: .5; }
+.cal-cell.drag-over { border-color: var(--cyan) !important; background: rgba(0,255,231,.1) !important; }
+
+/* Calendar Modal */
+.cal-modal-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,.7);
+  z-index: 200; display: none; align-items: center; justify-content: center;
+}
+.cal-modal-overlay.open { display: flex; }
+.cal-modal {
+  background: var(--surface2); border: 1px solid var(--border-bright);
+  border-radius: 6px; padding: 24px; width: 100%; max-width: 440px;
+  max-height: 85vh; overflow-y: auto;
+  animation: cyberFadeIn .2s ease both;
+  box-shadow: 0 0 30px rgba(0,255,231,.12);
+}
+.cal-modal-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 16px;
+}
+.cal-modal-title {
+  font-family: 'Orbitron', sans-serif; font-size: .85rem;
+  color: var(--cyan); letter-spacing: 2px;
+}
+.cal-input {
+  width: 100%; padding: 8px 12px; margin-bottom: 8px;
+  background: var(--surface); border: 1px solid var(--border-bright);
+  border-radius: 3px; color: var(--text-bright);
+  font-family: 'Share Tech Mono', monospace; font-size: .78rem;
+  display: block;
+}
+.cal-input:focus { outline: none; border-color: var(--cyan); box-shadow: 0 0 6px var(--cyan-glow); }
+.cal-input::placeholder { color: var(--muted); }
+.btn-cal-save {
+  width: 100%; padding: 10px; background: transparent;
+  border: 1.5px solid var(--cyan); color: var(--cyan);
+  font-family: 'Orbitron', sans-serif; font-size: .75rem;
+  letter-spacing: 2px; cursor: pointer; border-radius: 3px;
+  margin-top: 4px; transition: .2s;
+}
+.btn-cal-save:hover { background: var(--cyan); color: var(--ink); }
+.cal-event-card {
+  background: var(--surface); border: 1px solid var(--border-bright);
+  border-radius: 4px; padding: 12px; margin-bottom: 10px;
+}
+.cal-event-card-title {
+  font-family: 'Orbitron', sans-serif; font-size: .78rem;
+  color: var(--cyan); margin-bottom: 6px;
+}
+.cal-event-meta { font-size: .7rem; color: var(--muted); margin-bottom: 8px; }
+.cal-event-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.btn-wa {
+  display: inline-flex; align-items: center; gap: 5px;
+  background: rgba(37,211,102,.15); border: 1px solid rgba(37,211,102,.35);
+  color: #25d366; font-size: .65rem; padding: 4px 10px;
+  border-radius: 2px; cursor: pointer; font-family: 'Share Tech Mono', monospace;
+  text-decoration: none; transition: .2s;
+}
+.btn-wa:hover { background: rgba(37,211,102,.3); }
+.btn-email-act {
+  display: inline-flex; align-items: center; gap: 5px;
+  background: rgba(0,180,255,.15); border: 1px solid rgba(0,180,255,.35);
+  color: var(--blue); font-size: .65rem; padding: 4px 10px;
+  border-radius: 2px; cursor: pointer; font-family: 'Share Tech Mono', monospace;
+  text-decoration: none; transition: .2s;
+}
+.btn-email-act:hover { background: rgba(0,180,255,.3); }
+.btn-del-evt {
+  background: rgba(255,51,85,.1); border: 1px solid rgba(255,51,85,.3);
+  color: var(--red); font-size: .65rem; padding: 4px 10px;
+  border-radius: 2px; cursor: pointer; font-family: 'Share Tech Mono', monospace;
+  transition: .2s;
+}
+.btn-del-evt:hover { background: rgba(255,51,85,.25); }
+.cal-modal-add { margin-top: 20px; border-top: 1px solid var(--border); padding-top: 16px; }
+
+/* ══ MERCADOS / CANDLES ══ */
+.mercados-wrap { max-width: 960px; }
+.mercados-selector {
+  display: flex; gap: 8px; margin-bottom: 16px;
+}
+.mkt-btn {
+  background: transparent; border: 1px solid var(--border-bright);
+  color: var(--muted); font-family: 'Share Tech Mono', monospace;
+  font-size: .72rem; padding: 8px 20px; border-radius: 3px;
+  cursor: pointer; transition: .2s; letter-spacing: 1px;
+}
+.mkt-btn.active, .mkt-btn:hover {
+  border-color: var(--cyan); color: var(--cyan);
+  box-shadow: 0 0 8px var(--cyan-glow);
+}
+.mercados-info {
+  display: flex; align-items: baseline; gap: 14px; margin-bottom: 14px;
+}
+.mkt-name {
+  font-family: 'Share Tech Mono', monospace; font-size: .7rem;
+  color: var(--muted); letter-spacing: 2px; text-transform: uppercase;
+}
+.mkt-price {
+  font-family: 'Orbitron', sans-serif; font-size: 1.4rem;
+  color: var(--cyan); text-shadow: 0 0 12px var(--cyan-glow);
+}
+.mkt-change {
+  font-family: 'Share Tech Mono', monospace; font-size: .8rem;
+}
+.mkt-change.up { color: var(--green); }
+.mkt-change.down { color: var(--red); }
+.candle-wrap {
+  background: var(--surface); border: 1px solid var(--border-bright);
+  border-radius: 6px; padding: 16px; overflow-x: auto;
+}
+#candleCanvas { display: block; max-width: 100%; }
+.candle-legend {
+  display: flex; gap: 20px; margin-top: 10px;
+  font-family: 'Share Tech Mono', monospace; font-size: .65rem;
+}
+.cl-bull { color: var(--green); }
+.cl-bear { color: var(--red); }
+.cl-ma   { color: var(--orange); }
+
+/* ══ MAPA CLIENTES ══ */
+.mapa-wrap { display: flex; gap: 16px; height: 560px; }
+.mapa-sidebar {
+  width: 240px; flex-shrink: 0;
+  background: var(--surface); border: 1px solid var(--border-bright);
+  border-radius: 6px; padding: 16px; overflow-y: auto;
+}
+.mapa-main {
+  flex: 1; background: var(--surface); border: 1px solid var(--border-bright);
+  border-radius: 6px; overflow: hidden; position: relative;
+}
+#mapaContainer { width: 100%; height: 100%; }
+.mapa-placeholder {
+  width: 100%; height: 100%; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; padding: 20px;
+}
+.mapa-points-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 10px; width: 100%; max-width: 700px;
+}
+.mapa-client-card {
+  background: var(--surface2); border: 1px solid var(--border-bright);
+  border-radius: 4px; padding: 10px; cursor: pointer; transition: .2s;
+}
+.mapa-client-card:hover { border-color: var(--cyan); }
+.mapa-client-name {
+  font-family: 'Share Tech Mono', monospace; font-size: .65rem;
+  color: var(--cyan); margin-bottom: 4px;
+}
+.mapa-client-addr {
+  font-size: .62rem; color: var(--muted); line-height: 1.4;
+}
+.mapa-client-badge {
+  display: inline-block; margin-top: 5px; padding: 1px 6px;
+  border-radius: 2px; font-size: .55rem;
+  font-family: 'Share Tech Mono', monospace;
+}
+.mapa-sidebar-item {
+  padding: 8px 6px; border-bottom: 1px solid var(--border);
+  cursor: pointer; transition: .15s;
+}
+.mapa-sidebar-item:hover { background: var(--cyan-faint); }
+.mapa-sidebar-item-name {
+  font-family: 'Share Tech Mono', monospace; font-size: .65rem;
+  color: var(--cyan-dim); margin-bottom: 2px;
+}
+.mapa-sidebar-item-city {
+  font-size: .6rem; color: var(--muted);
+}
+.mapa-pin {
+  position: absolute; transform: translate(-50%, -100%);
+  cursor: pointer; transition: transform .15s;
+  filter: drop-shadow(0 0 4px var(--cyan));
+}
+.mapa-pin:hover { transform: translate(-50%, -100%) scale(1.3); }
+.mapa-tooltip {
+  position: absolute; background: var(--surface2);
+  border: 1px solid var(--cyan); border-radius: 4px;
+  padding: 8px 12px; font-size: .68rem; z-index: 10;
+  pointer-events: none; white-space: nowrap;
+  font-family: 'Share Tech Mono', monospace; color: var(--text-bright);
+  box-shadow: 0 0 12px var(--cyan-glow);
+  display: none;
+}
+
+@media(max-width:700px){
+  .mapa-wrap{flex-direction:column;height:auto;}
+  .mapa-sidebar{width:100%;height:160px;}
+  .mapa-main{height:320px;}
+  .cal-grid{grid-template-columns:repeat(7,1fr);}
+  .cal-cell{min-height:52px;}
+}
+
+/* ── HUD CORNERS ── */
+.hud-corner{position:fixed;width:50px;height:50px;z-index:3;pointer-events:none;}
+.hud-corner.tl{top:0;left:0;border-top:1px solid var(--cyan-dim);border-left:1px solid var(--cyan-dim);}
+.hud-corner.tr{top:0;right:0;border-top:1px solid var(--cyan-dim);border-right:1px solid var(--cyan-dim);}
+.hud-corner.bl{bottom:0;left:0;border-bottom:1px solid var(--cyan-dim);border-left:1px solid var(--cyan-dim);}
+.hud-corner.br{bottom:0;right:0;border-bottom:1px solid var(--cyan-dim);border-right:1px solid var(--cyan-dim);}
+
+/* ── TOPBAR STATUS DOT ── */
+.topbar-status-dot{width:7px;height:7px;background:var(--green);border-radius:50%;box-shadow:0 0 8px var(--green);animation:blink 2s ease-in-out infinite;flex-shrink:0;}
+
+/* ── ANALYTICS / HOSTING / IA TABS ── */
+.section-header2{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--border);}
+.section-title2{font-family:'Orbitron',sans-serif;font-size:.72rem;color:var(--cyan);letter-spacing:3px;text-transform:uppercase;}
+.section-title2::before{content:'▶ ';color:var(--cyan-dim);font-size:.58rem;}
+.new-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:24px;}
+@media(max-width:900px){.new-grid{grid-template-columns:1fr 1fr;}}
+@media(max-width:600px){.new-grid{grid-template-columns:1fr;}}
+.new-panel{background:var(--surface);border:1px solid var(--border-bright);border-radius:4px;padding:18px 20px;backdrop-filter:blur(12px);position:relative;overflow:hidden;animation:floatCard 8s ease-in-out infinite;transition:.25s;}
+.new-panel.span2{grid-column:span 2;}
+.new-panel::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--cyan-dim),transparent);opacity:.5;}
+.new-panel:hover{border-color:var(--cyan-dim);box-shadow:0 0 16px var(--cyan-glow);}
+.np-title{font-family:'Share Tech Mono',monospace;font-size:.6rem;color:var(--cyan-dim);text-transform:uppercase;letter-spacing:2px;margin-bottom:10px;}
+.prog-row{margin-bottom:10px;}
+.prog-head{display:flex;justify-content:space-between;font-family:'Share Tech Mono',monospace;font-size:.62rem;color:var(--muted);margin-bottom:3px;}
+.prog-bar{height:3px;background:var(--border);border-radius:2px;overflow:hidden;}
+.prog-fill{height:100%;border-radius:2px;transform-origin:left;animation:waveGrow .7s ease both;}
+.h-card{background:var(--surface);border:1px solid var(--border-bright);border-radius:4px;padding:16px 18px;backdrop-filter:blur(12px);transition:.25s;animation:floatCard 9s ease-in-out infinite;position:relative;overflow:hidden;}
+.h-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--blue),transparent);opacity:.5;}
+.h-card:hover{border-color:var(--blue);box-shadow:0 0 16px rgba(0,180,255,.2);}
+.h-name{font-weight:800;font-size:.92rem;color:var(--text-bright);margin-bottom:4px;}
+.h-domain{font-family:'Share Tech Mono',monospace;font-size:.65rem;color:var(--blue);margin-bottom:10px;}
+.h-pills{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px;}
+.pill{padding:2px 9px;border-radius:20px;font-family:'Share Tech Mono',monospace;font-size:.54rem;font-weight:700;}
+.pill-live{background:rgba(0,255,153,.1);color:var(--green);border:1px solid rgba(0,255,153,.25);}
+.pill-ssl{background:rgba(0,180,255,.1);color:var(--blue);border:1px solid rgba(0,180,255,.25);}
+.pill-pend{background:rgba(255,140,0,.1);color:var(--orange);border:1px solid rgba(255,140,0,.25);}
+.uptime-bar{height:2px;background:var(--border);border-radius:2px;margin-top:8px;overflow:hidden;}
+.uptime-fill{height:100%;background:linear-gradient(90deg,var(--green),var(--cyan));border-radius:2px;}
+.hosting-grid2{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;}
+.ia-input{width:100%;padding:11px 13px;border:1px solid var(--border-bright);border-radius:3px;font-family:'Nunito',sans-serif;font-size:.88rem;background:var(--surface2);color:var(--text-bright);margin-bottom:10px;resize:none;display:block;}
+.ia-input:focus{outline:none;border-color:#a855f7;box-shadow:0 0 8px rgba(168,85,247,.2);}
+.btn-ia{padding:9px 18px;background:transparent;color:#a855f7;border:1.5px solid #a855f7;border-radius:3px;font-family:'Share Tech Mono',monospace;font-size:.65rem;cursor:pointer;letter-spacing:1px;transition:.25s;margin-right:6px;margin-bottom:6px;}
+.btn-ia:hover{background:rgba(168,85,247,.12);}
+.btn-mail-proj{padding:4px 11px;background:transparent;border:1px solid var(--cyan-dim);border-radius:2px;font-family:'Share Tech Mono',monospace;font-size:.6rem;color:var(--cyan-dim);cursor:pointer;transition:.2s;}
+.btn-mail-proj:hover{background:rgba(0,255,231,.08);color:var(--cyan);border-color:var(--cyan);box-shadow:0 0 8px var(--cyan-glow);}
+
+/* ── EMAIL MODAL ── */
+.email-overlay{position:fixed;inset:0;background:rgba(2,8,14,.88);z-index:300;display:none;align-items:center;justify-content:center;backdrop-filter:blur(6px);}
+.email-overlay.open{display:flex;}
+.email-modal{background:var(--surface);border:1px solid var(--cyan-dim);border-radius:4px;padding:28px;width:100%;max-width:480px;position:relative;box-shadow:0 0 50px rgba(0,255,231,0.12);animation:cyberFadeIn .25s ease both;backdrop-filter:blur(20px);}
+.email-modal::before{content:'';position:absolute;top:0;left:10%;right:10%;height:1px;background:linear-gradient(90deg,transparent,var(--cyan),transparent);}
+.email-modal-title{font-family:'Orbitron',sans-serif;font-size:.78rem;color:var(--cyan);letter-spacing:2px;margin-bottom:18px;}
+.efield{margin-bottom:12px;}
+.efield label{display:block;font-family:'Share Tech Mono',monospace;font-size:.58rem;color:var(--cyan-dim);text-transform:uppercase;letter-spacing:2px;margin-bottom:5px;}
+.efield input,.efield textarea{width:100%;padding:10px 13px;border:1px solid var(--border-bright);border-radius:3px;font-family:'Nunito',sans-serif;font-size:.85rem;background:var(--surface2);color:var(--text-bright);transition:.2s;}
+.efield textarea{resize:vertical;min-height:110px;}
+.efield input:focus,.efield textarea:focus{outline:none;border-color:var(--cyan);box-shadow:0 0 8px var(--cyan-glow);}
+.efield input::placeholder,.efield textarea::placeholder{color:var(--muted);}
+.email-actions{display:flex;gap:10px;margin-top:4px;}
+.btn-send{flex:1;padding:11px;background:transparent;color:var(--cyan);border:1.5px solid var(--cyan);border-radius:3px;font-family:'Orbitron',sans-serif;font-size:.65rem;cursor:pointer;letter-spacing:2px;transition:.25s;box-shadow:0 0 10px var(--cyan-glow);}
+.btn-send:hover{background:var(--cyan);color:var(--ink);}
+.btn-cancel-e{padding:11px 18px;background:transparent;border:1px solid var(--border-bright);border-radius:3px;font-family:'Share Tech Mono',monospace;font-size:.65rem;color:var(--muted);cursor:pointer;transition:.2s;}
+.btn-cancel-e:hover{border-color:var(--red);color:var(--red);}
+.email-hint{font-family:'Share Tech Mono',monospace;font-size:.54rem;color:var(--muted);margin-top:10px;line-height:1.6;padding:7px;border:1px solid var(--border);border-radius:2px;}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:22px;right:22px;z-index:500;padding:12px 20px;border-radius:3px;font-family:'Share Tech Mono',monospace;font-size:.68rem;letter-spacing:1px;border:1px solid;backdrop-filter:blur(12px);animation:cyberFadeIn .25s ease both;}
+.toast.ok{background:rgba(0,255,153,.1);border-color:var(--green);color:var(--green);}
+.toast.err{background:rgba(255,51,85,.1);border-color:var(--red);color:var(--red);}
+
+::-webkit-scrollbar{width:4px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:var(--border-bright);border-radius:2px;}
+
 .holo-rings{display:flex;align-items:center;justify-content:center;height:70px;position:relative;}
 .holo-ring{position:absolute;border:1px solid var(--cyan-dim);border-radius:50%;opacity:.4;}
 .holo-ring:nth-child(1){width:26px;height:26px;animation:spinSlow 4s linear infinite;}
@@ -740,6 +1059,10 @@ body::after {
 </head>
 <body>
 <canvas id="particles-canvas"></canvas>
+<div class="hud-corner tl"></div>
+<div class="hud-corner tr"></div>
+<div class="hud-corner bl"></div>
+<div class="hud-corner br"></div>
 <!-- TRANSITION OVERLAY -->
 <!-- LOGIN -->
 <div id="loginScreen">
@@ -784,13 +1107,19 @@ body::after {
         <div class="topbar-name">Terminal de Control</div>
     </div>
     <div class="topbar-right">
-      <span class="topbar-status">SISTEMA ACTIVO</span>
+      <span class="topbar-status"><span class="topbar-status-dot"></span>SISTEMA ACTIVO</span>
       <button class="btn-logout" onclick="doLogout()">SALIR</button>
     </div>
 
   </div>
   <div class="tabs">
     <button class="tab-btn active" onclick="switchTab('proyectos', this)">PROYECTOS</button>
+    <button class="tab-btn" onclick="switchTab('analytics', this)">ANALYTICS</button>
+    <button class="tab-btn" onclick="switchTab('hosting', this)">HOSTING</button>
+    <button class="tab-btn" onclick="switchTab('ia', this)">IA</button>
+    <button class="tab-btn" onclick="switchTab('calendario', this)">CALENDARIO</button>
+    <button class="tab-btn" onclick="switchTab('mercados', this)">MERCADOS</button>
+    <button class="tab-btn" onclick="switchTab('mapa', this)">MAPA CLIENTES</button>
     <div class="stock-ticker" id="stockTicker" style="margin-left: auto;">
       <div class="stock-label">Balance Actual (USD)</div>
       <div class="stock-value-row">
@@ -948,6 +1277,161 @@ body::after {
         </table>
       </div>
 
+    </div>
+  </div>
+</div>
+
+<!-- ══ TAB: ANALYTICS ══ -->
+<div id="tab-analytics" class="tab-pane">
+  <div class="section-header2" style="margin-bottom:18px"><div class="section-title2">Estadísticas de Rendimiento</div></div>
+  <div class="stats" style="margin-bottom:18px">
+    <div class="stat"><div class="stat-icon">🌐</div><div class="stat-n">8.4k</div><div class="stat-l">Visitas mes</div></div>
+    <div class="stat"><div class="stat-icon" style="color:var(--green)">⏱</div><div class="stat-n green">2m 34s</div><div class="stat-l">Duración media</div></div>
+    <div class="stat"><div class="stat-icon" style="color:var(--orange)">↩</div><div class="stat-n orange">34%</div><div class="stat-l">Rebote</div></div>
+    <div class="stat"><div class="stat-icon" style="color:var(--blue)">📱</div><div class="stat-n blue">72%</div><div class="stat-l">Móvil</div></div>
+  </div>
+  <div class="new-grid">
+    <div class="new-panel span2">
+      <div class="np-title">Visitas por hora — hoy</div>
+      <div class="chart-container" id="hourlyChart" style="height:110px"></div>
+      <div class="chart-label" id="hourlyLabels"></div>
+    </div>
+    <div class="new-panel">
+      <div class="np-title">Fuentes de tráfico</div>
+      <div id="trafficSrc"></div>
+    </div>
+    <div class="new-panel span2">
+      <div class="np-title">Top páginas</div>
+      <div id="topPages"></div>
+    </div>
+    <div class="new-panel">
+      <div class="np-title">Rendimiento SEO</div>
+      <div id="seoPanel"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ TAB: HOSTING ══ -->
+<div id="tab-hosting" class="tab-pane">
+  <div class="section-header2" style="margin-bottom:18px"><div class="section-title2">Infraestructura y Dominios</div></div>
+  <div class="stats" style="margin-bottom:18px">
+    <div class="stat"><div class="stat-icon" style="color:var(--green)">🌐</div><div class="stat-n green">7</div><div class="stat-l">Sitios activos</div></div>
+    <div class="stat"><div class="stat-icon" style="color:var(--blue)">🔒</div><div class="stat-n blue">7</div><div class="stat-l">SSL activos</div></div>
+    <div class="stat"><div class="stat-icon">💾</div><div class="stat-n">2.4 GB</div><div class="stat-l">Almacenamiento</div></div>
+    <div class="stat"><div class="stat-icon" style="color:var(--green)">⬆</div><div class="stat-n green">99.9%</div><div class="stat-l">Uptime prom.</div></div>
+  </div>
+  <div class="hosting-grid2" id="hostingGrid"></div>
+</div>
+
+<!-- ══ TAB: IA ══ -->
+<div id="tab-ia" class="tab-pane">
+  <div class="section-header2" style="margin-bottom:18px"><div class="section-title2">Inteligencia Artificial</div></div>
+  <div class="new-grid">
+    <div class="new-panel">
+      <div class="np-title" style="color:#a855f7">Generador de páginas</div>
+      <p style="font-family:'Share Tech Mono',monospace;font-size:.62rem;color:var(--muted);margin-bottom:10px">Describí el negocio y generamos la estructura.</p>
+      <textarea class="ia-input" rows="3" placeholder="Ej: Restaurante gourmet en Buenos Aires..."></textarea>
+      <button class="btn-ia">◈ Generar página</button>
+      <button class="btn-ia" style="border-color:var(--cyan-dim);color:var(--cyan-dim)">◈ SEO</button>
+    </div>
+    <div class="new-panel">
+      <div class="np-title" style="color:#a855f7">Generador de textos</div>
+      <textarea class="ia-input" rows="3" placeholder="Tipo de negocio, tono, palabras clave..."></textarea>
+      <button class="btn-ia">◈ Copy</button>
+      <button class="btn-ia" style="border-color:var(--green);color:var(--green)">◈ Logo</button>
+    </div>
+    <div class="new-panel">
+      <div class="np-title" style="color:#a855f7">Estado IA</div>
+      <div id="iaStatus"></div>
+    </div>
+  </div>
+</div>
+
+<!-- EMAIL MODAL -->
+<div class="email-overlay" id="emailOverlay" onclick="emailOutsideClick(event)">
+  <div class="email-modal">
+    <div class="email-modal-title">✉ Transmisión al cliente</div>
+    <div class="efield"><label>Para</label><input type="email" id="emailTo" placeholder="cliente@email.com"></div>
+    <div class="efield"><label>Asunto</label><input type="text" id="emailSubject" placeholder="Actualización de tu proyecto — in Albis"></div>
+    <div class="efield"><label>Mensaje</label><textarea id="emailBody" placeholder="Hola,&#10;&#10;Te escribimos para informarte..."></textarea></div>
+    <div class="email-actions">
+      <button class="btn-send" onclick="sendEmail()">◈ Enviar</button>
+      <button class="btn-cancel-e" onclick="closeEmail()">Cancelar</button>
+    </div>
+    <div class="email-hint">⚠ Para envío real conectá EmailJS o SendGrid al Worker. Por ahora abre tu cliente de correo.</div>
+  </div>
+</div>
+
+<!-- ══ TAB: CALENDARIO ══ -->
+<div id="tab-calendario" class="tab-pane">
+  <div class="cal-header">
+    <button class="cal-nav-btn" onclick="calNav(-1)">&#8592;</button>
+    <div class="cal-month-title" id="calMonthTitle">—</div>
+    <button class="cal-nav-btn" onclick="calNav(1)">&#8594;</button>
+  </div>
+  <div class="cal-grid" id="calGrid"></div>
+
+  <!-- Modal evento -->
+  <div class="cal-modal-overlay" id="calModalOverlay" onclick="closeCalModal(event)">
+    <div class="cal-modal" id="calModal">
+      <div class="cal-modal-header">
+        <span class="cal-modal-title" id="calModalTitle">Eventos del día</span>
+        <button class="btn-close" onclick="closeCalModal()">✕</button>
+      </div>
+      <div id="calModalBody"></div>
+      <div class="cal-modal-add">
+        <div class="widget-title" style="margin-bottom:10px;">+ Nuevo Evento</div>
+        <input class="cal-input" id="calEvtTitle" placeholder="Título del evento" />
+        <input class="cal-input" id="calEvtClient" placeholder="Cliente (nombre)" />
+        <input class="cal-input" id="calEvtEmail" placeholder="Email" />
+        <input class="cal-input" id="calEvtPhone" placeholder="WhatsApp (con código país)" />
+        <input class="cal-input" type="time" id="calEvtTime" />
+        <textarea class="cal-input" id="calEvtNotes" placeholder="Notas..." rows="2"></textarea>
+        <button class="btn-cal-save" onclick="saveCalEvent()">GUARDAR EVENTO</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ TAB: MERCADOS ══ -->
+<div id="tab-mercados" class="tab-pane">
+  <div class="mercados-wrap">
+    <div class="mercados-selector">
+      <button class="mkt-btn active" onclick="switchMkt('BTC', this)">&#9785; Bitcoin</button>
+      <button class="mkt-btn" onclick="switchMkt('GOLD', this)">&#9678; Oro</button>
+      <button class="mkt-btn" onclick="switchMkt('USD', this)">$ Dólar</button>
+    </div>
+    <div class="mercados-info">
+      <span class="mkt-name" id="mktName">Bitcoin / USD</span>
+      <span class="mkt-price" id="mktPrice">—</span>
+      <span class="mkt-change" id="mktChange"></span>
+    </div>
+    <div class="candle-wrap">
+      <canvas id="candleCanvas" width="900" height="340"></canvas>
+    </div>
+    <div class="candle-legend">
+      <span class="cl-bull">&#9608; Alcista</span>
+      <span class="cl-bear">&#9608; Bajista</span>
+      <span class="cl-ma">— Media 7</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══ TAB: MAPA CLIENTES ══ -->
+<div id="tab-mapa" class="tab-pane">
+  <div class="mapa-wrap">
+    <div class="mapa-sidebar">
+      <div class="widget-title">Clientes</div>
+      <div id="mapaClientList"></div>
+    </div>
+    <div class="mapa-main">
+      <div id="mapaContainer">
+        <div class="mapa-placeholder">
+          <div style="font-family:'Orbitron',sans-serif;font-size:1rem;color:var(--cyan);margin-bottom:8px;">MAPA DE CLIENTES</div>
+          <div style="font-size:.8rem;color:var(--muted);margin-bottom:20px;">Visualización de ubicaciones geográficas</div>
+          <div id="mapaPoints" class="mapa-points-grid"></div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -1768,6 +2252,507 @@ renderTable(TABLE_DATA);
   }
   setTimeout(tick, 1200);
 })();
+
+
+
+// ══════════════════════════════════════════════════
+//  ANALYTICS TAB
+// ══════════════════════════════════════════════════
+(function() {
+  const container = document.getElementById('hourlyChart');
+  const labels    = document.getElementById('hourlyLabels');
+  if (!container) return;
+  const hours = ['0','2','4','6','8','10','12','14','16','18','20','22'];
+  const vals  = [12,8,5,20,95,180,210,320,280,410,390,260];
+  const max   = Math.max(...vals);
+  vals.forEach((v, i) => {
+    const pct = Math.round((v/max)*100);
+    const bar = document.createElement('div');
+    bar.className = 'chart-bar';
+    bar.style.height = pct + '%';
+    bar.style.background = 'linear-gradient(180deg,var(--blue),var(--cyan-dim))';
+    bar.style.animationDelay = (i * 0.06) + 's';
+    bar.setAttribute('data-val', v);
+    container.appendChild(bar);
+  });
+  if (labels) labels.innerHTML = hours.map(h => `<span>${h}h</span>`).join('');
+})();
+
+(function() {
+  const el = document.getElementById('trafficSrc');
+  if (!el) return;
+  const srcs = [
+    { name:'Orgánico',   pct:42, color:'var(--cyan)' },
+    { name:'Directo',    pct:28, color:'var(--blue)' },
+    { name:'WhatsApp',   pct:18, color:'var(--green)' },
+    { name:'Referidos',  pct:12, color:'var(--orange)' },
+  ];
+  el.innerHTML = srcs.map(s => `
+    <div class="prog-row">
+      <div class="prog-head"><span>${s.name}</span><span style="color:${s.color}">${s.pct}%</span></div>
+      <div class="prog-bar"><div class="prog-fill" style="width:${s.pct}%;background:${s.color}"></div></div>
+    </div>`).join('');
+})();
+
+(function() {
+  const el = document.getElementById('topPages');
+  if (!el) return;
+  const pages = [
+    { url:'/inicio',      visits:3240, bounce:'28%' },
+    { url:'/servicios',   visits:1820, bounce:'42%' },
+    { url:'/contacto',    visits:1540, bounce:'18%' },
+    { url:'/portfolio',   visits: 980, bounce:'55%' },
+    { url:'/sobre-mi',    visits: 620, bounce:'61%' },
+  ];
+  el.innerHTML = `<table class="dyn-table" style="font-size:.7rem">
+    <thead><tr>
+      <th>Página</th><th>Visitas</th><th>Rebote</th>
+    </tr></thead>
+    <tbody>${pages.map(p => `<tr>
+      <td class="mono" style="color:var(--cyan-dim)">${p.url}</td>
+      <td class="mono">${p.visits.toLocaleString('es-ES')}</td>
+      <td class="mono">${p.bounce}</td>
+    </tr>`).join('')}</tbody>
+  </table>`;
+})();
+
+(function() {
+  const el = document.getElementById('seoPanel');
+  if (!el) return;
+  const items = [
+    { label:'PageSpeed',  val:'94/100', color:'var(--green)' },
+    { label:'Core Vitals',val:'Bueno',  color:'var(--green)' },
+    { label:'Indexadas',  val:'47 pág', color:'var(--cyan)' },
+    { label:'Backlinks',  val:'128',    color:'var(--blue)' },
+    { label:'DA',         val:'32',     color:'var(--orange)' },
+  ];
+  el.innerHTML = items.map(i => `
+    <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--border);font-family:'Share Tech Mono',monospace;font-size:.62rem">
+      <span style="color:var(--muted)">${i.label}</span>
+      <span style="color:${i.color}">${i.val}</span>
+    </div>`).join('');
+})();
+
+// ══════════════════════════════════════════════════
+//  HOSTING TAB
+// ══════════════════════════════════════════════════
+(function() {
+  const grid = document.getElementById('hostingGrid');
+  if (!grid) return;
+  const sites = [
+    { name:'Lumina Studio',   domain:'luminastudio.com',    status:'live', ssl:true, uptime:99.9, exp:'2026-12-10' },
+    { name:'NovaBrand',       domain:'novabrand.com.ar',    status:'live', ssl:true, uptime:99.7, exp:'2026-08-22' },
+    { name:'Arco Digital',    domain:'arcodigital.net',     status:'live', ssl:true, uptime:100,  exp:'2027-01-05' },
+    { name:'Tectum Co.',      domain:'tectum.co',           status:'pend', ssl:false,uptime:0,    exp:'—' },
+    { name:'Helix Media',     domain:'helixmedia.io',       status:'live', ssl:true, uptime:99.8, exp:'2026-11-18' },
+    { name:'Synth Labs',      domain:'synthlabs.dev',       status:'live', ssl:true, uptime:98.4, exp:'2026-07-30' },
+    { name:'Orion Dept.',     domain:'oriondept.com',       status:'live', ssl:true, uptime:99.5, exp:'2026-09-14' },
+  ];
+  grid.innerHTML = sites.map(s => `
+    <div class="h-card">
+      <div class="h-name">${s.name}</div>
+      <div class="h-domain">${s.domain}</div>
+      <div class="h-pills">
+        <span class="pill ${s.status==='live'?'pill-live':'pill-pend'}">${s.status==='live'?'● LIVE':'○ PENDIENTE'}</span>
+        ${s.ssl ? '<span class="pill pill-ssl">🔒 SSL</span>' : ''}
+      </div>
+      ${s.uptime ? `<div style="font-family:'Share Tech Mono',monospace;font-size:.58rem;color:var(--muted)">Uptime: <span style="color:var(--green)">${s.uptime}%</span> · SSL exp: <span style="color:var(--cyan-dim)">${s.exp}</span></div>
+      <div class="uptime-bar"><div class="uptime-fill" style="width:${s.uptime}%"></div></div>` : ''}
+    </div>`).join('');
+})();
+
+// ══════════════════════════════════════════════════
+//  IA TAB
+// ══════════════════════════════════════════════════
+(function() {
+  const el = document.getElementById('iaStatus');
+  if (!el) return;
+  const items = [
+    { label:'Modelo',    val:'Claude Sonnet',  color:'#a855f7' },
+    { label:'Estado',    val:'Activo',         color:'var(--green)' },
+    { label:'Tokens/mes',val:'48.2k',          color:'var(--cyan)' },
+    { label:'Generadas', val:'14 páginas',     color:'var(--blue)' },
+    { label:'Copy gen.', val:'37 textos',      color:'var(--orange)' },
+  ];
+  el.innerHTML = items.map(i => `
+    <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);font-family:'Share Tech Mono',monospace;font-size:.62rem">
+      <span style="color:var(--muted)">${i.label}</span>
+      <span style="color:${i.color}">${i.val}</span>
+    </div>`).join('');
+})();
+
+// ══════════════════════════════════════════════════
+//  EMAIL MODAL
+// ══════════════════════════════════════════════════
+function openEmail(to, subject) {
+  document.getElementById('emailTo').value = to || '';
+  document.getElementById('emailSubject').value = subject || 'Actualización de tu proyecto — in Albis';
+  document.getElementById('emailBody').value = '';
+  document.getElementById('emailOverlay').classList.add('open');
+}
+function closeEmail() { document.getElementById('emailOverlay').classList.remove('open'); }
+function emailOutsideClick(e) { if (e.target === document.getElementById('emailOverlay')) closeEmail(); }
+function sendEmail() {
+  const to = document.getElementById('emailTo').value.trim();
+  const sub = document.getElementById('emailSubject').value.trim();
+  const body = document.getElementById('emailBody').value.trim();
+  if (!to) return;
+  window.open(`mailto:${to}?subject=${encodeURIComponent(sub)}&body=${encodeURIComponent(body)}`);
+  closeEmail();
+  showToast('✓ Cliente de correo abierto', 'ok');
+}
+
+// ══════════════════════════════════════════════════
+//  TOAST
+// ══════════════════════════════════════════════════
+function showToast(msg, type='ok') {
+  const t = document.createElement('div');
+  t.className = `toast ${type}`;
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(() => t.remove(), 3200);
+}
+
+// ══════════════════════════════════════════════════
+//  CALENDAR
+// ══════════════════════════════════════════════════
+let calYear, calMonth;
+let calEvents = JSON.parse(localStorage.getItem('calEvents') || '{}');
+let calDragEvt = null, calDragDate = null;
+
+function saveCalEvents() { localStorage.setItem('calEvents', JSON.stringify(calEvents)); }
+
+(function initCal() {
+  const now = new Date();
+  calYear = now.getFullYear();
+  calMonth = now.getMonth();
+  renderCal();
+})();
+
+function calNav(dir) { calMonth += dir; if (calMonth > 11){calMonth=0;calYear++;} if (calMonth<0){calMonth=11;calYear--;} renderCal(); }
+
+function renderCal() {
+  const title = document.getElementById('calMonthTitle');
+  const grid  = document.getElementById('calGrid');
+  if (!title || !grid) return;
+  const months = ['ENERO','FEBRERO','MARZO','ABRIL','MAYO','JUNIO','JULIO','AGOSTO','SEPTIEMBRE','OCTUBRE','NOVIEMBRE','DICIEMBRE'];
+  title.textContent = months[calMonth] + ' ' + calYear;
+
+  const days = ['DOM','LUN','MAR','MIÉ','JUE','VIE','SÁB'];
+  let html = days.map(d => `<div class="cal-day-label">${d}</div>`).join('');
+
+  const first = new Date(calYear, calMonth, 1).getDay();
+  const daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
+  const daysInPrev  = new Date(calYear, calMonth, 0).getDate();
+  const today = new Date();
+
+  // Previous month padding
+  for (let i = first - 1; i >= 0; i--) {
+    html += `<div class="cal-cell other-month"><div class="cal-cell-num">${daysInPrev - i}</div></div>`;
+  }
+  // Current month
+  for (let d = 1; d <= daysInMonth; d++) {
+    const key = calYear + '-' + String(calMonth+1).padStart(2,'0') + '-' + String(d).padStart(2,'0');
+    const evts = calEvents[key] || [];
+    const isToday = today.getFullYear()===calYear && today.getMonth()===calMonth && today.getDate()===d;
+    const chips = evts.slice(0,3).map((e,i) =>
+      `<div class="cal-evt-chip" draggable="true"
+        ondragstart="calDragStart(event,'${key}',${i})"
+        onclick="event.stopPropagation()">${e.time ? e.time + ' ' : ''}${e.title}</div>`
+    ).join('');
+    const more = evts.length > 3 ? `<div style="font-size:.5rem;color:var(--muted)">+${evts.length-3} más</div>` : '';
+    html += `<div class="cal-cell${isToday?' today':''}${evts.length?' has-events':''}"
+      onclick="openCalDay('${key}')"
+      ondragover="event.preventDefault();this.classList.add('drag-over')"
+      ondragleave="this.classList.remove('drag-over')"
+      ondrop="calDrop(event,'${key}',this)">
+      <div class="cal-cell-num">${d}</div>
+      ${chips}${more}
+    </div>`;
+  }
+  // Next month padding
+  const total = first + daysInMonth;
+  const rem = total % 7 === 0 ? 0 : 7 - (total % 7);
+  for (let d = 1; d <= rem; d++) {
+    html += `<div class="cal-cell other-month"><div class="cal-cell-num">${d}</div></div>`;
+  }
+  grid.innerHTML = html;
+}
+
+function calDragStart(e, date, idx) {
+  calDragEvt = idx; calDragDate = date;
+  e.dataTransfer.effectAllowed = 'move';
+}
+function calDrop(e, targetDate, cell) {
+  e.preventDefault();
+  cell.classList.remove('drag-over');
+  if (calDragDate === null || calDragEvt === null) return;
+  if (calDragDate === targetDate) return;
+  const evts = calEvents[calDragDate] || [];
+  const [evt] = evts.splice(calDragEvt, 1);
+  if (!calEvents[targetDate]) calEvents[targetDate] = [];
+  calEvents[targetDate].push(evt);
+  if (!evts.length) delete calEvents[calDragDate];
+  else calEvents[calDragDate] = evts;
+  saveCalEvents();
+  renderCal();
+  calDragEvt = null; calDragDate = null;
+}
+
+let openCalKey = null;
+function openCalDay(key) {
+  openCalKey = key;
+  const [y,m,d] = key.split('-');
+  document.getElementById('calModalTitle').textContent = d + '/' + m + '/' + y;
+  renderCalModal(key);
+  document.getElementById('calModalOverlay').classList.add('open');
+}
+function renderCalModal(key) {
+  const evts = calEvents[key] || [];
+  const body = document.getElementById('calModalBody');
+  if (!evts.length) { body.innerHTML = '<div style="font-size:.75rem;color:var(--muted);padding:8px 0">Sin eventos este día.</div>'; return; }
+  body.innerHTML = evts.map((e,i) => `
+    <div class="cal-event-card">
+      <div class="cal-event-card-title">${e.title}</div>
+      <div class="cal-event-meta">
+        ${e.time ? '🕐 ' + e.time + '  ' : ''}
+        ${e.client ? '👤 ' + e.client + '  ' : ''}
+        ${e.notes ? '<br>📝 ' + e.notes : ''}
+      </div>
+      <div class="cal-event-actions">
+        ${e.phone ? `<a class="btn-wa" href="https://wa.me/${e.phone.replace(/[^0-9]/g,'')}" target="_blank">💬 WhatsApp</a>` : ''}
+        ${e.email ? `<a class="btn-email-act" href="mailto:${e.email}">✉ Email</a>` : ''}
+        <button class="btn-del-evt" onclick="delCalEvt('${key}',${i})">✕ Eliminar</button>
+      </div>
+    </div>`).join('');
+}
+function delCalEvt(key, idx) {
+  calEvents[key].splice(idx, 1);
+  if (!calEvents[key].length) delete calEvents[key];
+  saveCalEvents(); renderCal(); renderCalModal(key);
+}
+function saveCalEvent() {
+  const title = document.getElementById('calEvtTitle').value.trim();
+  if (!title) return;
+  if (!calEvents[openCalKey]) calEvents[openCalKey] = [];
+  calEvents[openCalKey].push({
+    title,
+    client: document.getElementById('calEvtClient').value.trim(),
+    email:  document.getElementById('calEvtEmail').value.trim(),
+    phone:  document.getElementById('calEvtPhone').value.trim(),
+    time:   document.getElementById('calEvtTime').value,
+    notes:  document.getElementById('calEvtNotes').value.trim(),
+  });
+  ['calEvtTitle','calEvtClient','calEvtEmail','calEvtPhone','calEvtTime','calEvtNotes'].forEach(id => { document.getElementById(id).value = ''; });
+  saveCalEvents(); renderCal(); renderCalModal(openCalKey);
+}
+function closeCalModal(e) {
+  if (!e || e.target === document.getElementById('calModalOverlay'))
+    document.getElementById('calModalOverlay').classList.remove('open');
+}
+
+// ══════════════════════════════════════════════════
+//  JAPANESE CANDLES (OHLC synthetic data)
+// ══════════════════════════════════════════════════
+const MKT_CONFIG = {
+  BTC:  { name:'Bitcoin / USD',  base:65000, vol:2000, fmt: v => '$'+Math.round(v).toLocaleString('en-US') },
+  GOLD: { name:'Oro (XAU/USD)',  base:2320,  vol:40,   fmt: v => '$'+v.toFixed(2) },
+  USD:  { name:'Dólar (DXY)',    base:104.5, vol:0.8,  fmt: v => v.toFixed(3) },
+};
+let currentMkt = 'BTC';
+let mktData = {};
+
+function genCandles(base, vol, n=60) {
+  const arr = []; let price = base;
+  const now = Date.now();
+  for (let i = n; i >= 0; i--) {
+    const open = price;
+    const move = (Math.random() - 0.48) * vol * 2;
+    const close = open + move;
+    const high = Math.max(open, close) + Math.random() * vol * 0.6;
+    const low  = Math.min(open, close) - Math.random() * vol * 0.6;
+    arr.push({ t: now - i * 86400000 / 4, o: open, h: high, l: low, c: close });
+    price = close;
+  }
+  return arr;
+}
+
+function initMktData() {
+  Object.entries(MKT_CONFIG).forEach(([k, cfg]) => {
+    mktData[k] = genCandles(cfg.base, cfg.vol);
+  });
+}
+initMktData();
+
+function switchMkt(key, btn) {
+  currentMkt = key;
+  document.querySelectorAll('.mkt-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  drawCandles();
+}
+
+function drawCandles() {
+  const canvas = document.getElementById('candleCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  ctx.clearRect(0, 0, W, H);
+
+  const data = mktData[currentMkt];
+  const cfg  = MKT_CONFIG[currentMkt];
+
+  // Update info
+  const last = data[data.length - 1];
+  const prev = data[data.length - 2];
+  const pct  = ((last.c - prev.c) / prev.c * 100);
+  document.getElementById('mktName').textContent  = cfg.name;
+  document.getElementById('mktPrice').textContent = cfg.fmt(last.c);
+  const chEl = document.getElementById('mktChange');
+  chEl.textContent = (pct >= 0 ? '+' : '') + pct.toFixed(2) + '%';
+  chEl.className   = 'mkt-change ' + (pct >= 0 ? 'up' : 'down');
+
+  const pad = { l: 54, r: 20, t: 20, b: 30 };
+  const cW = W - pad.l - pad.r;
+  const cH = H - pad.t - pad.b;
+
+  const allH = data.map(d => d.h), allL = data.map(d => d.l);
+  const yMax = Math.max(...allH) * 1.002;
+  const yMin = Math.min(...allL) * 0.998;
+  const yRange = yMax - yMin;
+
+  const n = data.length;
+  const bw = Math.max(4, Math.floor(cW / n) - 2);
+  const toX = i => pad.l + (i + 0.5) * (cW / n);
+  const toY = v => pad.t + cH - ((v - yMin) / yRange) * cH;
+
+  // Grid lines
+  ctx.strokeStyle = 'rgba(0,255,231,0.05)';
+  ctx.lineWidth = 1;
+  for (let g = 0; g <= 4; g++) {
+    const y = pad.t + (g / 4) * cH;
+    ctx.beginPath(); ctx.moveTo(pad.l, y); ctx.lineTo(W - pad.r, y); ctx.stroke();
+    const val = yMax - (g / 4) * yRange;
+    ctx.fillStyle = 'rgba(74,122,128,0.8)';
+    ctx.font = '9px Share Tech Mono, monospace';
+    ctx.textAlign = 'right';
+    ctx.fillText(cfg.fmt(val).replace('$',''), pad.l - 4, y + 3);
+  }
+
+  // MA7
+  ctx.strokeStyle = 'rgba(255,140,0,0.7)';
+  ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  data.forEach((d, i) => {
+    if (i < 6) return;
+    const ma = data.slice(i-6, i+1).reduce((s,c) => s+c.c, 0) / 7;
+    if (i === 6) ctx.moveTo(toX(i), toY(ma));
+    else ctx.lineTo(toX(i), toY(ma));
+  });
+  ctx.stroke();
+
+  // Candles
+  data.forEach((d, i) => {
+    const x  = toX(i);
+    const oY = toY(d.o), cY = toY(d.c);
+    const hY = toY(d.h), lY = toY(d.l);
+    const bull = d.c >= d.o;
+    const col  = bull ? '#00ff99' : '#ff3355';
+
+    // Wick
+    ctx.strokeStyle = col + '99';
+    ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(x, hY); ctx.lineTo(x, lY); ctx.stroke();
+
+    // Body
+    const bodyH = Math.max(1, Math.abs(cY - oY));
+    ctx.fillStyle = bull ? 'rgba(0,255,153,0.75)' : 'rgba(255,51,85,0.75)';
+    ctx.strokeStyle = col;
+    ctx.lineWidth = .8;
+    ctx.fillRect(x - bw/2, Math.min(oY, cY), bw, bodyH);
+    ctx.strokeRect(x - bw/2, Math.min(oY, cY), bw, bodyH);
+  });
+
+  // X labels every 10
+  ctx.fillStyle = 'rgba(74,122,128,0.8)';
+  ctx.font = '9px Share Tech Mono, monospace';
+  ctx.textAlign = 'center';
+  data.forEach((d, i) => {
+    if (i % 10 !== 0) return;
+    const dt = new Date(d.t);
+    const lbl = (dt.getMonth()+1) + '/' + dt.getDate();
+    ctx.fillText(lbl, toX(i), H - 6);
+  });
+}
+
+// Auto-refresh candles every 3s with a new last candle
+setInterval(() => {
+  Object.entries(MKT_CONFIG).forEach(([k, cfg]) => {
+    const arr = mktData[k];
+    const last = arr[arr.length - 1];
+    const move = (Math.random() - 0.48) * cfg.vol * 0.5;
+    const c = last.c + move;
+    arr[arr.length - 1] = {
+      t: last.t, o: last.o, h: Math.max(last.h, c), l: Math.min(last.l, c), c
+    };
+  });
+  if (document.getElementById('tab-mercados')?.classList.contains('active')) drawCandles();
+}, 3000);
+
+// ══════════════════════════════════════════════════
+//  MAPA CLIENTES
+// ══════════════════════════════════════════════════
+const CLIENT_LOCATIONS = [
+  { name:'Lumina Studio',  city:'Buenos Aires', country:'AR', lat:-34.6037, lng:-58.3816, status:'completado',  email:'lumina@studio.com',  phone:'+541112345678' },
+  { name:'NovaBrand',      city:'Madrid',       country:'ES', lat:40.4168,  lng:-3.7038,  status:'en_progreso', email:'nova@brand.es',       phone:'+34911234567' },
+  { name:'Arco Digital',   city:'Ciudad de México', country:'MX', lat:19.4326, lng:-99.1332, status:'completado', email:'arco@digital.mx', phone:'+5215512345678' },
+  { name:'Tectum Co.',     city:'Bogotá',       country:'CO', lat:4.7110,   lng:-74.0721, status:'pendiente',   email:'tectum@co.com',       phone:'+5713456789' },
+  { name:'Helix Media',    city:'Lima',         country:'PE', lat:-12.0464, lng:-77.0428, status:'completado',  email:'helix@media.pe',      phone:'+51987654321' },
+  { name:'Synth Labs',     city:'Santiago',     country:'CL', lat:-33.4489, lng:-70.6693, status:'archivado',   email:'synth@labs.cl',       phone:'+56987654321' },
+  { name:'Orion Dept.',    city:'Miami',        country:'US', lat:25.7617,  lng:-80.1918, status:'en_progreso', email:'orion@dept.com',      phone:'+13051234567' },
+];
+
+function renderMapaClients() {
+  const sidebar = document.getElementById('mapaClientList');
+  if (!sidebar) return;
+  sidebar.innerHTML = CLIENT_LOCATIONS.map((c, i) => `
+    <div class="mapa-sidebar-item" onclick="focusMapaClient(${i})">
+      <div class="mapa-sidebar-item-name">${c.name}</div>
+      <div class="mapa-sidebar-item-city">${c.city}, ${c.country}</div>
+    </div>`).join('');
+
+  const grid = document.getElementById('mapaPoints');
+  if (!grid) return;
+  const statusColors = { completado:'var(--green)', en_progreso:'var(--blue)', pendiente:'var(--orange)', archivado:'var(--muted)' };
+  grid.innerHTML = CLIENT_LOCATIONS.map((c, i) => `
+    <div class="mapa-client-card" onclick="focusMapaClient(${i})">
+      <div class="mapa-client-name">${c.name}</div>
+      <div class="mapa-client-addr">📍 ${c.city}, ${c.country}</div>
+      <div class="mapa-client-addr">📧 ${c.email}</div>
+      <div class="mapa-client-addr">📞 ${c.phone}</div>
+      <div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap">
+        <a class="btn-wa" href="https://wa.me/${c.phone.replace(/[^0-9]/g,'')}" target="_blank">💬 WA</a>
+        <a class="btn-email-act" href="mailto:${c.email}">✉</a>
+      </div>
+      <span class="mapa-client-badge badge" style="color:${statusColors[c.status]||'var(--muted)'};border:1px solid ${statusColors[c.status]||'var(--muted)'}22;background:${statusColors[c.status]||'var(--muted)'}11">${c.status}</span>
+    </div>`).join('');
+}
+renderMapaClients();
+
+let mapaFocused = null;
+function focusMapaClient(i) {
+  mapaFocused = i;
+  const c = CLIENT_LOCATIONS[i];
+  alert(`📍 ${c.name}\n${c.city}, ${c.country}\n\nEmail: ${c.email}\nTeléfono: ${c.phone}\nEstado: ${c.status}`);
+}
+
+// Draw candles when switching to that tab
+const origSwitchTab = window.switchTab;
+window.switchTab = function(name, btn) {
+  origSwitchTab(name, btn);
+  if (name === 'mercados') setTimeout(drawCandles, 50);
+  if (name === 'calendario') renderCal();
+};
+drawCandles(); // init
 
 // ── HOLO CLOCK ───────────────────────────────────────────────────────────────
 function pad(n) { return String(n).padStart(2, '0'); }
