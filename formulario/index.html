@@ -1095,6 +1095,52 @@ document.getElementById('onboarding-form').addEventListener('submit', async func
   } catch (e) {}
 })();
 </script>
+<script>
+(async function autoFillFromWhatsApp() {
+  try {
+    // Primero intentar localStorage (viene de la web)
+    const raw = localStorage.getItem("albi_profile");
+    if (raw) {
+      const p = JSON.parse(raw);
+      fill("business_name", p.business_name);
+      fill("phone",         p.phone);
+      fill("email",         p.email);
+      fill("description",   p.business_description);
+      showBanner(p.name);
+      return;
+    }
 
+    // Si viene de WhatsApp con ?ref=TELEFONO
+    const phone = new URLSearchParams(window.location.search).get("ref");
+    if (!phone) return;
+
+    const res = await fetch(`https://wainalbot.gabrieldelaaalaz.workers.dev/profile?phone=${phone}`);
+    const p = await res.json();
+    if (!p || !Object.keys(p).length) return;
+
+    fill("business_name", p.business_name);
+    fill("phone",         p.phone || phone);
+    fill("email",         p.email);
+    fill("description",   p.business_description);
+    fill("business_type", p.business_name);
+    showBanner(p.name);
+
+  } catch(e) {}
+
+  function fill(name, value) {
+    if (!value) return;
+    const el = document.querySelector(`[name="${name}"]`);
+    if (el && !el.value) el.value = value;
+  }
+
+  function showBanner(name) {
+    const banner = document.createElement("div");
+    banner.style.cssText = "background:rgba(26,143,209,0.1);border:1px solid rgba(26,143,209,0.3);border-radius:8px;padding:10px 16px;margin-bottom:20px;font-size:0.82rem;color:#1a8fd1;";
+    banner.innerHTML = `✨ Hola${name ? " <strong>" + name + "</strong>" : ""}! Autorellenamos algunos datos de tu conversación con Albi.`;
+    const form = document.getElementById("onboarding-form");
+    if (form) form.prepend(banner);
+  }
+})();
+</script>
 </body>
 </html>
