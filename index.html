@@ -1123,6 +1123,8 @@ window.addEventListener('scroll',()=>{
       });
       const data = await res.json();
       const reply = data.reply || "Disculpá, hubo un error. Intentá de nuevo.";
+      // Guardar perfil en localStorage para autorellenar el formulario
+      if (data.profile) localStorage.setItem("albi_profile", JSON.stringify(data.profile));
       messages.innerHTML += `<p><b>Albi:</b> ${reply.replace(/\n/g,"<br>")}</p>`;
       setAvatar("happy");
     } catch(e) {
