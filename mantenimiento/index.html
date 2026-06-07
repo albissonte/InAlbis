@@ -8,121 +8,276 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --sun:   #f59e0b;
-    --sun2:  #d97706;
-    --sun3:  #fbbf24;
-    --warm:  #451a03;
-    --text2: #92400e;
-    --muted: #b45309;
-    --border:rgba(245,158,11,0.22);
-    --glow:  rgba(251,191,36,0.3);
+    --rose:   #f43f5e;
+    --orange: #f97316;
+    --amber:  #fb923c;
+    --pink:   #ec4899;
+    --purple: #a855f7;
+    --warm:   #4a0519;
+    --text2:  #9f1239;
+    --muted:  #be123c;
+    --border: rgba(244,63,94,0.2);
   }
   *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
   html { scroll-behavior:smooth; }
-  body { font-family:'Plus Jakarta Sans',sans-serif; background:#fffbeb; color:var(--warm); min-height:100vh; overflow-x:hidden; }
+  body { font-family:'Plus Jakarta Sans',sans-serif; background:#fff1f2; color:var(--warm); min-height:100vh; overflow-x:hidden; }
 
-  .sky-bg { position:fixed;inset:0;z-index:0;background:linear-gradient(180deg,#fed7aa 0%,#fde68a 30%,#fef9c3 65%,#fffbeb 100%); }
-  .sun { position:fixed;top:-80px;left:50%;transform:translateX(-50%);width:240px;height:240px;border-radius:50%;background:radial-gradient(circle at 40% 40%,#fef08a,#f59e0b 50%,#d97706);box-shadow:0 0 70px 25px rgba(251,191,36,0.45),0 0 140px 50px rgba(245,158,11,0.25);animation:pulse-sun 4s ease-in-out infinite;z-index:1; }
-  @keyframes pulse-sun{0%,100%{box-shadow:0 0 70px 25px rgba(251,191,36,0.45),0 0 140px 50px rgba(245,158,11,0.25);}50%{box-shadow:0 0 90px 35px rgba(251,191,36,0.6),0 0 180px 70px rgba(245,158,11,0.35);}}
-  .sun-rays { position:fixed;top:-140px;left:50%;transform:translateX(-50%);width:600px;height:600px;z-index:0;animation:rotate-rays 25s linear infinite; }
-  .sun-rays::before,.sun-rays::after{content:'';position:absolute;inset:0;border-radius:50%;background:repeating-conic-gradient(rgba(251,191,36,0.1) 0deg 10deg,transparent 10deg 20deg);}
-  .sun-rays::after{transform:rotate(10deg);opacity:0.6;}
-  @keyframes rotate-rays{to{transform:translateX(-50%) rotate(360deg);}}
-  .cloud{position:fixed;background:rgba(255,255,255,0.65);border-radius:100px;filter:blur(2px);z-index:1;}
-  .cloud::before,.cloud::after{content:'';position:absolute;background:inherit;border-radius:50%;}
-  .c1{width:160px;height:45px;top:22%;left:-10px;animation:drift1 28s ease-in-out infinite;}
-  .c1::before{width:70px;height:70px;top:-35px;left:18px;}.c1::after{width:55px;height:55px;top:-28px;left:65px;}
-  .c2{width:120px;height:35px;top:38%;right:-5px;animation:drift2 32s ease-in-out infinite;}
-  .c2::before{width:55px;height:55px;top:-28px;left:12px;}.c2::after{width:45px;height:45px;top:-22px;left:50px;}
-  @keyframes drift1{0%,100%{transform:translateX(0);}50%{transform:translateX(28px);}}
-  @keyframes drift2{0%,100%{transform:translateX(0);}50%{transform:translateX(-22px);}}
+  /* ── BG ATARDECER ── */
+  .sky-bg {
+    position:fixed; inset:0; z-index:0;
+    background:linear-gradient(
+      180deg,
+      #1e1035 0%,
+      #4a1040 8%,
+      #831843 16%,
+      #be185d 24%,
+      #e11d48 32%,
+      #f97316 46%,
+      #fb923c 58%,
+      #fcd34d 70%,
+      #fef3c7 85%,
+      #fff1f2 100%
+    );
+  }
 
-  .page{position:relative;z-index:2;min-height:100vh;}
+  /* Sol en el horizonte */
+  .sun {
+    position:fixed;
+    bottom: 28%;
+    left:50%;
+    transform:translateX(-50%);
+    width:180px; height:180px;
+    border-radius:50%;
+    background:radial-gradient(circle at 45% 45%, #fef08a, #fbbf24 40%, #f97316 70%, #ef4444);
+    box-shadow:
+      0 0 60px 20px rgba(251,146,60,0.6),
+      0 0 120px 50px rgba(249,115,22,0.35),
+      0 0 200px 80px rgba(244,63,94,0.2);
+    animation:pulse-sun 5s ease-in-out infinite;
+    z-index:1;
+  }
+  @keyframes pulse-sun {
+    0%,100%{box-shadow:0 0 60px 20px rgba(251,146,60,0.6),0 0 120px 50px rgba(249,115,22,0.35),0 0 200px 80px rgba(244,63,94,0.2);}
+    50%{box-shadow:0 0 80px 30px rgba(251,146,60,0.75),0 0 160px 70px rgba(249,115,22,0.45),0 0 260px 100px rgba(244,63,94,0.28);}
+  }
 
-  /* HEADER */
-  .header{text-align:center;padding:5.5rem 1.5rem 2.5rem;}
-  .header-logo{display:inline-flex;align-items:center;gap:0.4rem;background:rgba(255,255,255,0.6);border:1.5px solid rgba(245,158,11,0.3);border-radius:100px;padding:0.35rem 1rem;font-size:0.75rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--sun2);margin-bottom:1.5rem;backdrop-filter:blur(8px);}
-  .header h1{font-family:'Playfair Display',serif;font-size:clamp(1.9rem,5.5vw,2.8rem);color:var(--warm);line-height:1.15;margin-bottom:0.75rem;}
-  .header h1 em{font-style:italic;color:var(--sun2);}
-  .header p{color:var(--text2);font-size:0.93rem;max-width:420px;margin:0 auto;line-height:1.65;}
+  /* Rayos del sol */
+  .sun-rays {
+    position:fixed;
+    bottom:20%;
+    left:50%;
+    transform:translateX(-50%);
+    width:500px; height:500px;
+    z-index:0;
+    animation:rotate-rays 30s linear infinite;
+    opacity:0.4;
+  }
+  .sun-rays::before,.sun-rays::after {
+    content:''; position:absolute; inset:0; border-radius:50%;
+    background:repeating-conic-gradient(rgba(251,146,60,0.25) 0deg 8deg, transparent 8deg 18deg);
+  }
+  .sun-rays::after { transform:rotate(9deg); opacity:0.6; }
+  @keyframes rotate-rays { to { transform:translateX(-50%) rotate(360deg); } }
 
-  .wrapper{max-width:900px;margin:0 auto;padding:0 1.25rem 5rem;}
+  /* Línea del horizonte */
+  .horizon {
+    position:fixed;
+    bottom:28%;
+    left:0; right:0;
+    height:2px;
+    background:linear-gradient(90deg,transparent,rgba(251,146,60,0.6) 20%,rgba(253,186,116,0.9) 50%,rgba(251,146,60,0.6) 80%,transparent);
+    z-index:1;
+    box-shadow:0 0 20px 4px rgba(251,146,60,0.4);
+  }
 
-  /* PLAN SELECTOR */
-  .plans-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1rem;margin-bottom:2rem;}
+  /* Nubes oscuras del atardecer */
+  .cloud {
+    position:fixed;
+    background:rgba(120,20,60,0.35);
+    border-radius:100px;
+    filter:blur(3px);
+    z-index:2;
+  }
+  .cloud::before,.cloud::after { content:''; position:absolute; background:inherit; border-radius:50%; }
+  .c1{width:200px;height:55px;bottom:38%;left:-20px;animation:drift1 30s ease-in-out infinite;}
+  .c1::before{width:90px;height:90px;top:-45px;left:20px;}
+  .c1::after{width:70px;height:70px;top:-35px;left:80px;}
+  .c2{width:160px;height:45px;bottom:45%;right:-10px;animation:drift2 35s ease-in-out infinite;}
+  .c2::before{width:70px;height:70px;top:-35px;left:15px;}
+  .c2::after{width:55px;height:55px;top:-28px;left:65px;}
+  .c3{width:120px;height:35px;bottom:42%;left:15%;animation:drift1 40s ease-in-out infinite reverse;opacity:0.6;}
+  .c3::before{width:55px;height:55px;top:-28px;left:10px;}
+  .c3::after{width:42px;height:42px;top:-22px;left:48px;}
+
+  /* Nubes rosadas encima */
+  .cloud-pink {
+    position:fixed;
+    background:rgba(236,72,153,0.2);
+    border-radius:100px;
+    filter:blur(4px);
+    z-index:1;
+  }
+  .cloud-pink::before,.cloud-pink::after{content:'';position:absolute;background:inherit;border-radius:50%;}
+  .cp1{width:250px;height:60px;top:15%;left:5%;animation:drift2 38s ease-in-out infinite;}
+  .cp1::before{width:100px;height:100px;top:-50px;left:25px;}
+  .cp1::after{width:80px;height:80px;top:-40px;left:100px;}
+  .cp2{width:180px;height:50px;top:22%;right:8%;animation:drift1 32s ease-in-out infinite;}
+  .cp2::before{width:80px;height:80px;top:-40px;left:18px;}
+  .cp2::after{width:65px;height:65px;top:-32px;left:75px;}
+
+  @keyframes drift1{0%,100%{transform:translateX(0);}50%{transform:translateX(30px);}}
+  @keyframes drift2{0%,100%{transform:translateX(0);}50%{transform:translateX(-25px);}}
+
+  /* Estrellas */
+  .stars {
+    position:fixed; top:0; left:0; right:0; height:30%;
+    z-index:1; pointer-events:none;
+  }
+  .star {
+    position:absolute;
+    width:2px; height:2px;
+    background:#fff;
+    border-radius:50%;
+    animation:twinkle 3s ease-in-out infinite;
+  }
+  @keyframes twinkle{0%,100%{opacity:0.2;}50%{opacity:0.9;}}
+
+  /* ── LAYOUT ── */
+  .page{position:relative;z-index:3;min-height:100vh;}
+
+  /* ── HEADER ── */
+  .header{text-align:center;padding:5rem 1.5rem 2.5rem;}
+  .header-logo{
+    display:inline-flex;align-items:center;gap:0.4rem;
+    background:rgba(255,255,255,0.12);
+    border:1.5px solid rgba(255,255,255,0.25);
+    border-radius:100px;padding:0.35rem 1rem;
+    font-size:0.75rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;
+    color:rgba(255,255,255,0.9);margin-bottom:1.5rem;backdrop-filter:blur(8px);
+  }
+  .header h1{
+    font-family:'Playfair Display',serif;
+    font-size:clamp(2rem,5.5vw,3rem);
+    color:#fff;line-height:1.15;margin-bottom:0.75rem;
+    text-shadow:0 2px 20px rgba(244,63,94,0.4),0 4px 40px rgba(0,0,0,0.2);
+  }
+  .header h1 em{font-style:italic;color:#fcd34d;}
+  .header p{color:rgba(255,255,255,0.75);font-size:0.93rem;max-width:420px;margin:0 auto;line-height:1.65;}
+
+  /* ── WRAPPER ── */
+  .wrapper{max-width:920px;margin:0 auto;padding:0 1.25rem 5rem;}
+
+  /* ── PLAN CARDS ── */
+  .plans-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(255px,1fr));gap:1rem;margin-bottom:2rem;}
 
   .plan-card{
-    background:rgba(255,255,255,0.75);border:2px solid rgba(245,158,11,0.2);
-    border-radius:18px;overflow:hidden;cursor:pointer;
-    transition:all 0.22s;backdrop-filter:blur(10px);
-    box-shadow:0 4px 20px rgba(245,158,11,0.06);
+    background:rgba(255,255,255,0.12);
+    border:1.5px solid rgba(255,255,255,0.2);
+    border-radius:20px;overflow:hidden;cursor:pointer;
+    transition:all 0.25s;
+    backdrop-filter:blur(16px);
+    box-shadow:0 4px 24px rgba(0,0,0,0.15);
   }
-  .plan-card:hover{border-color:var(--sun);transform:translateY(-3px);box-shadow:0 12px 32px rgba(245,158,11,0.15);}
-  .plan-card.selected{border-color:var(--sun);box-shadow:0 0 0 4px rgba(251,191,36,0.18),0 8px 24px rgba(245,158,11,0.15);}
+  .plan-card:hover{border-color:rgba(255,255,255,0.45);transform:translateY(-4px);box-shadow:0 16px 40px rgba(0,0,0,0.25);}
+  .plan-card.selected{border-color:rgba(255,255,255,0.6);box-shadow:0 0 0 3px rgba(255,255,255,0.2),0 12px 36px rgba(0,0,0,0.25);}
 
-  .plan-top{padding:1.5rem 1.5rem 1.25rem;text-align:center;}
-  .plan-icon{font-size:2rem;margin-bottom:0.6rem;}
-  .plan-name{font-family:'Playfair Display',serif;font-size:1.25rem;color:var(--warm);margin-bottom:0.3rem;}
-  .plan-tagline{font-size:0.78rem;color:var(--muted);margin-bottom:1rem;line-height:1.4;}
+  /* Tops con degradados únicos */
+  .plan-top{padding:1.75rem 1.5rem 1.4rem;text-align:center;}
+  .card-hosting   .plan-top{background:linear-gradient(135deg,#1e1035,#4a1040,#831843);}
+  .card-mantenimiento .plan-top{background:linear-gradient(135deg,#831843,#e11d48,#f97316);}
+  .card-seo       .plan-top{background:linear-gradient(135deg,#f97316,#fb923c,#fcd34d);}
+
+  .plan-icon{font-size:2.2rem;margin-bottom:0.65rem;}
+  .plan-name{font-family:'Playfair Display',serif;font-size:1.3rem;color:#fff;margin-bottom:0.3rem;text-shadow:0 1px 8px rgba(0,0,0,0.2);}
+  .plan-tagline{font-size:0.78rem;color:rgba(255,255,255,0.7);margin-bottom:1rem;line-height:1.45;}
   .plan-price{display:flex;align-items:baseline;justify-content:center;gap:0.2rem;margin-bottom:0.15rem;}
-  .p-symbol{font-size:1rem;color:var(--sun2);font-weight:700;}
-  .p-amount{font-size:2.2rem;font-weight:800;color:var(--warm);line-height:1;}
-  .p-period{font-size:0.78rem;color:var(--muted);}
-  .plan-sub{font-size:0.72rem;color:var(--muted);}
+  .p-symbol{font-size:1.1rem;color:rgba(255,255,255,0.85);font-weight:700;}
+  .p-amount{font-size:2.5rem;font-weight:800;color:#fff;line-height:1;text-shadow:0 2px 12px rgba(0,0,0,0.15);}
+  .p-period{font-size:0.8rem;color:rgba(255,255,255,0.65);}
+  .plan-sub{font-size:0.7rem;color:rgba(255,255,255,0.55);margin-top:0.15rem;}
 
-  .plan-divider{height:1px;background:rgba(245,158,11,0.12);margin:0 1.25rem;}
+  .plan-divider{height:1px;background:rgba(255,255,255,0.1);}
 
-  .plan-features{padding:1.1rem 1.5rem 1.5rem;}
-  .feat{display:flex;align-items:flex-start;gap:0.5rem;padding:0.4rem 0;font-size:0.82rem;color:var(--text2);line-height:1.4;}
-  .feat-icon{font-size:0.9rem;flex-shrink:0;margin-top:1px;}
+  .plan-features{padding:1.25rem 1.5rem 1.4rem;}
+  .feat{display:flex;align-items:flex-start;gap:0.5rem;padding:0.42rem 0;font-size:0.82rem;color:rgba(255,255,255,0.82);line-height:1.4;border-bottom:1px solid rgba(255,255,255,0.06);}
+  .feat:last-child{border-bottom:none;}
+  .feat-icon{font-size:0.88rem;flex-shrink:0;margin-top:1px;}
 
   .plan-select-btn{
-    margin:0 1.25rem 1.25rem;
+    margin:0 1.25rem 1.4rem;
     width:calc(100% - 2.5rem);
-    background:rgba(245,158,11,0.1);
-    border:1.5px solid rgba(245,158,11,0.3);
-    border-radius:10px;padding:0.65rem;
+    background:rgba(255,255,255,0.12);
+    border:1.5px solid rgba(255,255,255,0.3);
+    border-radius:10px;padding:0.7rem;
     font-family:'Plus Jakarta Sans',sans-serif;
-    font-size:0.85rem;font-weight:700;color:var(--sun2);
+    font-size:0.85rem;font-weight:700;color:rgba(255,255,255,0.9);
     cursor:pointer;transition:all 0.15s;
   }
-  .plan-card.selected .plan-select-btn{background:linear-gradient(135deg,var(--sun2),var(--sun));color:#fff;border-color:transparent;box-shadow:0 4px 14px rgba(245,158,11,0.3);}
-  .plan-card:hover .plan-select-btn{background:rgba(245,158,11,0.18);}
-  .plan-card.selected:hover .plan-select-btn{background:linear-gradient(135deg,var(--sun2),var(--sun));}
+  .plan-card:hover .plan-select-btn{background:rgba(255,255,255,0.2);}
+  .plan-card.selected .plan-select-btn{background:rgba(255,255,255,0.95);color:var(--warm);}
 
-  /* FORM */
-  .form-card{background:rgba(255,255,255,0.78);border:1.5px solid rgba(245,158,11,0.22);border-radius:20px;backdrop-filter:blur(12px);box-shadow:0 4px 28px rgba(245,158,11,0.08);padding:1.75rem;margin-bottom:1rem;display:none;}
+  /* ── FORM ── */
+  .form-card{
+    background:rgba(255,255,255,0.13);
+    border:1.5px solid rgba(255,255,255,0.22);
+    border-radius:20px;backdrop-filter:blur(16px);
+    box-shadow:0 4px 28px rgba(0,0,0,0.15);
+    padding:1.75rem;margin-bottom:1rem;display:none;
+  }
   .form-card.show{display:block;animation:fadeUp 0.35s ease;}
 
-  .form-title{font-family:'Playfair Display',serif;font-size:1.3rem;color:var(--warm);margin-bottom:0.3rem;}
-  .form-sub{font-size:0.83rem;color:var(--text2);margin-bottom:1.5rem;}
-  .selected-plan-tag{display:inline-flex;align-items:center;gap:0.4rem;background:rgba(245,158,11,0.12);border:1px solid rgba(245,158,11,0.25);border-radius:100px;padding:0.3rem 0.85rem;font-size:0.75rem;font-weight:700;color:var(--sun2);margin-bottom:1.25rem;}
+  .form-title{font-family:'Playfair Display',serif;font-size:1.35rem;color:#fff;margin-bottom:0.3rem;}
+  .form-sub{font-size:0.83rem;color:rgba(255,255,255,0.65);margin-bottom:1.4rem;}
 
-  .form-label{display:block;font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);margin-bottom:0.45rem;}
-  .form-input{width:100%;background:rgba(255,251,235,0.8);border:1.5px solid rgba(245,158,11,0.25);border-radius:10px;padding:0.75rem 1rem;font-family:'Plus Jakarta Sans',sans-serif;font-size:0.9rem;color:var(--warm);transition:border-color 0.2s;margin-bottom:1rem;}
-  .form-input:focus{outline:none;border-color:var(--sun);background:#fffbeb;}
-  .form-input::placeholder{color:var(--muted);opacity:0.55;}
+  .selected-plan-tag{
+    display:inline-flex;align-items:center;gap:0.4rem;
+    background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.25);
+    border-radius:100px;padding:0.3rem 0.9rem;
+    font-size:0.75rem;font-weight:700;color:rgba(255,255,255,0.9);
+    margin-bottom:1.25rem;
+  }
 
-  .btn-subscribe{width:100%;background:linear-gradient(135deg,var(--sun2),var(--sun));color:#fff;border:none;border-radius:12px;padding:1rem 1.5rem;font-family:'Plus Jakarta Sans',sans-serif;font-size:1rem;font-weight:700;cursor:pointer;transition:all 0.2s;box-shadow:0 4px 18px rgba(245,158,11,0.35);display:flex;align-items:center;justify-content:center;gap:0.5rem;}
-  .btn-subscribe:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(245,158,11,0.45);}
+  .form-label{display:block;font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:rgba(255,255,255,0.55);margin-bottom:0.45rem;}
+  .form-input{
+    width:100%;
+    background:rgba(255,255,255,0.1);
+    border:1.5px solid rgba(255,255,255,0.2);
+    border-radius:10px;padding:0.75rem 1rem;
+    font-family:'Plus Jakarta Sans',sans-serif;font-size:0.9rem;color:#fff;
+    transition:border-color 0.2s;margin-bottom:1rem;
+  }
+  .form-input:focus{outline:none;border-color:rgba(255,255,255,0.5);background:rgba(255,255,255,0.15);}
+  .form-input::placeholder{color:rgba(255,255,255,0.35);}
+
+  .btn-subscribe{
+    width:100%;
+    background:linear-gradient(135deg,#e11d48,#f97316);
+    color:#fff;border:none;border-radius:12px;
+    padding:1rem 1.5rem;
+    font-family:'Plus Jakarta Sans',sans-serif;font-size:1rem;font-weight:700;
+    cursor:pointer;transition:all 0.2s;
+    box-shadow:0 4px 20px rgba(225,29,72,0.4);
+    display:flex;align-items:center;justify-content:center;gap:0.5rem;
+  }
+  .btn-subscribe:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(225,29,72,0.5);}
   .btn-subscribe:disabled{opacity:0.5;cursor:not-allowed;transform:none;}
 
-  .security{display:flex;align-items:center;justify-content:center;gap:0.5rem;font-size:0.72rem;color:var(--muted);margin-top:1rem;}
+  .security{display:flex;align-items:center;justify-content:center;gap:0.5rem;font-size:0.72rem;color:rgba(255,255,255,0.45);margin-top:1rem;}
 
-  .error-msg{background:rgba(239,68,68,0.08);border:1.5px solid rgba(239,68,68,0.2);border-radius:10px;padding:0.75rem 1rem;font-size:0.83rem;color:#b91c1c;margin-top:0.75rem;display:none;}
+  .error-msg{background:rgba(239,68,68,0.15);border:1.5px solid rgba(239,68,68,0.3);border-radius:10px;padding:0.75rem 1rem;font-size:0.83rem;color:#fca5a5;margin-top:0.75rem;display:none;}
   .error-msg.show{display:block;}
 
-  /* SUCCESS */
-  .success-screen{display:none;text-align:center;padding:3rem 1rem;animation:fadeUp 0.5s ease;}
+  /* ── SUCCESS ── */
+  .success-screen{display:none;text-align:center;padding:4rem 1rem;animation:fadeUp 0.5s ease;}
   .success-screen.show{display:block;}
   .success-icon{font-size:3.5rem;margin-bottom:1rem;}
-  .success-screen h2{font-family:'Playfair Display',serif;font-size:1.9rem;color:var(--warm);margin-bottom:0.75rem;}
-  .success-screen p{color:var(--text2);font-size:0.93rem;line-height:1.65;max-width:360px;margin:0 auto 1.5rem;}
+  .success-screen h2{font-family:'Playfair Display',serif;font-size:2rem;color:#fff;margin-bottom:0.75rem;text-shadow:0 2px 16px rgba(244,63,94,0.3);}
+  .success-screen p{color:rgba(255,255,255,0.7);font-size:0.93rem;line-height:1.65;max-width:360px;margin:0 auto 1.75rem;}
 
-  .spinner{display:none;width:22px;height:22px;border:3px solid rgba(255,255,255,0.4);border-top-color:#fff;border-radius:50%;animation:spin 0.7s linear infinite;}
+  .spinner{display:none;width:22px;height:22px;border:3px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:spin 0.7s linear infinite;}
   .spinner.show{display:block;}
   @keyframes spin{to{transform:rotate(360deg);}}
-  @keyframes fadeUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
 
   @media(max-width:480px){.plans-grid{grid-template-columns:1fr;}}
 </style>
@@ -132,81 +287,88 @@
 <div class="sky-bg"></div>
 <div class="sun-rays"></div>
 <div class="sun"></div>
+<div class="horizon"></div>
 <div class="cloud c1"></div>
 <div class="cloud c2"></div>
+<div class="cloud c3"></div>
+<div class="cloud-pink cp1"></div>
+<div class="cloud-pink cp2"></div>
+
+<!-- Estrellas generadas por JS -->
+<div class="stars" id="stars"></div>
 
 <div class="page">
 
   <div class="header">
-    <div class="header-logo">☀️ Páginas inAlbis</div>
-    <h1>Tu web siempre<br><em>al sol</em></h1>
-    <p>Planes mensuales para que tu presencia digital esté siempre activa, segura y creciendo.</p>
+    <div class="header-logo">🌅 Páginas inAlbis</div>
+    <h1>Tu web siempre<br><em>encendida</em></h1>
+    <p>Planes mensuales para que tu negocio digital esté siempre activo, seguro y creciendo.</p>
   </div>
 
   <div class="wrapper">
 
-    <!-- Plans -->
     <div id="plans-section">
       <div class="plans-grid">
 
         <!-- Hosting -->
-        <div class="plan-card" id="card-hosting" onclick="selectPlan('hosting')">
+        <div class="plan-card card-hosting" id="card-hosting" onclick="selectPlan('hosting')">
           <div class="plan-top">
             <div class="plan-icon">☁️</div>
             <div class="plan-name">Hosting Gestionado</div>
             <div class="plan-tagline">Tu sitio online, rápido y seguro. Sin preocupaciones técnicas.</div>
             <div class="plan-price"><span class="p-symbol">$</span><span class="p-amount">50</span><span class="p-period">USD/mes</span></div>
-            <div class="plan-sub">Cancelás cuando quieras</div>
+            <div class="plan-sub">Cancelás cuando quieras · Sin permanencia</div>
           </div>
           <div class="plan-divider"></div>
           <div class="plan-features">
-            <div class="feat"><span class="feat-icon">🌐</span>Dominio .com.ar incluido y renovado</div>
-            <div class="feat"><span class="feat-icon">⚡</span>Hosting en Cloudflare (máxima velocidad)</div>
-            <div class="feat"><span class="feat-icon">🔒</span>SSL y seguridad activa</div>
-            <div class="feat"><span class="feat-icon">📞</span>Soporte técnico por WhatsApp</div>
-            <div class="feat"><span class="feat-icon">🔄</span>Backups mensuales del sitio</div>
+            <div class="feat"><span class="feat-icon">🌐</span>Tu sitio siempre online, sin interrupciones</div>
+            <div class="feat"><span class="feat-icon">🏷️</span>Dominio .com.ar renovado cada año</div>
+            <div class="feat"><span class="feat-icon">⚡</span>Carga ultra rápida desde cualquier celular</div>
+            <div class="feat"><span class="feat-icon">🔒</span>Certificado de seguridad SSL activo</div>
+            <div class="feat"><span class="feat-icon">💾</span>Backup mensual de todo tu sitio</div>
+            <div class="feat"><span class="feat-icon">💬</span>Soporte técnico por WhatsApp</div>
           </div>
           <button class="plan-select-btn">Elegir este plan</button>
         </div>
 
         <!-- Mantenimiento -->
-        <div class="plan-card" id="card-mantenimiento" onclick="selectPlan('mantenimiento')">
+        <div class="plan-card card-mantenimiento" id="card-mantenimiento" onclick="selectPlan('mantenimiento')">
           <div class="plan-top">
             <div class="plan-icon">🛠️</div>
             <div class="plan-name">Mantenimiento Web</div>
             <div class="plan-tagline">Tu web siempre actualizada con los cambios que necesitás.</div>
             <div class="plan-price"><span class="p-symbol">$</span><span class="p-amount">100</span><span class="p-period">USD/mes</span></div>
-            <div class="plan-sub">Cancelás cuando quieras</div>
+            <div class="plan-sub">Cancelás cuando quieras · Sin permanencia</div>
           </div>
           <div class="plan-divider"></div>
           <div class="plan-features">
-            <div class="feat"><span class="feat-icon">✏️</span>Actualizaciones de contenido ilimitadas</div>
-            <div class="feat"><span class="feat-icon">📸</span>Cambios de fotos, textos y precios</div>
-            <div class="feat"><span class="feat-icon">🛡️</span>Monitoreo de seguridad semanal</div>
-            <div class="feat"><span class="feat-icon">📊</span>Reporte mensual de visitas</div>
-            <div class="feat"><span class="feat-icon">🔧</span>Corrección de errores sin costo extra</div>
-            <div class="feat"><span class="feat-icon">💬</span>Soporte prioritario por WhatsApp</div>
+            <div class="feat"><span class="feat-icon">✨</span>Todo lo del Hosting Gestionado incluido</div>
+            <div class="feat"><span class="feat-icon">✏️</span>Cambios de textos, fotos y precios cuando quieras</div>
+            <div class="feat"><span class="feat-icon">📣</span>Promociones y novedades actualizadas al instante</div>
+            <div class="feat"><span class="feat-icon">🔧</span>Corrección de errores sin costo adicional</div>
+            <div class="feat"><span class="feat-icon">📊</span>Reporte mensual de visitas a tu sitio</div>
+            <div class="feat"><span class="feat-icon">⭐</span>Respuesta prioritaria por WhatsApp</div>
           </div>
           <button class="plan-select-btn">Elegir este plan</button>
         </div>
 
         <!-- SEO -->
-        <div class="plan-card" id="card-seo" onclick="selectPlan('seo')">
+        <div class="plan-card card-seo" id="card-seo" onclick="selectPlan('seo')">
           <div class="plan-top">
             <div class="plan-icon">📈</div>
             <div class="plan-name">SEO Mensual</div>
-            <div class="plan-tagline">Más visitas, más clientes. Aparecé primero en Google.</div>
+            <div class="plan-tagline">Aparecé primero en Google cuando te buscan.</div>
             <div class="plan-price"><span class="p-symbol">$</span><span class="p-amount">150</span><span class="p-period">USD/mes</span></div>
-            <div class="plan-sub">Cancelás cuando quieras</div>
+            <div class="plan-sub">Cancelás cuando quieras · Sin permanencia</div>
           </div>
           <div class="plan-divider"></div>
           <div class="plan-features">
-            <div class="feat"><span class="feat-icon">🔍</span>Optimización de palabras clave locales</div>
-            <div class="feat"><span class="feat-icon">📝</span>Mejora de contenido y meta tags</div>
-            <div class="feat"><span class="feat-icon">🗺️</span>Google Maps + Search Console</div>
-            <div class="feat"><span class="feat-icon">📊</span>Reporte mensual de posiciones en PDF</div>
-            <div class="feat"><span class="feat-icon">🔗</span>Link building y autoridad de dominio</div>
-            <div class="feat"><span class="feat-icon">🚀</span>Todo lo del plan Mantenimiento incluido</div>
+            <div class="feat"><span class="feat-icon">✨</span>Todo lo del Mantenimiento Web incluido</div>
+            <div class="feat"><span class="feat-icon">🔍</span>Tu negocio aparece en Google cuando te buscan</div>
+            <div class="feat"><span class="feat-icon">🏆</span>Optimización continua para superar a la competencia</div>
+            <div class="feat"><span class="feat-icon">🗺️</span>Tu ficha de Google Maps mejorada y actualizada</div>
+            <div class="feat"><span class="feat-icon">📄</span>Reporte mensual de posiciones en Google en PDF</div>
+            <div class="feat"><span class="feat-icon">🚀</span>Estrategia de crecimiento personalizada mes a mes</div>
           </div>
           <button class="plan-select-btn">Elegir este plan</button>
         </div>
@@ -219,9 +381,9 @@
         <div class="form-sub">Te redirigimos a Mercado Pago para ingresar tu tarjeta de forma segura.</div>
 
         <div class="selected-plan-tag">
-          <span id="selected-plan-icon">☀️</span>
+          <span id="selected-plan-icon">🌅</span>
           <span id="selected-plan-label">Plan seleccionado</span>
-          <span id="selected-plan-price" style="opacity:0.7"></span>
+          <span id="selected-plan-price" style="opacity:0.65"></span>
         </div>
 
         <label class="form-label">Tu email</label>
@@ -245,13 +407,26 @@
       <div class="success-icon">🌅</div>
       <h2>¡Suscripción activa!</h2>
       <p>Tu plan está activo. Recibirás un email de confirmación y nos pondremos en contacto para coordinar el servicio mensual.</p>
-      <a href="/" style="display:inline-block;background:linear-gradient(135deg,var(--sun2),var(--sun));color:#fff;padding:0.85rem 2rem;border-radius:12px;text-decoration:none;font-weight:700;font-size:0.9rem;box-shadow:0 4px 16px rgba(245,158,11,0.35);">Volver al inicio</a>
+      <a href="/" style="display:inline-block;background:linear-gradient(135deg,#e11d48,#f97316);color:#fff;padding:0.85rem 2rem;border-radius:12px;text-decoration:none;font-weight:700;font-size:0.9rem;box-shadow:0 4px 16px rgba(225,29,72,0.4);">Volver al inicio</a>
     </div>
 
   </div>
 </div>
 
 <script>
+  // Estrellas
+  const starsEl = document.getElementById('stars');
+  for(let i=0;i<40;i++){
+    const s=document.createElement('div');
+    s.className='star';
+    s.style.left=Math.random()*100+'%';
+    s.style.top=Math.random()*100+'%';
+    s.style.animationDelay=Math.random()*4+'s';
+    s.style.animationDuration=(2+Math.random()*3)+'s';
+    s.style.opacity=Math.random()*0.5;
+    starsEl.appendChild(s);
+  }
+
   const plans = {
     hosting:       { name:'Hosting Gestionado', icon:'☁️', price:50,  label:'$50 USD/mes' },
     mantenimiento: { name:'Mantenimiento Web',  icon:'🛠️', price:100, label:'$100 USD/mes' },
@@ -262,59 +437,49 @@
 
   function selectPlan(key) {
     selectedPlan = key;
-    document.querySelectorAll('.plan-card').forEach(c => c.classList.remove('selected'));
-    document.getElementById('card-' + key).classList.add('selected');
-
-    const p = plans[key];
+    document.querySelectorAll('.plan-card').forEach(c=>c.classList.remove('selected'));
+    document.getElementById('card-'+key).classList.add('selected');
+    const p=plans[key];
     document.getElementById('selected-plan-icon').textContent  = p.icon;
     document.getElementById('selected-plan-label').textContent = p.name;
-    document.getElementById('selected-plan-price').textContent = '· ' + p.label;
-    document.getElementById('btn-text').textContent = 'Suscribirme — ' + p.label;
-
-    const fc = document.getElementById('form-card');
+    document.getElementById('selected-plan-price').textContent = '· '+p.label;
+    document.getElementById('btn-text').textContent = 'Suscribirme — '+p.label;
+    const fc=document.getElementById('form-card');
     fc.classList.add('show');
-    fc.scrollIntoView({ behavior:'smooth', block:'start' });
+    fc.scrollIntoView({behavior:'smooth',block:'start'});
   }
 
   async function startSubscription() {
-    const email = document.getElementById('sub-email').value.trim();
-    const name  = document.getElementById('sub-name').value.trim();
-    const errEl = document.getElementById('error-msg');
+    const email=document.getElementById('sub-email').value.trim();
+    const name=document.getElementById('sub-name').value.trim();
+    const errEl=document.getElementById('error-msg');
     errEl.classList.remove('show');
-
-    if (!selectedPlan) return;
-    if (!email || !email.includes('@')) { errEl.textContent='Ingresá un email válido.'; errEl.classList.add('show'); return; }
-    if (!name) { errEl.textContent='Ingresá tu nombre o empresa.'; errEl.classList.add('show'); return; }
-
-    const btn     = document.getElementById('btn-subscribe');
-    const btnText = document.getElementById('btn-text');
-    const spinner = document.getElementById('btn-spinner');
-    btn.disabled=true; btnText.textContent='Procesando...'; spinner.classList.add('show');
-
+    if(!selectedPlan) return;
+    if(!email||!email.includes('@')){errEl.textContent='Ingresá un email válido.';errEl.classList.add('show');return;}
+    if(!name){errEl.textContent='Ingresá tu nombre o empresa.';errEl.classList.add('show');return;}
+    const btn=document.getElementById('btn-subscribe');
+    const btnText=document.getElementById('btn-text');
+    const spinner=document.getElementById('btn-spinner');
+    btn.disabled=true;btnText.textContent='Procesando...';spinner.classList.add('show');
     try {
-      const res = await fetch('/api/create-subscription', {
-        method:'POST',
-        headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({ email, name, plan:selectedPlan, priceUsd:plans[selectedPlan].price }),
+      const res=await fetch('/api/create-subscription',{
+        method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({email,name,plan:selectedPlan,priceUsd:plans[selectedPlan].price}),
       });
-      const data = await res.json();
-
-      if (data.success && data.init_point) {
-        window.location.href = data.init_point;
-      } else {
-        throw new Error(data.message || 'Error al crear la suscripción.');
-      }
-    } catch(e) {
-      errEl.textContent = e.message || 'Error de conexión. Intentá de nuevo.';
+      const data=await res.json();
+      if(data.success&&data.init_point){window.location.href=data.init_point;}
+      else{throw new Error(data.message||'Error al crear la suscripción.');}
+    }catch(e){
+      errEl.textContent=e.message||'Error de conexión. Intentá de nuevo.';
       errEl.classList.add('show');
       btn.disabled=false;
-      btnText.textContent='Suscribirme — ' + plans[selectedPlan].label;
+      btnText.textContent='Suscribirme — '+plans[selectedPlan].label;
       spinner.classList.remove('show');
     }
   }
 
-  const params = new URLSearchParams(window.location.search);
-  if (params.get('status')==='authorized' || params.get('collection_status')==='approved') {
+  const params=new URLSearchParams(window.location.search);
+  if(params.get('status')==='authorized'||params.get('collection_status')==='approved'){
     document.getElementById('plans-section').style.display='none';
     document.getElementById('success').classList.add('show');
   }
