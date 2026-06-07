@@ -414,7 +414,7 @@ footer{
   100% { transform: translateX(-50%); }
 }
 /* ── CHATBOT WIDGET ── */
-#albi-wrap{
+#alby-wrap{
   position:fixed;
   bottom:28px;
   right:28px;
@@ -425,7 +425,7 @@ footer{
 }
 
 /* Botón toggle — siempre visible encima del chat */
-#albi-toggle{
+#alby-toggle{
   position:absolute;
   bottom:0;
   right:0;
@@ -434,7 +434,7 @@ footer{
   z-index:10;
   pointer-events:all;
 }
-#albi-toggle img{
+#alby-toggle img{
   width:62px;height:62px;
   border-radius:50%;
   object-fit:cover;
@@ -445,24 +445,24 @@ footer{
   position:relative;z-index:2;
   animation:float 4s ease-in-out infinite;
 }
-#albi-toggle:hover img{
+#alby-toggle:hover img{
   transform:scale(1.07);
   box-shadow:0 0 28px rgba(56,212,245,.85),0 0 60px rgba(56,212,245,.4);
 }
 /* Halos cian */
-.albi-halo{
+.alby-halo{
   position:absolute;
   top:50%;left:50%;
   transform:translate(-50%,-50%) scale(0.7);
   width:62px;height:62px;
   border-radius:50%;
   border:1.5px solid rgba(56,212,245,.5);
-  animation:albi-pulse 2.4s ease-out infinite;
+  animation:alby-pulse 2.4s ease-out infinite;
   pointer-events:none;
   z-index:1;
 }
-.albi-halo2{ animation-delay:1.2s; }
-@keyframes albi-pulse{
+.alby-halo2{ animation-delay:1.2s; }
+@keyframes alby-pulse{
   0%{transform:translate(-50%,-50%) scale(.85);opacity:.7}
   100%{transform:translate(-50%,-50%) scale(2.2);opacity:0}
 }
@@ -536,14 +536,14 @@ footer{
   border-bottom:1px solid rgba(56,212,245,.05);
   background:rgba(56,212,245,.02);
 }
-#chat-albi-img{
+#chat-alby-img{
   width:36px;height:36px;
   border-radius:50%;
   object-fit:cover;
   border:1.5px solid rgba(56,212,245,.5);
   box-shadow:0 0 10px rgba(56,212,245,.35);
 }
-#chat-albi-status{
+#chat-alby-status{
   font-size:11px;
   color:var(--muted);
   font-style:italic;
@@ -911,18 +911,18 @@ footer{
   </div>
 </footer>
 <!-- CHATBOT WIDGET -->
-<div id="albi-wrap">
+<div id="alby-wrap">
   <!-- Chat expandible -->
   <div id="chat-box">
     <div id="chat-header">
-      <span>💬 Albi · Asistente inAlbis</span>
+      <span>💬 Alby · Asistente inAlbis</span>
       <button id="chat-close">✕</button>
     </div>
     <div id="messages"></div>
     <!-- Avatar entre mensajes y el input -->
     <div id="chat-avatar-bar">
-      <img id="chat-albi-img" src="/avatars/idle.png" alt="Albi">
-      <span id="chat-albi-status">Esperando tu consulta…</span>
+      <img id="chat-alby-img" src="/avatars/idle.png" alt="Alby">
+      <span id="chat-alby-status">Esperando tu consulta…</span>
     </div>
     <div id="chat-input-area">
       <input id="chat-input" type="text" placeholder="Contame sobre tu negocio...">
@@ -930,10 +930,10 @@ footer{
     </div>
   </div>
   <!-- Botón flotante con halo cian — encima del chat -->
-  <div id="albi-toggle" title="Hablar con Albi">
-    <div class="albi-halo"></div>
-    <div class="albi-halo albi-halo2"></div>
-    <img id="albi-avatar" src="/avatars/idle.png" alt="Albi">
+  <div id="alby-toggle" title="Hablar con Alby">
+    <div class="alby-halo"></div>
+    <div class="alby-halo alby-halo2"></div>
+    <img id="alby-avatar" src="/avatars/idle.png" alt="Alby">
   </div>
 </div>
 
@@ -1069,27 +1069,27 @@ footer{
 window.addEventListener('scroll',()=>{
   document.getElementById('navbar').style.background=window.scrollY>40?'rgba(6,15,30,0.92)':'rgba(6,15,30,0.7)';
 });
-  /* ── CHATBOT ALBI ── */
+  /* ── CHATBOT ALBY ── */
 (function(){
-  const toggle   = document.getElementById("albi-toggle");
-  const avatarBtn= document.getElementById("albi-avatar");
+  const toggle   = document.getElementById("alby-toggle");
+  const avatarBtn= document.getElementById("alby-avatar");
   const chatBox  = document.getElementById("chat-box");
   const closeBtn = document.getElementById("chat-close");
   const input    = document.getElementById("chat-input");
   const messages = document.getElementById("messages");
   const sendBtn  = document.getElementById("send-btn");
-  const albiImg  = document.getElementById("chat-albi-img");
-  const albiStat = document.getElementById("chat-albi-status");
+  const albyImg  = document.getElementById("chat-alby-img");
+  const albyStat = document.getElementById("chat-alby-status");
 
   // Mensaje inicial
-  messages.innerHTML = `<p><b>Albi:</b> 👋 Hola, soy Albi. Contame sobre tu negocio y te ayudaré a encontrar la mejor web para vos.</p>`;
+  messages.innerHTML = `<p><b>Alby:</b> 👋 Hola, soy Alby. Contame sobre tu negocio y te ayudaré a encontrar la mejor web para vos.</p>`;
 
   function setAvatar(state){
     const map={idle:"/avatars/idle.png",writing:"/avatars/writing.png",thinking:"/avatars/thinking.png",happy:"/avatars/happy.png"};
     const src = map[state]||map.idle;
     avatarBtn.src = src;
-    albiImg.src   = src;
-    albiStat.textContent = state==="thinking"?"Pensando…":state==="writing"?"Escribiendo…":state==="happy"?"¡Listo!":"Esperando tu consulta…";
+    albyImg.src   = src;
+    albyStat.textContent = state==="thinking"?"Pensando…":state==="writing"?"Escribiendo…":state==="happy"?"¡Listo!":"Esperando tu consulta…";
   }
 
   // Abrir/cerrar
@@ -1105,10 +1105,10 @@ window.addEventListener('scroll',()=>{
 
   // Enviar
   // Generar o recuperar sessionId único por navegador
-  let sessionId = localStorage.getItem("albi_session");
+  let sessionId = localStorage.getItem("alby_session");
   if (!sessionId) {
     sessionId = crypto.randomUUID();
-    localStorage.setItem("albi_session", sessionId);
+    localStorage.setItem("alby_session", sessionId);
   }
 
   async function enviar(){
@@ -1128,11 +1128,11 @@ window.addEventListener('scroll',()=>{
       const data = await res.json();
       const reply = data.reply || "Disculpá, hubo un error. Intentá de nuevo.";
       // Guardar perfil en localStorage para autorellenar el formulario
-      if (data.profile) localStorage.setItem("albi_profile", JSON.stringify(data.profile));
-      messages.innerHTML += `<p><b>Albi:</b> ${reply.replace(/\n/g,"<br>")}</p>`;
+      if (data.profile) localStorage.setItem("alby_profile", JSON.stringify(data.profile));
+      messages.innerHTML += `<p><b>Alby:</b> ${reply.replace(/\n/g,"<br>")}</p>`;
       setAvatar("happy");
     } catch(e) {
-      messages.innerHTML += `<p><b>Albi:</b> Sin conexión, intentá de nuevo en un momento.</p>`;
+      messages.innerHTML += `<p><b>Alby:</b> Sin conexión, intentá de nuevo en un momento.</p>`;
       setAvatar("idle");
     }
 
