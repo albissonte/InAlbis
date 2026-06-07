@@ -552,11 +552,13 @@ footer{
 /* Input area */
 #chat-input-area{
   display:flex;
+  min-height:48px;
 }
 #chat-input{
   background:rgba(255,255,255,.03);
   color:var(--white);
   flex:1;
+  min-width:0;
   border:none;
   padding:13px 16px;
   outline:none;
@@ -571,10 +573,12 @@ footer{
   font-weight:700;
   font-size:13px;
   border:none;
-  padding:0 18px;
+  padding:0 20px;
   cursor:pointer;
   transition:.25s;
   font-family:inherit;
+  flex-shrink:0;
+  white-space:nowrap;
 }
 #send-btn:hover{ background:#5de0f7;transform:scale(1.04) }
 
