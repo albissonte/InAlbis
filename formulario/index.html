@@ -1065,10 +1065,10 @@ document.getElementById('onboarding-form').addEventListener('submit', async func
 </script>
 
 <script>
-// ── AUTORELLENADO DESDE PERFIL DE ALBI ──────────────────────
-(function autoFillFromAlbi() {
+// ── AUTORELLENADO DESDE PERFIL DE ALBY ──────────────────────
+(function autoFillFromAlby() {
   try {
-    const raw = localStorage.getItem("albi_profile");
+    const raw = localStorage.getItem("alby_profile");
     if (!raw) return;
     const p = JSON.parse(raw);
 
@@ -1088,7 +1088,7 @@ document.getElementById('onboarding-form').addEventListener('submit', async func
     if (p.name || p.phone || p.email) {
       const banner = document.createElement("div");
       banner.style.cssText = "background:rgba(26,143,209,0.1);border:1px solid rgba(26,143,209,0.3);border-radius:8px;padding:10px 16px;margin-bottom:20px;font-size:0.82rem;color:#1a8fd1;";
-      banner.innerHTML = `✨ Hola${p.name ? " <strong>" + p.name + "</strong>" : ""}! Autorellenamos algunos datos de tu conversación con Albi.`;
+      banner.innerHTML = `✨ Hola${p.name ? " <strong>" + p.name + "</strong>" : ""}! Autorellenamos algunos datos de tu conversación con Alby.`;
       const form = document.getElementById("onboarding-form");
       if (form) form.prepend(banner);
     }
@@ -1099,7 +1099,7 @@ document.getElementById('onboarding-form').addEventListener('submit', async func
 (async function autoFillFromWhatsApp() {
   try {
     // Primero intentar localStorage (viene de la web)
-    const raw = localStorage.getItem("albi_profile");
+    const raw = localStorage.getItem("alby_profile");
     if (raw) {
       const p = JSON.parse(raw);
       fill("business_name", p.business_name);
@@ -1136,7 +1136,7 @@ document.getElementById('onboarding-form').addEventListener('submit', async func
   function showBanner(name) {
     const banner = document.createElement("div");
     banner.style.cssText = "background:rgba(26,143,209,0.1);border:1px solid rgba(26,143,209,0.3);border-radius:8px;padding:10px 16px;margin-bottom:20px;font-size:0.82rem;color:#1a8fd1;";
-    banner.innerHTML = `✨ Hola${name ? " <strong>" + name + "</strong>" : ""}! Autorellenamos algunos datos de tu conversación con Albi.`;
+    banner.innerHTML = `✨ Hola${name ? " <strong>" + name + "</strong>" : ""}! Autorellenamos algunos datos de tu conversación con Alby.`;
     const form = document.getElementById("onboarding-form");
     if (form) form.prepend(banner);
   }
