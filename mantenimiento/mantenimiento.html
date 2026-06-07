@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Servicios Mensuales — Páginas inAlbis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --sun:   #f59e0b;
+    --sun2:  #d97706;
+    --sun3:  #fbbf24;
+    --warm:  #451a03;
+    --text2: #92400e;
+    --muted: #b45309;
+    --border:rgba(245,158,11,0.22);
+    --glow:  rgba(251,191,36,0.3);
+  }
+  *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+  html { scroll-behavior:smooth; }
+  body { font-family:'Plus Jakarta Sans',sans-serif; background:#fffbeb; color:var(--warm); min-height:100vh; overflow-x:hidden; }
+
+  .sky-bg { position:fixed;inset:0;z-index:0;background:linear-gradient(180deg,#fed7aa 0%,#fde68a 30%,#fef9c3 65%,#fffbeb 100%); }
+  .sun { position:fixed;top:-80px;left:50%;transform:translateX(-50%);width:240px;height:240px;border-radius:50%;background:radial-gradient(circle at 40% 40%,#fef08a,#f59e0b 50%,#d97706);box-shadow:0 0 70px 25px rgba(251,191,36,0.45),0 0 140px 50px rgba(245,158,11,0.25);animation:pulse-sun 4s ease-in-out infinite;z-index:1; }
+  @keyframes pulse-sun{0%,100%{box-shadow:0 0 70px 25px rgba(251,191,36,0.45),0 0 140px 50px rgba(245,158,11,0.25);}50%{box-shadow:0 0 90px 35px rgba(251,191,36,0.6),0 0 180px 70px rgba(245,158,11,0.35);}}
+  .sun-rays { position:fixed;top:-140px;left:50%;transform:translateX(-50%);width:600px;height:600px;z-index:0;animation:rotate-rays 25s linear infinite; }
+  .sun-rays::before,.sun-rays::after{content:'';position:absolute;inset:0;border-radius:50%;background:repeating-conic-gradient(rgba(251,191,36,0.1) 0deg 10deg,transparent 10deg 20deg);}
+  .sun-rays::after{transform:rotate(10deg);opacity:0.6;}
+  @keyframes rotate-rays{to{transform:translateX(-50%) rotate(360deg);}}
+  .cloud{position:fixed;background:rgba(255,255,255,0.65);border-radius:100px;filter:blur(2px);z-index:1;}
+  .cloud::before,.cloud::after{content:'';position:absolute;background:inherit;border-radius:50%;}
+  .c1{width:160px;height:45px;top:22%;left:-10px;animation:drift1 28s ease-in-out infinite;}
+  .c1::before{width:70px;height:70px;top:-35px;left:18px;}.c1::after{width:55px;height:55px;top:-28px;left:65px;}
+  .c2{width:120px;height:35px;top:38%;right:-5px;animation:drift2 32s ease-in-out infinite;}
+  .c2::before{width:55px;height:55px;top:-28px;left:12px;}.c2::after{width:45px;height:45px;top:-22px;left:50px;}
+  @keyframes drift1{0%,100%{transform:translateX(0);}50%{transform:translateX(28px);}}
+  @keyframes drift2{0%,100%{transform:translateX(0);}50%{transform:translateX(-22px);}}
+
+  .page{position:relative;z-index:2;min-height:100vh;}
+
+  /* HEADER */
+  .header{text-align:center;padding:5.5rem 1.5rem 2.5rem;}
+  .header-logo{display:inline-flex;align-items:center;gap:0.4rem;background:rgba(255,255,255,0.6);border:1.5px solid rgba(245,158,11,0.3);border-radius:100px;padding:0.35rem 1rem;font-size:0.75rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--sun2);margin-bottom:1.5rem;backdrop-filter:blur(8px);}
+  .header h1{font-family:'Playfair Display',serif;font-size:clamp(1.9rem,5.5vw,2.8rem);color:var(--warm);line-height:1.15;margin-bottom:0.75rem;}
+  .header h1 em{font-style:italic;color:var(--sun2);}
+  .header p{color:var(--text2);font-size:0.93rem;max-width:420px;margin:0 auto;line-height:1.65;}
+
+  .wrapper{max-width:900px;margin:0 auto;padding:0 1.25rem 5rem;}
+
+  /* PLAN SELECTOR */
+  .plans-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1rem;margin-bottom:2rem;}
+
+  .plan-card{
+    background:rgba(255,255,255,0.75);border:2px solid rgba(245,158,11,0.2);
+    border-radius:18px;overflow:hidden;cursor:pointer;
+    transition:all 0.22s;backdrop-filter:blur(10px);
+    box-shadow:0 4px 20px rgba(245,158,11,0.06);
+  }
+  .plan-card:hover{border-color:var(--sun);transform:translateY(-3px);box-shadow:0 12px 32px rgba(245,158,11,0.15);}
+  .plan-card.selected{border-color:var(--sun);box-shadow:0 0 0 4px rgba(251,191,36,0.18),0 8px 24px rgba(245,158,11,0.15);}
+
+  .plan-top{padding:1.5rem 1.5rem 1.25rem;text-align:center;}
+  .plan-icon{font-size:2rem;margin-bottom:0.6rem;}
+  .plan-name{font-family:'Playfair Display',serif;font-size:1.25rem;color:var(--warm);margin-bottom:0.3rem;}
+  .plan-tagline{font-size:0.78rem;color:var(--muted);margin-bottom:1rem;line-height:1.4;}
+  .plan-price{display:flex;align-items:baseline;justify-content:center;gap:0.2rem;margin-bottom:0.15rem;}
+  .p-symbol{font-size:1rem;color:var(--sun2);font-weight:700;}
+  .p-amount{font-size:2.2rem;font-weight:800;color:var(--warm);line-height:1;}
+  .p-period{font-size:0.78rem;color:var(--muted);}
+  .plan-sub{font-size:0.72rem;color:var(--muted);}
+
+  .plan-divider{height:1px;background:rgba(245,158,11,0.12);margin:0 1.25rem;}
+
+  .plan-features{padding:1.1rem 1.5rem 1.5rem;}
+  .feat{display:flex;align-items:flex-start;gap:0.5rem;padding:0.4rem 0;font-size:0.82rem;color:var(--text2);line-height:1.4;}
+  .feat-icon{font-size:0.9rem;flex-shrink:0;margin-top:1px;}
+
+  .plan-select-btn{
+    margin:0 1.25rem 1.25rem;
+    width:calc(100% - 2.5rem);
+    background:rgba(245,158,11,0.1);
+    border:1.5px solid rgba(245,158,11,0.3);
+    border-radius:10px;padding:0.65rem;
+    font-family:'Plus Jakarta Sans',sans-serif;
+    font-size:0.85rem;font-weight:700;color:var(--sun2);
+    cursor:pointer;transition:all 0.15s;
+  }
+  .plan-card.selected .plan-select-btn{background:linear-gradient(135deg,var(--sun2),var(--sun));color:#fff;border-color:transparent;box-shadow:0 4px 14px rgba(245,158,11,0.3);}
+  .plan-card:hover .plan-select-btn{background:rgba(245,158,11,0.18);}
+  .plan-card.selected:hover .plan-select-btn{background:linear-gradient(135deg,var(--sun2),var(--sun));}
+
+  /* FORM */
+  .form-card{background:rgba(255,255,255,0.78);border:1.5px solid rgba(245,158,11,0.22);border-radius:20px;backdrop-filter:blur(12px);box-shadow:0 4px 28px rgba(245,158,11,0.08);padding:1.75rem;margin-bottom:1rem;display:none;}
+  .form-card.show{display:block;animation:fadeUp 0.35s ease;}
+
+  .form-title{font-family:'Playfair Display',serif;font-size:1.3rem;color:var(--warm);margin-bottom:0.3rem;}
+  .form-sub{font-size:0.83rem;color:var(--text2);margin-bottom:1.5rem;}
+  .selected-plan-tag{display:inline-flex;align-items:center;gap:0.4rem;background:rgba(245,158,11,0.12);border:1px solid rgba(245,158,11,0.25);border-radius:100px;padding:0.3rem 0.85rem;font-size:0.75rem;font-weight:700;color:var(--sun2);margin-bottom:1.25rem;}
+
+  .form-label{display:block;font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);margin-bottom:0.45rem;}
+  .form-input{width:100%;background:rgba(255,251,235,0.8);border:1.5px solid rgba(245,158,11,0.25);border-radius:10px;padding:0.75rem 1rem;font-family:'Plus Jakarta Sans',sans-serif;font-size:0.9rem;color:var(--warm);transition:border-color 0.2s;margin-bottom:1rem;}
+  .form-input:focus{outline:none;border-color:var(--sun);background:#fffbeb;}
+  .form-input::placeholder{color:var(--muted);opacity:0.55;}
+
+  .btn-subscribe{width:100%;background:linear-gradient(135deg,var(--sun2),var(--sun));color:#fff;border:none;border-radius:12px;padding:1rem 1.5rem;font-family:'Plus Jakarta Sans',sans-serif;font-size:1rem;font-weight:700;cursor:pointer;transition:all 0.2s;box-shadow:0 4px 18px rgba(245,158,11,0.35);display:flex;align-items:center;justify-content:center;gap:0.5rem;}
+  .btn-subscribe:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(245,158,11,0.45);}
+  .btn-subscribe:disabled{opacity:0.5;cursor:not-allowed;transform:none;}
+
+  .security{display:flex;align-items:center;justify-content:center;gap:0.5rem;font-size:0.72rem;color:var(--muted);margin-top:1rem;}
+
+  .error-msg{background:rgba(239,68,68,0.08);border:1.5px solid rgba(239,68,68,0.2);border-radius:10px;padding:0.75rem 1rem;font-size:0.83rem;color:#b91c1c;margin-top:0.75rem;display:none;}
+  .error-msg.show{display:block;}
+
+  /* SUCCESS */
+  .success-screen{display:none;text-align:center;padding:3rem 1rem;animation:fadeUp 0.5s ease;}
+  .success-screen.show{display:block;}
+  .success-icon{font-size:3.5rem;margin-bottom:1rem;}
+  .success-screen h2{font-family:'Playfair Display',serif;font-size:1.9rem;color:var(--warm);margin-bottom:0.75rem;}
+  .success-screen p{color:var(--text2);font-size:0.93rem;line-height:1.65;max-width:360px;margin:0 auto 1.5rem;}
+
+  .spinner{display:none;width:22px;height:22px;border:3px solid rgba(255,255,255,0.4);border-top-color:#fff;border-radius:50%;animation:spin 0.7s linear infinite;}
+  .spinner.show{display:block;}
+  @keyframes spin{to{transform:rotate(360deg);}}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+
+  @media(max-width:480px){.plans-grid{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+
+<div class="sky-bg"></div>
+<div class="sun-rays"></div>
+<div class="sun"></div>
+<div class="cloud c1"></div>
+<div class="cloud c2"></div>
+
+<div class="page">
+
+  <div class="header">
+    <div class="header-logo">☀️ Páginas inAlbis</div>
+    <h1>Tu web siempre<br><em>al sol</em></h1>
+    <p>Planes mensuales para que tu presencia digital esté siempre activa, segura y creciendo.</p>
+  </div>
+
+  <div class="wrapper">
+
+    <!-- Plans -->
+    <div id="plans-section">
+      <div class="plans-grid">
+
+        <!-- Hosting -->
+        <div class="plan-card" id="card-hosting" onclick="selectPlan('hosting')">
+          <div class="plan-top">
+            <div class="plan-icon">☁️</div>
+            <div class="plan-name">Hosting Gestionado</div>
+            <div class="plan-tagline">Tu sitio online, rápido y seguro. Sin preocupaciones técnicas.</div>
+            <div class="plan-price"><span class="p-symbol">$</span><span class="p-amount">50</span><span class="p-period">USD/mes</span></div>
+            <div class="plan-sub">Cancelás cuando quieras</div>
+          </div>
+          <div class="plan-divider"></div>
+          <div class="plan-features">
+            <div class="feat"><span class="feat-icon">🌐</span>Dominio .com.ar incluido y renovado</div>
+            <div class="feat"><span class="feat-icon">⚡</span>Hosting en Cloudflare (máxima velocidad)</div>
+            <div class="feat"><span class="feat-icon">🔒</span>SSL y seguridad activa</div>
+            <div class="feat"><span class="feat-icon">📞</span>Soporte técnico por WhatsApp</div>
+            <div class="feat"><span class="feat-icon">🔄</span>Backups mensuales del sitio</div>
+          </div>
+          <button class="plan-select-btn">Elegir este plan</button>
+        </div>
+
+        <!-- Mantenimiento -->
+        <div class="plan-card" id="card-mantenimiento" onclick="selectPlan('mantenimiento')">
+          <div class="plan-top">
+            <div class="plan-icon">🛠️</div>
+            <div class="plan-name">Mantenimiento Web</div>
+            <div class="plan-tagline">Tu web siempre actualizada con los cambios que necesitás.</div>
+            <div class="plan-price"><span class="p-symbol">$</span><span class="p-amount">100</span><span class="p-period">USD/mes</span></div>
+            <div class="plan-sub">Cancelás cuando quieras</div>
+          </div>
+          <div class="plan-divider"></div>
+          <div class="plan-features">
+            <div class="feat"><span class="feat-icon">✏️</span>Actualizaciones de contenido ilimitadas</div>
+            <div class="feat"><span class="feat-icon">📸</span>Cambios de fotos, textos y precios</div>
+            <div class="feat"><span class="feat-icon">🛡️</span>Monitoreo de seguridad semanal</div>
+            <div class="feat"><span class="feat-icon">📊</span>Reporte mensual de visitas</div>
+            <div class="feat"><span class="feat-icon">🔧</span>Corrección de errores sin costo extra</div>
+            <div class="feat"><span class="feat-icon">💬</span>Soporte prioritario por WhatsApp</div>
+          </div>
+          <button class="plan-select-btn">Elegir este plan</button>
+        </div>
+
+        <!-- SEO -->
+        <div class="plan-card" id="card-seo" onclick="selectPlan('seo')">
+          <div class="plan-top">
+            <div class="plan-icon">📈</div>
+            <div class="plan-name">SEO Mensual</div>
+            <div class="plan-tagline">Más visitas, más clientes. Aparecé primero en Google.</div>
+            <div class="plan-price"><span class="p-symbol">$</span><span class="p-amount">150</span><span class="p-period">USD/mes</span></div>
+            <div class="plan-sub">Cancelás cuando quieras</div>
+          </div>
+          <div class="plan-divider"></div>
+          <div class="plan-features">
+            <div class="feat"><span class="feat-icon">🔍</span>Optimización de palabras clave locales</div>
+            <div class="feat"><span class="feat-icon">📝</span>Mejora de contenido y meta tags</div>
+            <div class="feat"><span class="feat-icon">🗺️</span>Google Maps + Search Console</div>
+            <div class="feat"><span class="feat-icon">📊</span>Reporte mensual de posiciones en PDF</div>
+            <div class="feat"><span class="feat-icon">🔗</span>Link building y autoridad de dominio</div>
+            <div class="feat"><span class="feat-icon">🚀</span>Todo lo del plan Mantenimiento incluido</div>
+          </div>
+          <button class="plan-select-btn">Elegir este plan</button>
+        </div>
+
+      </div>
+
+      <!-- Form -->
+      <div class="form-card" id="form-card">
+        <div class="form-title">Completá tus datos</div>
+        <div class="form-sub">Te redirigimos a Mercado Pago para ingresar tu tarjeta de forma segura.</div>
+
+        <div class="selected-plan-tag">
+          <span id="selected-plan-icon">☀️</span>
+          <span id="selected-plan-label">Plan seleccionado</span>
+          <span id="selected-plan-price" style="opacity:0.7"></span>
+        </div>
+
+        <label class="form-label">Tu email</label>
+        <input type="email" class="form-input" id="sub-email" placeholder="tu@email.com">
+
+        <label class="form-label">Tu nombre o empresa</label>
+        <input type="text" class="form-input" id="sub-name" placeholder="Ej: Pizzería Don Juan">
+
+        <button class="btn-subscribe" id="btn-subscribe" onclick="startSubscription()">
+          <span id="btn-text">Suscribirme</span>
+          <div class="spinner" id="btn-spinner"></div>
+        </button>
+
+        <div class="error-msg" id="error-msg"></div>
+        <div class="security">🔒 Pago seguro · Mercado Pago · Cancelás cuando quieras</div>
+      </div>
+    </div>
+
+    <!-- Success -->
+    <div class="success-screen" id="success">
+      <div class="success-icon">🌅</div>
+      <h2>¡Suscripción activa!</h2>
+      <p>Tu plan está activo. Recibirás un email de confirmación y nos pondremos en contacto para coordinar el servicio mensual.</p>
+      <a href="/" style="display:inline-block;background:linear-gradient(135deg,var(--sun2),var(--sun));color:#fff;padding:0.85rem 2rem;border-radius:12px;text-decoration:none;font-weight:700;font-size:0.9rem;box-shadow:0 4px 16px rgba(245,158,11,0.35);">Volver al inicio</a>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  const plans = {
+    hosting:       { name:'Hosting Gestionado', icon:'☁️', price:50,  label:'$50 USD/mes' },
+    mantenimiento: { name:'Mantenimiento Web',  icon:'🛠️', price:100, label:'$100 USD/mes' },
+    seo:           { name:'SEO Mensual',         icon:'📈', price:150, label:'$150 USD/mes' },
+  };
+
+  let selectedPlan = null;
+
+  function selectPlan(key) {
+    selectedPlan = key;
+    document.querySelectorAll('.plan-card').forEach(c => c.classList.remove('selected'));
+    document.getElementById('card-' + key).classList.add('selected');
+
+    const p = plans[key];
+    document.getElementById('selected-plan-icon').textContent  = p.icon;
+    document.getElementById('selected-plan-label').textContent = p.name;
+    document.getElementById('selected-plan-price').textContent = '· ' + p.label;
+    document.getElementById('btn-text').textContent = 'Suscribirme — ' + p.label;
+
+    const fc = document.getElementById('form-card');
+    fc.classList.add('show');
+    fc.scrollIntoView({ behavior:'smooth', block:'start' });
+  }
+
+  async function startSubscription() {
+    const email = document.getElementById('sub-email').value.trim();
+    const name  = document.getElementById('sub-name').value.trim();
+    const errEl = document.getElementById('error-msg');
+    errEl.classList.remove('show');
+
+    if (!selectedPlan) return;
+    if (!email || !email.includes('@')) { errEl.textContent='Ingresá un email válido.'; errEl.classList.add('show'); return; }
+    if (!name) { errEl.textContent='Ingresá tu nombre o empresa.'; errEl.classList.add('show'); return; }
+
+    const btn     = document.getElementById('btn-subscribe');
+    const btnText = document.getElementById('btn-text');
+    const spinner = document.getElementById('btn-spinner');
+    btn.disabled=true; btnText.textContent='Procesando...'; spinner.classList.add('show');
+
+    try {
+      const res = await fetch('/api/create-subscription', {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({ email, name, plan:selectedPlan, priceUsd:plans[selectedPlan].price }),
+      });
+      const data = await res.json();
+
+      if (data.success && data.init_point) {
+        window.location.href = data.init_point;
+      } else {
+        throw new Error(data.message || 'Error al crear la suscripción.');
+      }
+    } catch(e) {
+      errEl.textContent = e.message || 'Error de conexión. Intentá de nuevo.';
+      errEl.classList.add('show');
+      btn.disabled=false;
+      btnText.textContent='Suscribirme — ' + plans[selectedPlan].label;
+      spinner.classList.remove('show');
+    }
+  }
+
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('status')==='authorized' || params.get('collection_status')==='approved') {
+    document.getElementById('plans-section').style.display='none';
+    document.getElementById('success').classList.add('show');
+  }
+</script>
+</body>
+</html>
