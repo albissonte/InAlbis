@@ -13,12 +13,12 @@ const CORS = {
   "Access-Control-Allow-Headers": "Content-Type",
 };
 
-const BREVO_KEY   = "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";
+// ⚠️  Secrets se leen desde variables de entorno de Cloudflare Pages
+// Configurarlas en: Settings → Environment Variables
+// BREVO_KEY, WA_PHONE, WA_APIKEY
 const ADMIN_EMAIL = "albissonte@gmail.com";
 const FROM_NAME   = "inAlbis Pages";
 const FROM_EMAIL  = "albissonte@gmail.com";
-const WA_PHONE    = "46760684744";
-const WA_APIKEY   = "5325624";
 
 // Tipo de cambio USD→ARS de referencia por si falla la API
 const ARS_FALLBACK = 1300;
@@ -35,6 +35,9 @@ function json(data, status = 200) {
 // ══════════════════════════════════════════════
 export async function onRequest(context) {
   const { request, env } = context;
+  const BREVO_KEY = env.BREVO_KEY || "";
+  const WA_PHONE  = env.WA_PHONE  || "";
+  const WA_APIKEY = env.WA_APIKEY || "";
   if (request.method === "OPTIONS") return new Response(null, { status: 204, headers: CORS });
   if (request.method !== "POST") return json({ error: "Method not allowed" }, 405);
 
@@ -118,10 +121,10 @@ export async function onRequest(context) {
       .catch(() => {});
 
     // ── 4. Email al admin: datos + prompt + informe ───────────
-    await sendAdminEmail(data, projectId, arsRate);
+    await sendAdminEmail(data, projectId, arsRate, BREVO_KEY);
 
     // ── 5. Email de bienvenida al cliente ─────────────────────
-    if (data.email) await sendClientEmail(data);
+    if (data.email) await sendClientEmail(data, BREVO_KEY);
 
     return json({
       success: true,
@@ -532,7 +535,7 @@ function buildInforme(data, arsRate) {
 // ══════════════════════════════════════════════
 // EMAIL AL ADMIN
 // ══════════════════════════════════════════════
-async function sendAdminEmail(data, projectId, arsRate) {
+async function sendAdminEmail(data, projectId, arsRate, BREVO_KEY) {
   const goals     = Array.isArray(data.main_goals)        ? data.main_goals.join(", ")        : "—";
   const functions = Array.isArray(data.special_functions) ? data.special_functions.join(", ") : "—";
   const now       = new Date().toLocaleString("es-AR", { timeZone: "America/Argentina/Buenos_Aires" });
@@ -676,7 +679,7 @@ async function sendAdminEmail(data, projectId, arsRate) {
 // ══════════════════════════════════════════════
 // EMAIL AL CLIENTE (BIENVENIDA) — sin cambios
 // ══════════════════════════════════════════════
-async function sendClientEmail(data) {
+async function sendClientEmail(data, BREVO_KEY) {
   const html = `<!DOCTYPE html>
 <html lang="es">
 <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
