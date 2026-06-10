@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Alby IA · Contestador Automático — inAlbis Pages</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Poppins:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#060f1e;--navy:#081120;
+  --cyan:#38d4f5;--cyan-glow:rgba(56,212,245,0.18);
+  --border:rgba(56,212,245,0.22);--border2:rgba(255,255,255,0.07);
+  --muted:rgba(255,255,255,0.48);--glass:rgba(8,17,32,0.6);
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:#fff;font-family:'Poppins',sans-serif;overflow-x:hidden;min-height:100vh}
+a{text-decoration:none;color:inherit}
+
+#starfield{position:fixed;inset:0;z-index:0;pointer-events:none}
+
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 48px;height:64px;
+  background:rgba(6,15,30,0.85);backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border2);
+}
+.nav-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:17px}
+.nav-logo span{color:var(--cyan)}
+.nav-back{
+  font-size:12px;color:var(--muted);
+  display:flex;align-items:center;gap:6px;transition:color .2s;
+}
+.nav-back:hover{color:var(--cyan)}
+
+.page{position:relative;z-index:2;min-height:100vh;
+  display:flex;flex-direction:column;align-items:center;
+  justify-content:center;padding:100px 24px 60px;text-align:center}
+
+.eyebrow{
+  font-family:'JetBrains Mono',monospace;font-size:11px;
+  letter-spacing:3px;text-transform:uppercase;color:var(--cyan);
+  opacity:.7;margin-bottom:20px;
+}
+.headline{
+  font-family:'Syne',sans-serif;font-size:clamp(28px,5vw,56px);
+  font-weight:800;line-height:1.08;letter-spacing:-.5px;margin-bottom:16px;
+}
+.headline em{color:var(--cyan);font-style:italic}
+.sub{font-size:16px;color:var(--muted);max-width:480px;margin:0 auto 56px;line-height:1.7;font-weight:300}
+
+.cards{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:18px;max-width:960px;width:100%;
+}
+.card{
+  background:var(--glass);border:1px solid var(--border2);border-radius:20px;
+  padding:32px 26px;backdrop-filter:blur(4px);
+  transition:transform .28s,border-color .28s,box-shadow .28s;
+  display:flex;flex-direction:column;align-items:flex-start;text-align:left;
+  cursor:pointer;position:relative;overflow:hidden;
+}
+.card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(56,212,245,.4),transparent);
+  opacity:0;transition:opacity .28s;
+}
+.card:hover{transform:translateY(-6px);border-color:var(--border);box-shadow:0 20px 50px rgba(0,0,0,.35),0 0 30px rgba(56,212,245,.08)}
+.card:hover::before{opacity:1}
+.card.featured{border-color:rgba(56,212,245,.38);background:rgba(56,212,245,.05)}
+.card.featured::before{opacity:1}
+
+.card-icon{font-size:32px;margin-bottom:16px}
+.card-name{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;margin-bottom:8px}
+.card-desc{font-size:13px;color:var(--muted);line-height:1.65;margin-bottom:20px;flex:1}
+.card-price{
+  font-family:'JetBrains Mono',monospace;font-size:15px;
+  font-weight:500;color:var(--cyan);margin-bottom:18px;
+}
+.card-btn{
+  font-family:'Syne',sans-serif;font-size:12px;font-weight:700;
+  padding:9px 20px;border-radius:10px;border:1px solid var(--border);
+  color:#fff;background:rgba(255,255,255,.04);transition:all .22s;
+  letter-spacing:.3px;
+}
+.card:hover .card-btn{border-color:var(--cyan);color:var(--cyan)}
+.card.featured .card-btn{background:var(--cyan);color:var(--bg);border-color:transparent;box-shadow:0 0 22px rgba(56,212,245,.4)}
+.card.featured:hover .card-btn{box-shadow:0 0 36px rgba(56,212,245,.65);color:var(--bg)}
+
+.badge-new{
+  position:absolute;top:14px;right:14px;
+  font-size:9px;letter-spacing:1.5px;text-transform:uppercase;
+  color:var(--cyan);border:1px solid rgba(56,212,245,.35);
+  padding:3px 8px;border-radius:100px;
+}
+
+.note{margin-top:44px;font-size:12px;color:var(--muted);font-family:'JetBrains Mono',monospace}
+.note a{color:var(--cyan);border-bottom:1px solid rgba(56,212,245,.3)}
+</style>
+</head>
+<body>
+<canvas id="starfield"></canvas>
+
+<nav>
+  <div class="nav-logo">Páginas <span>inAlbis</span></div>
+  <a href="/" class="nav-back">← Volver al inicio</a>
+</nav>
+
+<div class="page">
+  <div class="eyebrow">Alby IA · Contestador Automático</div>
+  <h1 class="headline">¿Qué parte de <em>Alby</em> te interesa?</h1>
+  <p class="sub">Elegí el canal que necesitás o llevate el paquete completo. Setup incluido en todos los planes.</p>
+
+  <div class="cards">
+
+    <div class="card" onclick="location.href='wa/'">
+      <div class="card-icon">💬</div>
+      <div class="card-name">WhatsApp</div>
+      <p class="card-desc">Alby responde mensajes, toma pedidos y registra reservas por WhatsApp Business las 24 hs, sin que tengas que estar.</p>
+      <div class="card-price">$60–80 USD/mes</div>
+      <span class="card-btn">Ver más →</span>
+    </div>
+
+    <div class="card" onclick="location.href='web/'">
+      <div class="card-icon">🌐</div>
+      <div class="card-name">Web</div>
+      <p class="card-desc">Chatbot embebido en tu página web. Atiende visitantes, responde preguntas frecuentes y los guía hacia la conversión.</p>
+      <div class="card-price">$60–80 USD/mes</div>
+      <span class="card-btn">Ver más →</span>
+    </div>
+
+    <div class="card" onclick="location.href='email/'">
+      <div class="card-icon">✉️</div>
+      <div class="card-name">Email</div>
+      <p class="card-desc">Alby lee, clasifica y responde emails de clientes automáticamente. Pedidos, consultas y reclamos sin demora.</p>
+      <div class="card-price">$40–60 USD/mes</div>
+      <span class="card-btn">Ver más →</span>
+    </div>
+
+    <div class="card featured" onclick="location.href='habla/'">
+      <div class="badge-new">★ Premium</div>
+      <div class="card-icon">📞</div>
+      <div class="card-name">Teléfono</div>
+      <p class="card-desc">Alby atiende llamadas, entiende lo que dice el cliente y responde con voz natural. El canal más potente del mercado.</p>
+      <div class="card-price">$250–300 USD/mes</div>
+      <span class="card-btn">Ver más →</span>
+    </div>
+
+    <div class="card featured" style="grid-column:1/-1;flex-direction:row;align-items:center;gap:28px;flex-wrap:wrap" onclick="location.href='habla/'">
+      <div class="card-icon" style="font-size:40px;flex-shrink:0">⚡</div>
+      <div style="flex:1;min-width:200px">
+        <div class="card-name">Alby Full — Los 4 canales</div>
+        <p class="card-desc" style="margin-bottom:0">WhatsApp + Web + Email + Teléfono. Un solo bot, todos los frentes cubiertos. El paquete más completo para negocios que no quieren perder ninguna consulta.</p>
+      </div>
+      <div style="flex-shrink:0;text-align:right">
+        <div class="card-price" style="font-size:20px;margin-bottom:12px">$350 USD/mes</div>
+        <span class="card-btn">Ver Alby completo →</span>
+      </div>
+    </div>
+
+  </div>
+
+  <p class="note">Todos los planes incluyen setup · Soporte incluido · <a href="https://wa.me/541168115491" target="_blank">Consultar por WhatsApp</a></p>
+</div>
+
+<script>
+(function(){
+  const canvas=document.getElementById('starfield'),ctx=canvas.getContext('2d');
+  let W,H,stars=[];
+  function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight}
+  function init(){stars=[];for(let i=0;i<200;i++){stars.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.3+0.2,alpha:Math.random()*0.6+0.2,twinkle:Math.random()*Math.PI*2,layer:Math.floor(Math.random()*3)})}}
+  let scrollY=0;
+  const SPD=[0.06,0.14,0.24];
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    stars.forEach(s=>{
+      const py=(s.y-scrollY*SPD[s.layer])%H;
+      const fy=py<0?py+H:py;
+      s.twinkle+=0.012;
+      const a=s.alpha*(0.7+0.3*Math.sin(s.twinkle));
+      ctx.beginPath();ctx.arc(s.x,fy,s.r,0,Math.PI*2);
+      ctx.fillStyle=s.layer===2?`rgba(56,212,245,${a*0.7})`:`rgba(255,255,255,${a})`;
+      ctx.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+  resize();init();window.addEventListener('resize',()=>{resize();init()});requestAnimationFrame(draw);
+})();
+</script>
+</body>
+</html>
