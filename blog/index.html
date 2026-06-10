@@ -1,1 +1,395 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blog · inAlbis Pages · Diseño Web y Marketing Digital en Argentina</title>
+<meta name="description" content="Consejos, guías y recursos sobre diseño web, SEO y marketing digital para negocios argentinos. Aprendé a crecer online.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://www.inalbispages.com/blog/">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" href="/favicon-32x32.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.inalbispages.com/blog/">
+<meta property="og:title" content="Blog · inAlbis Pages">
+<meta property="og:description" content="Consejos, guías y recursos sobre diseño web, SEO y marketing digital para negocios argentinos.">
+<meta property="og:image" content="https://www.inalbispages.com/og-image.jpg">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=IBM+Plex+Mono:wght@400;500&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#060f1e;
+  --cyan:#38d4f5;
+  --cyan-glow:rgba(56,212,245,0.18);
+  --border:rgba(56,212,245,0.22);
+  --border2:rgba(255,255,255,0.07);
+  --white:#ffffff;
+  --muted:rgba(255,255,255,0.48);
+  --glass:rgba(8,17,32,0.55);
+}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);color:var(--white);
+  font-family:'Poppins',system-ui,sans-serif;
+  line-height:1.65;overflow-x:hidden;
+}
+a{text-decoration:none;color:inherit}
 
+/* STARFIELD */
+#starfield{position:fixed;inset:0;z-index:0;pointer-events:none}
+
+/* NAV */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 48px;height:64px;
+  background:rgba(6,15,30,0.85);backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border2);
+}
+.nav-logo{display:flex;align-items:center;gap:8px;font-family:'Syne',sans-serif;font-weight:800;font-size:17px}
+.nav-logo span{color:var(--cyan)}
+.nav-links{display:flex;gap:28px;list-style:none;font-size:13px;color:var(--muted)}
+.nav-links a:hover{color:var(--white);transition:color .2s}
+.nav-cta{
+  background:var(--cyan);color:var(--bg);
+  font-family:'Syne',sans-serif;font-size:12px;font-weight:700;
+  padding:9px 22px;border-radius:10px;
+  box-shadow:0 0 22px rgba(56,212,245,.4);
+}
+
+/* CLOUD PAGE BG */
+.cloud-page{
+  position:relative;min-height:100vh;
+  padding:110px 24px 80px;
+  z-index:1;
+  background:
+    radial-gradient(ellipse 70% 50% at 15% 20%, rgba(255,255,255,0.042) 0%, transparent 100%),
+    radial-gradient(ellipse 55% 65% at 85% 10%, rgba(255,255,255,0.032) 0%, transparent 100%),
+    radial-gradient(ellipse 80% 40% at 50% 50%, rgba(200,230,255,0.022) 0%, transparent 100%),
+    radial-gradient(ellipse 45% 70% at 10% 75%, rgba(255,255,255,0.038) 0%, transparent 100%),
+    radial-gradient(ellipse 60% 45% at 90% 80%, rgba(255,255,255,0.028) 0%, transparent 100%);
+}
+
+/* Animated cloud layer */
+.cloud-layer{
+  position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse 500px 280px at 5% 18%, rgba(255,255,255,0.038) 0%, transparent 100%),
+    radial-gradient(ellipse 420px 340px at 92% 8%, rgba(255,255,255,0.03) 0%, transparent 100%),
+    radial-gradient(ellipse 600px 220px at 50% 45%, rgba(240,250,255,0.022) 0%, transparent 100%),
+    radial-gradient(ellipse 380px 300px at 12% 78%, rgba(255,255,255,0.035) 0%, transparent 100%),
+    radial-gradient(ellipse 460px 200px at 80% 88%, rgba(255,255,255,0.025) 0%, transparent 100%),
+    radial-gradient(ellipse 300px 260px at 62% 12%, rgba(255,255,255,0.04) 0%, transparent 100%),
+    radial-gradient(ellipse 350px 180px at 35% 92%, rgba(255,255,255,0.02) 0%, transparent 100%);
+  animation:clouds-slow 25s ease-in-out infinite alternate;
+}
+.cloud-layer-2{
+  position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse 280px 200px at 70% 35%, rgba(255,255,255,0.028) 0%, transparent 100%),
+    radial-gradient(ellipse 320px 240px at 25% 55%, rgba(255,255,255,0.022) 0%, transparent 100%),
+    radial-gradient(ellipse 200px 280px at 88% 60%, rgba(220,240,255,0.025) 0%, transparent 100%);
+  animation:clouds-slow2 32s ease-in-out infinite alternate;
+}
+@keyframes clouds-slow{
+  0%{transform:translate(0,0)}
+  100%{transform:translate(18px,-12px)}
+}
+@keyframes clouds-slow2{
+  0%{transform:translate(0,0)}
+  100%{transform:translate(-14px,10px)}
+}
+
+/* HERO BLOG */
+.blog-hero{
+  max-width:780px;margin:0 auto 64px;text-align:center;
+  position:relative;z-index:2;
+}
+.blog-hero-label{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:11px;letter-spacing:2.5px;text-transform:uppercase;
+  color:var(--cyan);border:1px solid var(--border);
+  background:rgba(56,212,245,0.06);
+  padding:7px 18px;border-radius:100px;margin-bottom:28px;
+  backdrop-filter:blur(10px);
+}
+.blog-hero h1{
+  font-family:'Syne',sans-serif;
+  font-size:clamp(32px,5vw,58px);
+  font-weight:800;line-height:1.06;letter-spacing:-.5px;
+  margin-bottom:20px;
+}
+.blog-hero h1 em{color:var(--cyan);font-style:italic}
+.blog-hero p{
+  font-size:16px;color:var(--muted);line-height:1.75;max-width:520px;margin:0 auto;
+}
+
+/* FILTER TAGS */
+.blog-filters{
+  display:flex;gap:10px;flex-wrap:wrap;justify-content:center;
+  margin-bottom:48px;position:relative;z-index:2;
+}
+.filter-tag{
+  font-size:11px;letter-spacing:1px;text-transform:uppercase;
+  padding:7px 18px;border-radius:100px;cursor:pointer;
+  border:1px solid var(--border2);color:var(--muted);
+  background:rgba(255,255,255,0.03);backdrop-filter:blur(4px);
+  transition:all .2s;
+}
+.filter-tag:hover,.filter-tag.active{
+  border-color:var(--cyan);color:var(--cyan);
+  background:rgba(56,212,245,0.06);
+}
+
+/* GRID */
+.blog-grid{
+  max-width:1100px;margin:0 auto;
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));
+  gap:28px;position:relative;z-index:2;
+}
+
+/* CARD */
+.blog-card{
+  position:relative;
+  background:rgba(255,255,255,0.048);
+  border:1px solid rgba(255,255,255,0.11);
+  border-radius:22px;overflow:hidden;
+  backdrop-filter:blur(14px);
+  transition:transform .3s,box-shadow .3s,border-color .3s;
+  display:flex;flex-direction:column;
+}
+.blog-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;
+  height:1px;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,0.15),transparent);
+}
+.blog-card::after{
+  content:'';position:absolute;
+  top:0;left:0;right:0;bottom:0;pointer-events:none;
+  background:radial-gradient(ellipse 220px 140px at 20% 10%, rgba(255,255,255,0.05) 0%, transparent 100%);
+}
+.blog-card:hover{
+  transform:translateY(-7px);
+  border-color:rgba(56,212,245,0.32);
+  box-shadow:0 20px 60px rgba(0,0,0,0.35), 0 0 40px rgba(56,212,245,0.08);
+}
+.blog-card-inner{padding:28px 26px;flex:1;display:flex;flex-direction:column}
+.blog-tag{
+  font-size:10px;letter-spacing:2px;text-transform:uppercase;
+  color:var(--cyan);font-family:'IBM Plex Mono',monospace;
+  margin-bottom:14px;display:block;
+}
+.blog-title{
+  font-family:'Syne',sans-serif;font-size:19px;font-weight:700;
+  line-height:1.3;color:var(--white);margin-bottom:12px;
+}
+.blog-excerpt{
+  font-size:13px;color:var(--muted);line-height:1.75;flex:1;
+}
+.blog-footer{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-top:20px;padding-top:18px;
+  border-top:1px solid rgba(255,255,255,0.07);
+}
+.blog-meta{
+  display:flex;flex-direction:column;gap:2px;
+}
+.blog-date{font-size:11px;color:rgba(255,255,255,0.28);font-family:'IBM Plex Mono',monospace}
+.blog-readtime{font-size:11px;color:rgba(255,255,255,0.2);font-family:'IBM Plex Mono',monospace}
+.blog-read-btn{
+  font-size:12px;font-weight:700;color:var(--cyan);
+  display:inline-flex;align-items:center;gap:6px;
+  transition:gap .2s;
+}
+.blog-card:hover .blog-read-btn{gap:10px}
+
+/* FEATURED CARD */
+.blog-card.featured{
+  grid-column:1/-1;
+  background:rgba(56,212,245,0.05);
+  border-color:rgba(56,212,245,0.22);
+}
+.blog-card.featured .blog-title{font-size:clamp(20px,2.5vw,26px)}
+.blog-card.featured .blog-card-inner{
+  display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:center;
+}
+.blog-card.featured .blog-tag{font-size:11px}
+
+/* FOOTER */
+footer{
+  position:relative;z-index:2;
+  text-align:center;padding:40px 24px;
+  border-top:1px solid var(--border2);
+  margin-top:80px;
+}
+.footer-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:18px;margin-bottom:10px}
+.footer-logo span{color:var(--cyan)}
+.footer-text{font-size:12px;color:var(--muted);margin-bottom:16px}
+.footer-links{display:flex;gap:24px;justify-content:center;font-size:13px;color:var(--muted)}
+.footer-links a:hover{color:var(--white)}
+
+@media(max-width:768px){
+  nav{padding:0 20px}
+  .nav-links{display:none}
+  .blog-card.featured .blog-card-inner{grid-template-columns:1fr}
+  .blog-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<canvas id="starfield"></canvas>
+<div class="cloud-layer"></div>
+<div class="cloud-layer-2"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">
+    <img src="/iA.png" alt="iA" style="height:40px;width:40px;object-fit:contain;filter:drop-shadow(0 0 10px rgba(56,212,245,0.4))">
+    <span>in</span>Albis Pages
+  </div>
+  <ul class="nav-links">
+    <li><a href="/#paquetes">Paquetes</a></li>
+    <li><a href="/#portfolio">Portfolio</a></li>
+    <li><a href="/blog/" style="color:var(--cyan)">Blog</a></li>
+    <li><a href="/#contacto">Contacto</a></li>
+    <li><a href="/Alby/habla/index.html" style="color:var(--cyan);font-weight:600">✦ Alby IA</a></li>
+    <li><a href="https://wa.me/541168115491" target="_blank" class="nav-cta">Consultar</a></li>
+  </ul>
+</nav>
+
+<!-- CLOUD PAGE -->
+<div class="cloud-page">
+
+  <!-- HERO -->
+  <div class="blog-hero">
+    <div class="blog-hero-label">
+      <span style="width:6px;height:6px;background:var(--cyan);border-radius:50%;display:inline-block;animation:blink 1.6s ease-in-out infinite"></span>
+      Recursos · Negocios Argentinos
+    </div>
+    <h1>Ideas para <em>crecer</em><br>en internet</h1>
+    <p>Guías prácticas sobre diseño web, SEO local e inteligencia artificial para negocios que quieren más clientes.</p>
+  </div>
+
+  <!-- FILTROS -->
+  <div class="blog-filters">
+    <span class="filter-tag active">Todos</span>
+    <span class="filter-tag">SEO</span>
+    <span class="filter-tag">Diseño Web</span>
+    <span class="filter-tag">Google</span>
+    <span class="filter-tag">Inteligencia Artificial</span>
+    <span class="filter-tag">Negocios</span>
+  </div>
+
+  <!-- GRID -->
+  <div class="blog-grid">
+
+    <!-- FEATURED -->
+    <div class="blog-card featured">
+      <div class="blog-card-inner">
+        <div>
+          <span class="blog-tag">SEO · Destacado</span>
+          <div class="blog-title">¿Cuánto cuesta una página web en Argentina en 2026?</div>
+          <p class="blog-excerpt">Comparamos precios, qué incluye cada opción y cómo no caer en una web barata que no posiciona ni convierte. La guía definitiva antes de contratar.</p>
+          <div class="blog-footer">
+            <div class="blog-meta">
+              <span class="blog-date">Junio 2026</span>
+              <span class="blog-readtime">7 min de lectura</span>
+            </div>
+            <a href="/blog/cuanto-cuesta-pagina-web-argentina/" class="blog-read-btn">Leer artículo →</a>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:center;padding:20px 0">
+          <div style="font-size:72px;filter:drop-shadow(0 0 20px rgba(56,212,245,0.4))">💻</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CARD 2 -->
+    <div class="blog-card">
+      <div class="blog-card-inner">
+        <span class="blog-tag">Google · Visibilidad</span>
+        <div class="blog-title">Por qué tu negocio no aparece en Google (y cómo solucionarlo)</div>
+        <p class="blog-excerpt">Los errores más comunes y los pasos exactos para empezar a aparecer en búsquedas locales sin pagar publicidad.</p>
+        <div class="blog-footer">
+          <div class="blog-meta">
+            <span class="blog-date">Junio 2026</span>
+            <span class="blog-readtime">5 min de lectura</span>
+          </div>
+          <a href="/blog/por-que-negocio-no-aparece-en-google/" class="blog-read-btn">Leer →</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- CARD 3 -->
+    <div class="blog-card">
+      <div class="blog-card-inner">
+        <span class="blog-tag">IA · Automatización</span>
+        <div class="blog-title">Cómo la inteligencia artificial puede atender clientes las 24 hs</div>
+        <p class="blog-excerpt">Desde WhatsApp hasta el teléfono: cómo un contestador automático con IA puede transformar la atención de tu negocio.</p>
+        <div class="blog-footer">
+          <div class="blog-meta">
+            <span class="blog-date">Junio 2026</span>
+            <span class="blog-readtime">6 min de lectura</span>
+          </div>
+          <a href="/blog/ia-contestador-automatico-negocio/" class="blog-read-btn">Leer →</a>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /blog-grid -->
+</div><!-- /cloud-page -->
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">in<span>Albis</span> Pages</div>
+  <div class="footer-text">© 2026 inAlbis Pages · Diseño Web Profesional en Argentina</div>
+  <div class="footer-links">
+    <a href="/">Inicio</a>
+    <a href="/#paquetes">Paquetes</a>
+    <a href="https://wa.me/541168115491">WhatsApp</a>
+    <a href="mailto:albissonte@gmail.com">Email</a>
+  </div>
+</footer>
+
+<style>
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+</style>
+
+<script>
+/* STARFIELD */
+(function(){
+  const canvas=document.getElementById('starfield'),ctx=canvas.getContext('2d');
+  let W,H,stars=[];
+  function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight}
+  function init(){stars=[];for(let i=0;i<180;i++){stars.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.2+0.2,layer:Math.floor(Math.random()*3),alpha:Math.random()*0.5+0.15,twinkle:Math.random()*Math.PI*2})}}
+  let scrollY=0;
+  window.addEventListener('scroll',()=>{scrollY=window.scrollY});
+  const SPD=[0.06,0.14,0.24];
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    stars.forEach(s=>{
+      const py=(s.y-scrollY*SPD[s.layer])%H;
+      const fy=py<0?py+H:py;
+      s.twinkle+=0.01;
+      const a=s.alpha*(0.7+0.3*Math.sin(s.twinkle));
+      ctx.beginPath();ctx.arc(s.x,fy,s.r,0,Math.PI*2);
+      ctx.fillStyle=s.layer===2?`rgba(56,212,245,${a*0.6})`:`rgba(255,255,255,${a})`;
+      ctx.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+  resize();init();window.addEventListener('resize',()=>{resize();init()});requestAnimationFrame(draw);
+})();
+
+/* FILTER TAGS */
+document.querySelectorAll('.filter-tag').forEach(tag => {
+  tag.addEventListener('click', () => {
+    document.querySelectorAll('.filter-tag').forEach(t => t.classList.remove('active'));
+    tag.classList.add('active');
+  });
+});
+</script>
+</body>
+</html>
