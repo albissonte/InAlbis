@@ -1,1 +1,1320 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Alby — Contestador Automático de Pedidos y Reservas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+  :root {
+    --night:   #020818;
+    --deep:    #071224;
+    --blue:    #0055ff;
+    --cyan:    #00d4ff;
+    --cyan2:   #00aadd;
+    --glass:   rgba(0,180,255,0.05);
+    --glass-b: rgba(0,180,255,0.14);
+    --orb:     'Orbitron', sans-serif;
+    --body:    'Inter', sans-serif;
+    --mono:    'JetBrains Mono', monospace;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--night);
+    color: #ddeeff;
+    font-family: var(--body);
+    overflow-x: hidden;
+  }
+
+  /* ── LIGHTNING CANVAS ── */
+  #lightning-canvas {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  /* ── CLOUD BG ── */
+  .cloud-bg {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background:
+      radial-gradient(ellipse 110% 55% at 50% 105%, #031540 0%, transparent 65%),
+      radial-gradient(ellipse 70% 35% at 15% 85%,  #051230 0%, transparent 55%),
+      radial-gradient(ellipse 55% 28% at 85% 75%,  #040f28 0%, transparent 50%);
+    animation: cloudDrift 20s ease-in-out infinite alternate;
+  }
+
+  @keyframes cloudDrift {
+    0%   { transform: translateX(0)    translateY(0); }
+    100% { transform: translateX(14px) translateY(-9px); }
+  }
+
+  /* ── PAGE ── */
+  .page { position: relative; z-index: 2; }
+
+  /* ── NAV ── */
+  nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.1rem 2rem;
+    background: rgba(2,8,24,0.75);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid rgba(0,180,255,0.1);
+    position: sticky; top: 0; z-index: 100;
+  }
+
+  .nav-logo {
+    font-family: var(--orb);
+    font-size: 1rem;
+    font-weight: 900;
+    color: var(--cyan);
+    letter-spacing: 0.07em;
+    text-shadow: 0 0 18px rgba(0,212,255,0.5);
+  }
+
+  .nav-logo span { color: #fff; }
+
+  .nav-cta {
+    font-family: var(--orb);
+    font-size: 0.68rem;
+    font-weight: 700;
+    padding: 0.48rem 1.1rem;
+    border: 1px solid var(--cyan);
+    color: var(--cyan);
+    background: rgba(0,212,255,0.07);
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+    letter-spacing: 0.1em;
+    transition: all 0.2s;
+  }
+
+  .nav-cta:hover {
+    background: rgba(0,212,255,0.18);
+    box-shadow: 0 0 18px rgba(0,212,255,0.3);
+  }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 5rem 1.5rem 4rem;
+    position: relative;
+  }
+
+  .hero-eyebrow {
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    color: var(--cyan);
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    margin-bottom: 1.4rem;
+    opacity: 0.75;
+  }
+
+  .hero-headline {
+    font-family: var(--orb);
+    font-size: clamp(2.2rem, 7vw, 4.6rem);
+    font-weight: 900;
+    line-height: 1.06;
+    letter-spacing: -0.01em;
+    max-width: 860px;
+  }
+
+  .hero-headline .c { color: var(--cyan); }
+
+  .hero-bolt-icon {
+    display: inline-block;
+    width: 1em; height: 1em;
+    vertical-align: middle;
+    margin-left: 0.1em;
+    animation: boltPulse 1.4s ease-in-out infinite alternate;
+  }
+
+  @keyframes boltPulse {
+    0%  { filter: drop-shadow(0 0 6px var(--cyan)) drop-shadow(0 0 18px var(--blue)); transform: scale(1); }
+    100%{ filter: drop-shadow(0 0 14px var(--cyan)) drop-shadow(0 0 40px var(--cyan)); transform: scale(1.12); }
+  }
+
+  .hero-sub {
+    font-size: 1.02rem;
+    color: rgba(180,220,255,0.65);
+    max-width: 560px;
+    margin-top: 1.5rem;
+    line-height: 1.72;
+    font-weight: 300;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2.6rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .btn-primary {
+    font-family: var(--orb);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    padding: 0.9rem 2rem;
+    background: linear-gradient(135deg, var(--blue), #0099cc);
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    box-shadow: 0 0 28px rgba(0,100,255,0.4);
+    transition: all 0.25s;
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 50px rgba(0,180,255,0.55);
+  }
+
+  .btn-ghost {
+    font-family: var(--orb);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    padding: 0.9rem 2rem;
+    background: transparent;
+    color: var(--cyan);
+    border: 1px solid rgba(0,212,255,0.35);
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.25s;
+  }
+
+  .btn-ghost:hover {
+    background: rgba(0,212,255,0.1);
+    border-color: var(--cyan);
+  }
+
+  .capacity-badge {
+    margin-top: 3rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 0.55rem 1.5rem;
+    border: 1px solid rgba(0,212,255,0.18);
+    border-radius: 50px;
+    background: rgba(0,80,200,0.1);
+    backdrop-filter: blur(8px);
+  }
+
+  .capacity-badge .num {
+    font-family: var(--orb);
+    font-size: 1.7rem;
+    font-weight: 900;
+    color: var(--cyan);
+    line-height: 1;
+    text-shadow: 0 0 22px rgba(0,212,255,0.55);
+  }
+
+  .capacity-badge .lbl {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    color: rgba(180,220,255,0.55);
+    line-height: 1.35;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  /* ── SECTIONS ── */
+  .section-wrap {
+    max-width: 1060px;
+    margin: 0 auto;
+    padding: 5rem 1.5rem;
+  }
+
+  .section-label {
+    font-family: var(--mono);
+    font-size: 0.63rem;
+    letter-spacing: 0.3em;
+    color: var(--cyan);
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+    opacity: 0.65;
+  }
+
+  .section-title {
+    font-family: var(--orb);
+    font-size: clamp(1.5rem, 4vw, 2.5rem);
+    font-weight: 700;
+    line-height: 1.15;
+    margin-bottom: 0.5rem;
+  }
+
+  .section-title .c { color: var(--cyan); }
+
+  .section-sub {
+    color: rgba(180,220,255,0.5);
+    font-size: 0.92rem;
+    margin-bottom: 2.8rem;
+    font-weight: 300;
+    line-height: 1.6;
+  }
+
+  /* ── PANEL GLASS ── */
+  .panel {
+    background: var(--glass);
+    border: 1px solid var(--glass-b);
+    border-radius: 12px;
+    padding: 1.2rem;
+    backdrop-filter: blur(12px);
+    overflow: hidden;
+  }
+
+  .panel-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.9rem;
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    color: var(--cyan);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    border-bottom: 1px solid rgba(0,180,255,0.1);
+    padding-bottom: 0.65rem;
+  }
+
+  .dot-live {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: #00ee88;
+    box-shadow: 0 0 7px #00ee88;
+    animation: livePulse 1.3s ease-in-out infinite alternate;
+    flex-shrink: 0;
+  }
+
+  @keyframes livePulse { 0%{opacity:1} 100%{opacity:0.25} }
+
+  /* ── CALLS SCROLL ── */
+  .calls-viewport {
+    height: 220px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .calls-track {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    transition: transform 0.7s ease;
+  }
+
+  .call-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.55rem 0;
+    border-bottom: 1px solid rgba(0,180,255,0.07);
+    flex-shrink: 0;
+    min-height: 52px;
+  }
+
+  .call-avatar {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--blue), var(--cyan2));
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--mono);
+    font-size: 0.62rem;
+    font-weight: 500;
+    flex-shrink: 0;
+    box-shadow: 0 0 10px rgba(0,100,255,0.35);
+    color: #fff;
+  }
+
+  .call-info { flex: 1; min-width: 0; }
+
+  .call-name {
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    color: #ddeeff;
+    letter-spacing: 0.03em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .call-status {
+    font-size: 0.58rem;
+    color: var(--cyan);
+    opacity: 0.65;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    margin-top: 0.12rem;
+  }
+
+  .waveform {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    height: 20px;
+    flex-shrink: 0;
+  }
+
+  .wave-bar {
+    width: 2.5px;
+    border-radius: 2px;
+    background: var(--cyan);
+    box-shadow: 0 0 3px var(--cyan);
+  }
+
+  .call-timer {
+    font-family: var(--mono);
+    font-size: 0.62rem;
+    color: #00ee88;
+    flex-shrink: 0;
+  }
+
+  /* ── ORDERS TYPEWRITER ── */
+  .orders-list { display: flex; flex-direction: column; gap: 0.6rem; }
+
+  .order-item {
+    padding: 0.7rem 0.9rem;
+    border-radius: 8px;
+    background: rgba(0,80,180,0.1);
+    border: 1px solid rgba(0,150,255,0.15);
+  }
+
+  .order-tag {
+    font-family: var(--mono);
+    font-size: 0.56rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--cyan);
+    opacity: 0.7;
+  }
+
+  .order-business {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    font-weight: 500;
+    color: #ddeeff;
+    margin: 0.15rem 0 0.2rem;
+  }
+
+  .order-details {
+    font-size: 0.7rem;
+    color: rgba(180,220,255,0.58);
+    line-height: 1.45;
+    min-height: 1.2em;
+  }
+
+  .order-details .cursor {
+    display: inline-block;
+    width: 1px; height: 0.8em;
+    background: var(--cyan);
+    margin-left: 1px;
+    vertical-align: text-bottom;
+    animation: cursorBlink 0.6s step-end infinite;
+  }
+
+  @keyframes cursorBlink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+  .order-confirmed {
+    margin-top: 0.3rem;
+    font-family: var(--mono);
+    font-size: 0.58rem;
+    color: #00ee88;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    opacity: 0;
+    transition: opacity 0.4s;
+  }
+
+  .order-confirmed.show { opacity: 1; }
+
+  /* ── DEMO GRID ── */
+  .demo-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.2rem;
+  }
+
+  @media (max-width: 680px) { .demo-grid { grid-template-columns: 1fr; } }
+
+  /* ── STEPS ── */
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.4rem;
+    margin-top: 3rem;
+  }
+
+  @media (max-width: 640px) { .steps { grid-template-columns: 1fr; } }
+
+  .step-card {
+    padding: 2rem 1.4rem;
+    border: 1px solid rgba(0,180,255,0.1);
+    border-radius: 14px;
+    background: rgba(7,18,36,0.65);
+    backdrop-filter: blur(8px);
+    transition: border-color 0.3s, transform 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .step-card::before {
+    content: '';
+    position: absolute;
+    top: -20px; left: 50%;
+    transform: translateX(-50%);
+    width: 80px; height: 80px;
+    background: radial-gradient(circle, rgba(0,212,255,0.12), transparent 70%);
+    border-radius: 50%;
+  }
+
+  .step-card:hover {
+    border-color: rgba(0,212,255,0.3);
+    transform: translateY(-4px);
+  }
+
+  .step-num {
+    font-family: var(--orb);
+    font-size: 0.58rem;
+    letter-spacing: 0.22em;
+    color: var(--cyan);
+    opacity: 0.45;
+    margin-bottom: 0.9rem;
+  }
+
+  .step-icon-wrap {
+    width: 40px; height: 40px;
+    border-radius: 10px;
+    background: rgba(0,100,255,0.15);
+    border: 1px solid rgba(0,180,255,0.2);
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 1rem;
+  }
+
+  .step-title {
+    font-family: var(--orb);
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: #ddeeff;
+    margin-bottom: 0.55rem;
+    line-height: 1.3;
+  }
+
+  .step-desc {
+    font-size: 0.8rem;
+    color: rgba(180,220,255,0.52);
+    line-height: 1.62;
+  }
+
+  /* ── STATS ── */
+  .stats-band {
+    border-top: 1px solid rgba(0,180,255,0.07);
+    border-bottom: 1px solid rgba(0,180,255,0.07);
+    background: linear-gradient(180deg, transparent, rgba(0,30,90,0.3), transparent);
+    padding: 4rem 1.5rem;
+  }
+
+  .stats-inner {
+    max-width: 860px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    text-align: center;
+  }
+
+  @media (max-width: 580px) { .stats-inner { grid-template-columns: repeat(2,1fr); } }
+
+  .stat-num {
+    font-family: var(--orb);
+    font-size: clamp(2rem, 5vw, 2.9rem);
+    font-weight: 900;
+    color: var(--cyan);
+    text-shadow: 0 0 28px rgba(0,212,255,0.45);
+    line-height: 1;
+  }
+
+  .stat-label {
+    font-family: var(--mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.15em;
+    color: rgba(180,220,255,0.45);
+    text-transform: uppercase;
+    margin-top: 0.45rem;
+  }
+
+  /* ── BENEFITS ── */
+  .benefits-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    margin-top: 2.5rem;
+  }
+
+  @media (max-width: 600px) { .benefits-grid { grid-template-columns: 1fr; } }
+
+  .benefit-card {
+    display: flex;
+    gap: 1rem;
+    padding: 1.4rem;
+    border: 1px solid rgba(0,180,255,0.09);
+    border-radius: 12px;
+    background: rgba(0,20,60,0.45);
+    backdrop-filter: blur(8px);
+    transition: border-color 0.3s, background 0.3s;
+  }
+
+  .benefit-card:hover {
+    border-color: rgba(0,212,255,0.28);
+    background: rgba(0,30,80,0.55);
+  }
+
+  .bicon {
+    width: 36px; height: 36px;
+    flex-shrink: 0;
+    border-radius: 8px;
+    background: rgba(0,100,255,0.15);
+    border: 1px solid rgba(0,180,255,0.18);
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  .benefit-title {
+    font-family: var(--orb);
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #ddeeff;
+    margin-bottom: 0.28rem;
+    letter-spacing: 0.03em;
+  }
+
+  .benefit-desc {
+    font-size: 0.77rem;
+    color: rgba(180,220,255,0.52);
+    line-height: 1.55;
+  }
+
+  /* ── CTA FINAL ── */
+  .cta-section {
+    padding: 7rem 1.5rem 5rem;
+    text-align: center;
+    position: relative;
+  }
+
+  .cta-section::before {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%,-50%);
+    width: 700px; height: 500px;
+    background: radial-gradient(ellipse, rgba(0,80,200,0.1), transparent 65%);
+    pointer-events: none;
+  }
+
+  .alby-glow-wrap {
+    width: 140px; height: 140px;
+    margin: 0 auto 2.5rem;
+    position: relative;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  .alby-ring {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    border: 1px solid rgba(0,212,255,0.25);
+    box-shadow: 0 0 40px rgba(0,180,255,0.15), inset 0 0 40px rgba(0,80,200,0.1);
+    animation: ringPulse 2.8s ease-in-out infinite alternate;
+  }
+
+  @keyframes ringPulse {
+    0%  { box-shadow: 0 0 20px rgba(0,180,255,0.15); transform: scale(0.96); }
+    100%{ box-shadow: 0 0 55px rgba(0,212,255,0.3);  transform: scale(1.04); }
+  }
+
+  .alby-letter {
+    font-family: var(--orb);
+    font-size: 3.2rem;
+    font-weight: 900;
+    color: var(--cyan);
+    text-shadow: 0 0 30px rgba(0,212,255,0.7), 0 0 60px rgba(0,100,255,0.4);
+    position: relative; z-index: 1;
+    animation: albyFloat 3.5s ease-in-out infinite;
+  }
+
+  @keyframes albyFloat { 0%,100%{ transform:translateY(0) } 50%{ transform:translateY(-8px) } }
+
+  .cta-headline {
+    font-family: var(--orb);
+    font-size: clamp(1.8rem, 5vw, 3rem);
+    font-weight: 900;
+    line-height: 1.1;
+    max-width: 680px;
+    margin: 0 auto 1rem;
+  }
+
+  .cta-headline .c { color: var(--cyan); }
+
+  .cta-sub {
+    color: rgba(180,220,255,0.52);
+    font-size: 0.92rem;
+    margin-bottom: 2.5rem;
+    font-weight: 300;
+    line-height: 1.65;
+  }
+
+  .cta-brand {
+    margin-top: 3rem;
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    color: rgba(180,220,255,0.25);
+    text-transform: uppercase;
+  }
+
+  .cta-brand a { color: rgba(0,212,255,0.4); text-decoration: none; }
+
+  /* ── SCROLL REVEAL ── */
+  .reveal { opacity: 0; transform: translateY(22px); transition: opacity 0.65s ease, transform 0.65s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* ── FOOTER ── */
+  footer {
+    padding: 1.4rem 2rem;
+    text-align: center;
+    border-top: 1px solid rgba(0,180,255,0.07);
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    color: rgba(180,220,255,0.22);
+    letter-spacing: 0.1em;
+  }
+
+  footer a { color: rgba(0,212,255,0.38); text-decoration: none; }
+</style>
+</head>
+<body>
+
+<canvas id="lightning-canvas"></canvas>
+<div class="cloud-bg"></div>
+
+<div class="page">
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-logo">in<span>Albis</span> Pages</div>
+    <a href="#contacto" class="nav-cta">Ver Demo</a>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <p class="hero-eyebrow">inAlbis · Automatización · Atención al cliente</p>
+    <h1 class="hero-headline">
+      Contesto tus llamadas<br>
+      <span class="c">tomo el pedido</span><br>
+      y confirmo al instante
+      <!-- SVG bolt inline -->
+      <svg class="hero-bolt-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M13 2L4.5 13.5H11L10 22L20.5 9.5H14L13 2Z" fill="#00d4ff" stroke="#00d4ff" stroke-width="1.2" stroke-linejoin="round"/>
+      </svg>
+    </h1>
+    <p class="hero-sub">
+      Hola, soy Alby. Atiendo cada llamada de tu negocio, registro pedidos y confirmo reservas — solo. Sin que vos tengas que estar al teléfono.
+    </p>
+    <div class="hero-actions">
+      <a href="#contacto" class="btn-primary">Solicitar Demo Gratis</a>
+      <a href="#como-funciona" class="btn-ghost">Como funciona</a>
+    </div>
+    <div class="capacity-badge">
+      <span class="num">10</span>
+      <span class="lbl">llamadas<br>simultáneas</span>
+    </div>
+  </section>
+
+  <!-- LIVE DEMO -->
+  <section id="demo" style="padding: 5rem 1.5rem;">
+    <div style="max-width:1060px;margin:0 auto;">
+      <div class="reveal">
+        <p class="section-label">// En este momento</p>
+        <h2 class="section-title">Así trabajo <span class="c">en tiempo real</span></h2>
+        <p class="section-sub">Mientras vos atendés tu negocio, yo manejo las llamadas y registro todo automáticamente.</p>
+      </div>
+      <div class="demo-grid reveal">
+        <!-- Llamadas -->
+        <div class="panel">
+          <div class="panel-header">
+            <div class="dot-live"></div>
+            Llamadas en curso
+          </div>
+          <div class="calls-viewport">
+            <div class="calls-track" id="calls-track"></div>
+          </div>
+        </div>
+        <!-- Pedidos -->
+        <div class="panel">
+          <div class="panel-header">
+            <div class="dot-live"></div>
+            Pedidos registrados
+          </div>
+          <div class="orders-list" id="orders-list"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section id="como-funciona" class="section-wrap" style="text-align:center;">
+    <div class="reveal">
+      <p class="section-label">// Como funciona</p>
+      <h2 class="section-title">Tres pasos,<br><span class="c">resultado inmediato</span></h2>
+    </div>
+    <div class="steps">
+      <div class="step-card reveal">
+        <p class="step-num">PASO 01</p>
+        <div class="step-icon-wrap">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z" fill="#00d4ff"/></svg>
+        </div>
+        <h3 class="step-title">El cliente llama</h3>
+        <p class="step-desc">Atiendo en menos de un segundo. Sin tonos de espera, sin mensajes grabados, sin demoras.</p>
+      </div>
+      <div class="step-card reveal">
+        <p class="step-num">PASO 02</p>
+        <div class="step-icon-wrap">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z" fill="#00d4ff"/></svg>
+        </div>
+        <h3 class="step-title">Entiendo y gestiono</h3>
+        <p class="step-desc">Escucho el pedido o reserva en lenguaje natural. Pregunto lo que falta, confirmo cada detalle con el cliente.</p>
+      </div>
+      <div class="step-card reveal">
+        <p class="step-num">PASO 03</p>
+        <div class="step-icon-wrap">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z" fill="#00d4ff"/></svg>
+        </div>
+        <h3 class="step-title">Registro y confirmo</h3>
+        <p class="step-desc">El pedido queda guardado al instante en tu panel. Tu equipo lo ve de inmediato. El cliente cuelga satisfecho.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <div class="stats-band">
+    <div class="stats-inner">
+      <div class="reveal" style="text-align:center">
+        <div class="stat-num" data-target="10">0</div>
+        <div class="stat-label">Llamadas simultáneas</div>
+      </div>
+      <div class="reveal" style="text-align:center">
+        <div class="stat-num">24/7</div>
+        <div class="stat-label">Siempre activo</div>
+      </div>
+      <div class="reveal" style="text-align:center">
+        <div class="stat-num" data-target="0">99</div>
+        <div class="stat-label">Errores de registro</div>
+      </div>
+      <div class="reveal" style="text-align:center">
+        <div class="stat-num">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" style="filter:drop-shadow(0 0 8px #00d4ff)">
+            <path d="M13 2L4.5 13.5H11L10 22L20.5 9.5H14L13 2Z" fill="#00d4ff" stroke="#00d4ff" stroke-width="1" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="stat-label">Respuesta instantánea</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BENEFITS -->
+  <section class="section-wrap">
+    <div class="reveal" style="text-align:center">
+      <p class="section-label">// Lo que ganás</p>
+      <h2 class="section-title">Más ventas.<br><span class="c">Menos caos.</span></h2>
+      <p class="section-sub" style="max-width:520px;margin:0.5rem auto 0">
+        Cada vez que suena el teléfono y vos no podés atender, yo estoy ahí.
+      </p>
+    </div>
+    <div class="benefits-grid" style="margin-top:3rem">
+      <div class="benefit-card reveal">
+        <div class="bicon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M13 2L4.5 13.5H11L10 22L20.5 9.5H14L13 2Z" fill="#00d4ff"/></svg>
+        </div>
+        <div>
+          <div class="benefit-title">Respondo en menos de 1 segundo</div>
+          <div class="benefit-desc">Ningún cliente espera. Ninguna venta se pierde por línea ocupada o fuera de horario.</div>
+        </div>
+      </div>
+      <div class="benefit-card reveal">
+        <div class="bicon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><rect x="5" y="2" width="14" height="20" rx="2" stroke="#00d4ff" stroke-width="1.8"/><path d="M9 7h6M9 11h6M9 15h4" stroke="#00d4ff" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </div>
+        <div>
+          <div class="benefit-title">Pedidos sin errores</div>
+          <div class="benefit-desc">Escucho, confirmo y registro cada detalle. El "no me anotaron bien" desaparece.</div>
+        </div>
+      </div>
+      <div class="benefit-card reveal">
+        <div class="bicon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M3 17l4-8 4 5 3-3 4 6H3z" fill="none" stroke="#00d4ff" stroke-width="1.8" stroke-linejoin="round"/></svg>
+        </div>
+        <div>
+          <div class="benefit-title">Más ventas, automáticamente</div>
+          <div class="benefit-desc">Atiendo el pico del mediodía, los domingos a la noche y los feriados — sin contratar a nadie más.</div>
+        </div>
+      </div>
+      <div class="benefit-card reveal">
+        <div class="bicon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#00d4ff" stroke-width="1.8"/><path d="M8.5 12.5l2.5 2.5 4.5-5" stroke="#00d4ff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div>
+          <div class="benefit-title">Integrado a tu web inAlbis</div>
+          <div class="benefit-desc">Los pedidos llegan al mismo panel de tu página. Todo en un solo lugar.</div>
+        </div>
+      </div>
+      <div class="benefit-card reveal">
+        <div class="bicon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 3C12 3 5 6 5 12.5C5 16.1 8.1 19 12 19C15.9 19 19 16.1 19 12.5C19 6 12 3 12 3Z" stroke="#00d4ff" stroke-width="1.8" stroke-linejoin="round"/><path d="M12 19v2M9 21h6" stroke="#00d4ff" stroke-width="1.8" stroke-linecap="round"/></svg>
+        </div>
+        <div>
+          <div class="benefit-title">Sin turnos, sin descansos</div>
+          <div class="benefit-desc">A las 3 AM o en feriados nacionales, sigo en línea. Tu negocio nunca cierra.</div>
+        </div>
+      </div>
+      <div class="benefit-card reveal">
+        <div class="bicon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="#00d4ff" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/></svg>
+        </div>
+        <div>
+          <div class="benefit-title">Fácil de activar</div>
+          <div class="benefit-desc">Sin equipos ni servidores propios. Lo ponemos a funcionar en tu negocio en menos de 24 horas.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA FINAL -->
+  <section class="cta-section" id="contacto">
+    <div class="alby-glow-wrap">
+      <div class="alby-ring"></div>
+      <div class="alby-letter">A</div>
+    </div>
+    <h2 class="cta-headline reveal">
+      Tu negocio merece<br>
+      <span class="c">velocidad real.</span><br>
+      Resultados reales.
+    </h2>
+    <p class="cta-sub reveal">
+      Hablá con el equipo de inAlbis hoy y te activo esta semana.
+    </p>
+    <div class="reveal">
+      <a href="https://www.inalbispages.com" class="btn-primary" style="font-size:0.78rem;padding:1rem 2.4rem;">
+        Solicitar Demo Gratis
+      </a>
+    </div>
+    <p class="cta-brand reveal" style="margin-top:3rem">
+      Un producto de <a href="https://www.inalbispages.com">inAlbis Pages</a> · Automatización web para tu negocio
+    </p>
+  </section>
+
+  <footer>
+    © 2025 inAlbis Pages · Argentina · <a href="https://www.inalbispages.com">www.inalbispages.com</a>
+  </footer>
+
+</div>
+
+<script>
+// ===== LIGHTNING CANVAS =====
+const canvas = document.getElementById('lightning-canvas');
+const ctx    = canvas.getContext('2d');
+
+function resize(){ canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+resize();
+window.addEventListener('resize', resize);
+
+function rnd(a,b){ return a + Math.random()*(b-a); }
+
+// Recursive midpoint displacement bolt
+function boltSegment(x1,y1,x2,y2,roughness,depth){
+  if(depth===0){
+    ctx.beginPath(); ctx.moveTo(x1,y1); ctx.lineTo(x2,y2); ctx.stroke();
+    return;
+  }
+  const mx = (x1+x2)/2 + rnd(-roughness,roughness);
+  const my = (y1+y2)/2 + rnd(-roughness*0.3,roughness*0.3);
+  boltSegment(x1,y1,mx,my, roughness*0.55, depth-1);
+  boltSegment(mx,my,x2,y2, roughness*0.55, depth-1);
+  // branch
+  if(depth>=3 && Math.random()<0.45){
+    const ang = rnd(0.3,1.1) * (Math.random()<0.5?1:-1);
+    const len = rnd(40,120);
+    const bx  = mx + Math.cos(ang)*len;
+    const by  = my + Math.sin(ang)*len + rnd(20,80);
+    ctx.save();
+    ctx.globalAlpha *= 0.55;
+    ctx.lineWidth   *= 0.5;
+    boltSegment(mx,my,bx,by, roughness*0.4, depth-2);
+    ctx.restore();
+  }
+}
+
+function fireLightning(){
+  const x  = rnd(canvas.width*0.08, canvas.width*0.92);
+  const y2 = rnd(canvas.height*0.35, canvas.height*0.8);
+  const dx = rnd(-60,60);
+
+  // outer glow
+  ctx.save();
+  ctx.strokeStyle = 'rgba(0,160,255,0.18)';
+  ctx.lineWidth   = 6;
+  ctx.shadowColor = '#00d4ff';
+  ctx.shadowBlur  = 28;
+  ctx.globalAlpha = 0.7;
+  boltSegment(x,0, x+dx,y2, 70, 5);
+  ctx.restore();
+
+  // mid glow
+  ctx.save();
+  ctx.strokeStyle = 'rgba(0,210,255,0.45)';
+  ctx.lineWidth   = 2;
+  ctx.shadowColor = '#00d4ff';
+  ctx.shadowBlur  = 14;
+  ctx.globalAlpha = 0.9;
+  boltSegment(x,0, x+dx,y2, 70, 5);
+  ctx.restore();
+
+  // bright core
+  ctx.save();
+  ctx.strokeStyle = 'rgba(200,240,255,0.95)';
+  ctx.lineWidth   = 0.8;
+  ctx.shadowColor = '#ffffff';
+  ctx.shadowBlur  = 6;
+  ctx.globalAlpha = 1;
+  boltSegment(x,0, x+dx,y2, 70, 5);
+  ctx.restore();
+
+  // flash overlay
+  ctx.save();
+  ctx.fillStyle = 'rgba(0,140,255,0.04)';
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+  ctx.restore();
+
+  // fade out
+  let alpha = 1;
+  const fade = setInterval(()=>{
+    alpha -= 0.1;
+    if(alpha<=0){
+      clearInterval(fade);
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+    } else {
+      ctx.save();
+      ctx.globalCompositeOperation = 'destination-out';
+      ctx.fillStyle = `rgba(0,0,0,${0.1})`;
+      ctx.fillRect(0,0,canvas.width,canvas.height);
+      ctx.restore();
+    }
+  }, 35);
+}
+
+setInterval(fireLightning, 3400);
+setInterval(fireLightning, 6100);
+setTimeout(()=>setInterval(fireLightning, 8200), 2000);
+fireLightning();
+setTimeout(fireLightning, 800);
+
+// ===== SCROLL REVEAL =====
+const revObs = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('visible'); });
+},{threshold:0.1});
+document.querySelectorAll('.reveal').forEach(el=>revObs.observe(el));
+
+// ===== COUNTERS =====
+function animCount(el, from, to, ms){
+  const s = performance.now();
+  const tick = now=>{
+    const p = Math.min((now-s)/ms,1);
+    el.textContent = Math.round(from+(to-from)*p);
+    if(p<1) requestAnimationFrame(tick);
+  };
+  requestAnimationFrame(tick);
+}
+const cntObs = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(!e.isIntersecting) return;
+    const el = e.target, t = parseInt(el.dataset.target);
+    if(!isNaN(t)){ animCount(el, t===0?99:0, t, 1200); cntObs.unobserve(el); }
+  });
+},{threshold:0.5});
+document.querySelectorAll('[data-target]').forEach(el=>cntObs.observe(el));
+
+// ===== CALLS — infinite CSS marquee + staggered timers =====
+const businesses = [
+  'La Parrilla del Sur','Pizzería Don Mario','Sushi Express',
+  'Resto El Rancho','Burger House','La Trattoria',
+  'Confitería Dulce','Helados del Centro','Cantina Napoli',
+  'El Quincho','Saborea BA','Resto del Puerto',
+  'Bar El Federal','Bodegón Los Amigos','Tostadería Nube'
+];
+const statuses = ['TOMANDO PEDIDO','CONFIRMANDO RESERVA','NUEVO PEDIDO','CONSULTA DE MESA','REGISTRANDO RESERVA'];
+
+// CSS for the marquee scroll and waveform
+(()=>{
+  const s = document.createElement('style');
+  s.textContent = `
+    .calls-viewport { height: 240px; overflow: hidden; position: relative; }
+    .calls-track {
+      display: flex;
+      flex-direction: column;
+      animation: callsScroll linear infinite;
+    }
+    @keyframes callsScroll {
+      0%   { transform: translateY(0); }
+      100% { transform: translateY(-50%); }
+    }
+    @keyframes wv {
+      0%   { transform: scaleY(0.25); }
+      100% { transform: scaleY(1.8); }
+    }
+  `;
+  document.head.appendChild(s);
+})();
+
+function fmt(s){ return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0'); }
+
+function makeWaveHTML(){
+  let h = '<div class="waveform">';
+  for(let i=0;i<10;i++){
+    const dur = (0.18 + Math.random()*0.28).toFixed(2);
+    const del = (i * 0.04).toFixed(2);
+    const hpx = Math.floor(4 + Math.random()*10);
+    h += `<div class="wave-bar" style="height:${hpx}px;animation:wv ${dur}s ${del}s ease-in-out infinite alternate;"></div>`;
+  }
+  return h + '</div>';
+}
+
+// Build a fixed pool of 10 calls, each with a different starting elapsed time
+const POOL_SIZE = 10;
+const callPool = [];
+for(let i=0;i<POOL_SIZE;i++){
+  const biz = businesses[i % businesses.length];
+  const init = biz.split(' ').slice(0,2).map(w=>w[0]).join('').toUpperCase();
+  callPool.push({
+    id: i,
+    biz,
+    init,
+    status: statuses[i % statuses.length],
+    elapsed: Math.floor(5 + i * 13 + Math.random()*20) // staggered: 5s, 18s, 31s...
+  });
+}
+
+function buildTrack(){
+  const track = document.getElementById('calls-track');
+  if(!track) return;
+
+  // build items twice (clone) for seamless loop
+  function renderSet(){
+    return callPool.map(c => `
+      <div class="call-item">
+        <div class="call-avatar">${c.init}</div>
+        <div class="call-info">
+          <div class="call-name">${c.biz}</div>
+          <div class="call-status">${c.status}</div>
+        </div>
+        ${makeWaveHTML()}
+        <div class="call-timer" data-cid="${c.id}">${fmt(c.elapsed)}</div>
+      </div>`).join('');
+  }
+
+  track.innerHTML = renderSet() + renderSet(); // double for seamless loop
+
+  // Set animation duration: POOL_SIZE items × ~48px each ÷ ~18px/s
+  const totalH = POOL_SIZE * 52;
+  track.style.animationDuration = (totalH / 16) + 's'; // ~16px per second = slow drift
+}
+
+buildTrack();
+
+// Tick all timers every second
+setInterval(()=>{
+  callPool.forEach(c => {
+    c.elapsed++;
+    // randomly rotate a call off every ~45s
+    if(c.elapsed > 45 + Math.floor(Math.random()*30)){
+      c.elapsed = Math.floor(2 + Math.random()*8);
+      const newBiz = businesses[Math.floor(Math.random()*businesses.length)];
+      c.biz    = newBiz;
+      c.init   = newBiz.split(' ').slice(0,2).map(w=>w[0]).join('').toUpperCase();
+      c.status = statuses[Math.floor(Math.random()*statuses.length)];
+    }
+    // update all timer elements for this call id
+    document.querySelectorAll(`[data-cid="${c.id}"]`).forEach(el => {
+      el.textContent = fmt(c.elapsed);
+    });
+  });
+}, 1000);
+
+// Refresh track HTML every 60s to pick up biz name changes
+setInterval(buildTrack, 60000);
+
+// ===== VOICE WAVEFORM CHART =====
+// A canvas that shows a live-looking audio waveform for the "active" call
+(()=>{
+  const wrapper = document.getElementById('calls-track')?.closest('.panel');
+  if(!wrapper) return;
+
+  // Insert canvas below the calls viewport
+  const wfWrap = document.createElement('div');
+  wfWrap.style.cssText = 'padding:0.7rem 0.2rem 0.2rem;border-top:1px solid rgba(0,180,255,0.1);margin-top:0.4rem;';
+  wfWrap.innerHTML = `
+    <div style="font-family:var(--mono);font-size:0.58rem;letter-spacing:0.18em;color:var(--cyan);opacity:0.6;text-transform:uppercase;margin-bottom:0.4rem;">
+      Voz activa — Alby escuchando
+    </div>
+    <canvas id="voice-wave" height="44" style="width:100%;display:block;border-radius:4px;"></canvas>`;
+  wrapper.appendChild(wfWrap);
+
+  const wc  = document.getElementById('voice-wave');
+  const wctx = wc.getContext('2d');
+
+  function resizeWave(){
+    wc.width = wc.offsetWidth * window.devicePixelRatio;
+    wc.height = 44 * window.devicePixelRatio;
+    wc.style.height = '44px';
+  }
+  resizeWave();
+  window.addEventListener('resize', resizeWave);
+
+  // Smooth noise via multiple sin waves at different freqs
+  let t = 0;
+  const freqs  = [0.8, 1.3, 2.1, 3.4, 0.5, 4.2];
+  const amps   = [0.35, 0.25, 0.18, 0.10, 0.22, 0.08];
+  const phases = freqs.map(()=> Math.random()*Math.PI*2);
+
+  function sampleWave(x, time){
+    let v = 0;
+    for(let i=0;i<freqs.length;i++){
+      v += amps[i] * Math.sin(freqs[i]*x*0.045 + time*freqs[i] + phases[i]);
+    }
+    return v; // -1..1 range approx
+  }
+
+  function drawWave(){
+    const W = wc.width, H = wc.height;
+    wctx.clearRect(0,0,W,H);
+
+    const mid    = H/2;
+    const maxAmp = H * 0.38;
+    const steps  = W;
+
+    // Glow pass
+    wctx.beginPath();
+    for(let x=0;x<steps;x++){
+      const v = sampleWave(x, t);
+      const y = mid + v * maxAmp;
+      x===0 ? wctx.moveTo(x,y) : wctx.lineTo(x,y);
+    }
+    wctx.strokeStyle = 'rgba(0,200,255,0.18)';
+    wctx.lineWidth   = 6 * window.devicePixelRatio;
+    wctx.shadowColor = '#00d4ff';
+    wctx.shadowBlur  = 14;
+    wctx.stroke();
+
+    // Core line
+    wctx.beginPath();
+    for(let x=0;x<steps;x++){
+      const v = sampleWave(x, t);
+      const y = mid + v * maxAmp;
+      x===0 ? wctx.moveTo(x,y) : wctx.lineTo(x,y);
+    }
+
+    const grad = wctx.createLinearGradient(0,0,W,0);
+    grad.addColorStop(0,   'rgba(0,100,255,0.6)');
+    grad.addColorStop(0.5, 'rgba(0,212,255,1)');
+    grad.addColorStop(1,   'rgba(0,100,255,0.6)');
+    wctx.strokeStyle = grad;
+    wctx.lineWidth   = 1.8 * window.devicePixelRatio;
+    wctx.shadowBlur  = 0;
+    wctx.stroke();
+
+    t += 0.022;
+    requestAnimationFrame(drawWave);
+  }
+
+  drawWave();
+})();
+
+// ===== ORDERS — typewriter =====
+const orderData = [
+  {biz:'Pizzería Don Mario', details:'2x Mozzarella grande, 1x Fugazzeta, refresco', type:'PEDIDO'},
+  {biz:'La Parrilla del Sur', details:'Mesa 8 · 4 personas · 21:00 hs', type:'RESERVA'},
+  {biz:'Sushi Express', details:'3x Roll especial, 1x combo noche, delivery', type:'PEDIDO'},
+  {biz:'Resto El Rancho', details:'Mesa 12 · 2 personas · 20:30 hs', type:'RESERVA'},
+  {biz:'Burger House', details:'1x Burger doble, papas, limonada grande', type:'PEDIDO'},
+  {biz:'La Trattoria', details:'Mesa 5 · mañana 13:00 hs · 6 personas', type:'RESERVA'},
+  {biz:'Helados del Centro', details:'4x potes 1/4 kg, sabores mixtos, retiro en local', type:'PEDIDO'},
+  {biz:'El Quincho', details:'Mesa 3 · hoy 22:00 hs · 2 personas', type:'RESERVA'},
+  {biz:'Cantina Napoli', details:'2x Pasta fresca, 1x botella tinto, sin TACC', type:'PEDIDO'},
+  {biz:'Saborea BA', details:'Mesa 10 · 5 personas · sábado 20:00 hs', type:'RESERVA'},
+];
+
+const orderList = document.getElementById('orders-list');
+let orderIdx = 0;
+const MAX_ORDERS = 3;
+
+function typeText(el, text, cb){
+  let i = 0;
+  el.innerHTML = '<span class="cursor"></span>';
+  const int = setInterval(()=>{
+    if(i>=text.length){ clearInterval(int); el.innerHTML = text; if(cb) cb(); return; }
+    el.innerHTML = text.slice(0,i+1)+'<span class="cursor"></span>';
+    i++;
+  }, 28);
+}
+
+function addOrder(){
+  const o = orderData[orderIdx % orderData.length];
+  orderIdx++;
+
+  // remove last if too many
+  while(orderList.children.length >= MAX_ORDERS){
+    orderList.removeChild(orderList.lastChild);
+  }
+
+  const item = document.createElement('div');
+  item.className = 'order-item';
+  item.style.opacity = '0';
+  item.style.transition = 'opacity 0.35s';
+  item.innerHTML = `
+    <div class="order-tag">${o.type}</div>
+    <div class="order-business">${o.biz}</div>
+    <div class="order-details" id="od-${orderIdx}"></div>
+    <div class="order-confirmed" id="oc-${orderIdx}">Registrado por Alby</div>`;
+
+  orderList.insertBefore(item, orderList.firstChild);
+  requestAnimationFrame(()=>{ item.style.opacity='1'; });
+
+  setTimeout(()=>{
+    const detEl  = document.getElementById('od-'+orderIdx);
+    const confEl = document.getElementById('oc-'+orderIdx);
+    if(detEl) typeText(detEl, o.details, ()=>{
+      setTimeout(()=>{ if(confEl) confEl.classList.add('show'); }, 300);
+    });
+  }, 100);
+}
+
+addOrder();
+setInterval(addOrder, 4600);
+</script>
+</body>
+</html>
