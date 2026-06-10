@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <!-- SEO básico -->
-<title>inAlbis Pages · Diseño Web Profesional en Argentina</title>
+<title>Páginas inAlbis · Diseño Web Profesional en Argentina</title>
 <meta name="description" content="Diseño y desarrollo de páginas web profesionales para negocios argentinos. Aparecé en Google, conseguí más clientes. Desde USD 249.">
 <meta name="keywords" content="diseño web argentina, páginas web profesionales, desarrollo web buenos aires, crear página web, diseño web barato argentina">
 <meta name="author" content="inAlbis Pages">
@@ -22,7 +22,7 @@
 {
   "@context": "https://schema.org",
   "@type": "ProfessionalService",
-  "name": "inAlbis Pages",
+  "name": "Páginas inAlbis",
   "url": "https://www.inalbispages.com",
   "logo": "https://www.inalbispages.com/og-image.jpg",
   "image": "https://www.inalbispages.com/og-image.jpg",
@@ -38,7 +38,7 @@
     "@type": "Country",
     "name": "Argentina"
   },
-  "priceRange": "USD 249 - USD 700",
+  "priceRange": "USD 249 - USD 899",
   "currenciesAccepted": "USD, ARS",
   "paymentAccepted": "Mercado Pago, transferencia bancaria",
   "sameAs": [
@@ -66,7 +66,7 @@
         "@type": "Offer",
         "name": "Plan Autoridad",
         "description": "Web completa con blog, tienda online o reservas, estrategia SEO avanzada, Google Ads incluido.",
-        "price": "700",
+        "price": "899",
         "priceCurrency": "USD"
       }
     ]
@@ -77,7 +77,7 @@
 <!-- Open Graph (Facebook, WhatsApp, Instagram) -->
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://www.inalbispages.com/">
-<meta property="og:title" content="inAlbis Pages · Diseño Web Profesional en Argentina">
+<meta property="og:title" content="Páginas inAlbis · Diseño Web Profesional en Argentina">
 <meta property="og:description" content="Diseño y desarrollo de páginas web profesionales para negocios argentinos. Aparecé en Google, conseguí más clientes. Desde USD 249.">
 <meta property="og:image" content="https://www.inalbispages.com/og-image.jpg">
 <meta property="og:locale" content="es_AR">
@@ -85,7 +85,7 @@
 
 <!-- Twitter Card -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="inAlbis Pages · Diseño Web Profesional en Argentina">
+<meta name="twitter:title" content="Páginas inAlbis · Diseño Web Profesional en Argentina">
 <meta name="twitter:description" content="Diseño y desarrollo de páginas web profesionales para negocios argentinos. Aparecé en Google, conseguí más clientes. Desde USD 249.">
 <meta name="twitter:image" content="https://www.inalbispages.com/og-image.jpg">
 <!--<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">-->
@@ -164,12 +164,45 @@ nav{
   background:radial-gradient(circle,rgba(56,212,245,.1) 0%,transparent 65%);
   pointer-events:none;z-index:0;
 }
-/* Logo image */
-.logo-hero-wrap{
-  position:relative;display:inline-block;margin-bottom:10px;z-index:0;
-  animation:float 5s ease-in-out infinite;
+/* Hero banner */
+.hero-banner-wrap{
+  position:relative;width:100%;max-width:900px;margin:0 auto 32px;
+  height:220px;z-index:2;overflow:hidden;border-radius:20px;
 }
-@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+.hero-banner-wrap::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(
+    to bottom,
+    transparent 0%,
+    transparent 35%,
+    rgba(6,15,30,0.6) 65%,
+    var(--bg) 100%
+  ),
+  linear-gradient(
+    to right,
+    var(--bg) 0%,
+    transparent 18%,
+    transparent 82%,
+    var(--bg) 100%
+  );
+  z-index:1;pointer-events:none;
+}
+.hero-banner-img{
+  width:100%;height:100%;object-fit:cover;object-position:center;
+  display:block;
+  filter:saturate(1.1) brightness(0.9);
+}
+.hero-banner-title{
+  position:absolute;bottom:22px;left:50%;transform:translateX(-50%);
+  z-index:2;text-align:center;width:100%;padding:0 24px;
+  font-family:'Syne',sans-serif;font-size:clamp(15px,2.5vw,22px);
+  font-weight:700;letter-spacing:2px;text-transform:uppercase;
+  color:var(--white);text-shadow:0 0 30px rgba(56,212,245,.5),0 2px 8px rgba(0,0,0,.8);
+}
+.hero-banner-title span{color:var(--cyan)}
+
+/* Legacy logo (hidden but kept for JS reference) */
+.logo-hero-wrap{ display:none }
 .logo-hero-img{
   width:300px;height:300px;object-fit:contain;
   filter:drop-shadow(0 0 30px rgba(56,212,245,.55)) drop-shadow(0 0 80px rgba(56,212,245,.2));
@@ -712,6 +745,95 @@ footer{
   .hero-features{grid-template-columns:1fr 1fr}
   .logo-hero-img{width:200px;height:200px}
 }
+
+/* ── BLOG SECTION ── */
+.blog-section{
+  position:relative;z-index:2;
+  padding:100px 40px;max-width:1160px;margin:0 auto;
+}
+.blog-cloud-bg{
+  position:relative;z-index:2;
+  background:
+    radial-gradient(ellipse 80% 60% at 20% 30%, rgba(240,248,255,0.07) 0%, transparent 70%),
+    radial-gradient(ellipse 60% 80% at 75% 60%, rgba(220,240,255,0.05) 0%, transparent 60%),
+    radial-gradient(ellipse 90% 50% at 50% 80%, rgba(200,235,255,0.04) 0%, transparent 70%);
+  overflow:hidden;
+}
+.blog-cloud-bg::before{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse 320px 180px at 8% 25%, rgba(255,255,255,0.055) 0%, transparent 100%),
+    radial-gradient(ellipse 280px 200px at 88% 15%, rgba(255,255,255,0.04) 0%, transparent 100%),
+    radial-gradient(ellipse 400px 160px at 50% 55%, rgba(255,255,255,0.03) 0%, transparent 100%),
+    radial-gradient(ellipse 200px 220px at 15% 75%, rgba(255,255,255,0.045) 0%, transparent 100%),
+    radial-gradient(ellipse 260px 140px at 78% 80%, rgba(255,255,255,0.035) 0%, transparent 100%),
+    radial-gradient(ellipse 180px 160px at 38% 10%, rgba(255,255,255,0.05) 0%, transparent 100%);
+  animation:cloud-drift 18s ease-in-out infinite alternate;
+}
+@keyframes cloud-drift{
+  0%{transform:translateX(0) translateY(0)}
+  100%{transform:translateX(12px) translateY(-8px)}
+}
+.blog-cards{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+  gap:24px;margin-top:48px;
+}
+.blog-card{
+  position:relative;
+  background:rgba(255,255,255,0.055);
+  border:1px solid rgba(255,255,255,0.12);
+  border-radius:20px;overflow:hidden;
+  backdrop-filter:blur(12px);
+  transition:transform .3s,box-shadow .3s,border-color .3s;
+}
+.blog-card::before{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(ellipse 200px 120px at 30% 20%, rgba(255,255,255,0.06) 0%, transparent 100%);
+}
+.blog-card:hover{
+  transform:translateY(-6px);
+  border-color:rgba(56,212,245,0.3);
+  box-shadow:0 16px 48px rgba(0,0,0,0.3), 0 0 30px rgba(56,212,245,0.08);
+}
+.blog-card-tag{
+  font-size:10px;letter-spacing:2px;text-transform:uppercase;
+  color:var(--cyan);padding:22px 24px 0;display:block;
+  font-family:'IBM Plex Mono',monospace;
+}
+.blog-card-title{
+  font-family:'Syne',sans-serif;font-size:18px;font-weight:700;
+  padding:10px 24px 12px;line-height:1.3;color:var(--white);
+}
+.blog-card-excerpt{
+  font-size:13px;color:var(--muted);padding:0 24px;line-height:1.7;
+}
+.blog-card-footer{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:18px 24px 22px;margin-top:14px;
+  border-top:1px solid rgba(255,255,255,0.07);
+}
+.blog-card-date{font-size:11px;color:rgba(255,255,255,0.3);font-family:'IBM Plex Mono',monospace}
+.blog-card-link{
+  font-size:12px;font-weight:700;color:var(--cyan);
+  letter-spacing:.3px;transition:opacity .2s;
+}
+.blog-card-link:hover{opacity:.7}
+.blog-ver-todos{
+  display:flex;justify-content:center;margin-top:40px;
+}
+.blog-ver-todos a{
+  display:inline-flex;align-items:center;gap:10px;
+  padding:13px 32px;border-radius:12px;
+  border:1px solid var(--border);color:var(--white);
+  background:rgba(255,255,255,0.04);backdrop-filter:blur(4px);
+  font-weight:600;font-size:14px;transition:all .25s;
+}
+.blog-ver-todos a:hover{border-color:var(--cyan);box-shadow:0 0 20px var(--cyan-glow)}
+
+@media(max-width:768px){
+  .blog-section{padding:70px 20px}
+  .blog-cards{grid-template-columns:1fr}
+}
 </style>
 </head>
 <body>
@@ -734,6 +856,7 @@ footer{
     <li><a href="#mensuales">Mensuales</a></li>
     <li><a href="#portfolio">Portfolio</a></li>
     <li><a href="#contacto">Contacto</a></li>
+    <li><a href="/blog/">Blog</a></li>
     <li><a href="/Alby/habla/index.html" style="color:var(--cyan);font-weight:600">✦ Alby IA</a></li>
     <li><a href="https://wa.me/541168115491" target="_blank" class="nav-cta">Consultar</a></li>
   </ul>
@@ -744,14 +867,15 @@ footer{
   <canvas id="constellation" style="position:absolute;inset:0;pointer-events:none;z-index:-1"></canvas>
   <div class="hero-glow"></div>
 
+  <!-- Hidden legacy element kept for JS reference -->
   <div class="logo-hero-wrap">
-    <div class="pulse-ring"></div>
-    <div class="pulse-ring"></div>
-    <div class="pulse-ring"></div>
-    
-    <img class=logo-hero-img alt="inAlbis logo">
-  
-  
+    <img class="logo-hero-img" alt="inAlbis logo">
+  </div>
+
+  <!-- Banner horizontal con degradado -->
+  <div class="hero-banner-wrap">
+    <img class="hero-banner-img" src="inAlbis.png" alt="inAlbis Pages banner">
+    <div class="hero-banner-title"><span>in</span>Albis <span>Pages</span></div>
   </div>
   <div class="hero-badge" style="position:relative;z-index:2">
     <span class="badge-dot"></span>
@@ -980,6 +1104,50 @@ footer{
       </div>
     </div>
   </div>
+</div>
+
+
+<!-- BLOG -->
+<div class="blog-cloud-bg" id="blog">
+<div class="blog-section">
+  <div class="s-label reveal">Blog · Recursos</div>
+  <h2 class="s-title reveal">Aprendé a <em>crecer online</em></h2>
+  <p class="s-sub reveal">Consejos reales para negocios argentinos que quieren aparecer en Google y conseguir más clientes.</p>
+
+  <div class="blog-cards">
+    <div class="blog-card reveal">
+      <span class="blog-card-tag">SEO · Visibilidad</span>
+      <div class="blog-card-title">¿Cuánto cuesta una página web en Argentina en 2026?</div>
+      <p class="blog-card-excerpt">Comparamos precios, qué incluye cada opción y cómo no caer en una web barata que no sirve para nada.</p>
+      <div class="blog-card-footer">
+        <span class="blog-card-date">Jun 2026</span>
+        <a href="/blog/cuanto-cuesta-pagina-web-argentina/" class="blog-card-link">Leer artículo →</a>
+      </div>
+    </div>
+    <div class="blog-card reveal">
+      <span class="blog-card-tag">Google · Negocios</span>
+      <div class="blog-card-title">Por qué tu negocio no aparece en Google (y cómo solucionarlo)</div>
+      <p class="blog-card-excerpt">Los errores más comunes que cometen los negocios argentinos y los pasos exactos para empezar a aparecer en búsquedas locales.</p>
+      <div class="blog-card-footer">
+        <span class="blog-card-date">Jun 2026</span>
+        <a href="/blog/por-que-negocio-no-aparece-en-google/" class="blog-card-link">Leer artículo →</a>
+      </div>
+    </div>
+    <div class="blog-card reveal">
+      <span class="blog-card-tag">IA · Automatización</span>
+      <div class="blog-card-title">Cómo la inteligencia artificial puede atender clientes por vos las 24 hs</div>
+      <p class="blog-card-excerpt">Desde WhatsApp hasta el teléfono: cómo un contestador automático con IA puede reemplazar la recepción de tu negocio sin costo fijo de personal.</p>
+      <div class="blog-card-footer">
+        <span class="blog-card-date">Jun 2026</span>
+        <a href="/blog/ia-contestador-automatico-negocio/" class="blog-card-link">Leer artículo →</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="blog-ver-todos">
+    <a href="/blog/">Ver todos los artículos →</a>
+  </div>
+</div>
 </div>
 
 <!-- CTA FINAL -->
