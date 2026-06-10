@@ -369,7 +369,7 @@ background:var(--border2);margin-top:20px;}
 .extra-price{font-family:'Syne',sans-serif;font-size:22px;color:var(--cyan);white-space:nowrap;flex-shrink:0}
 
 /* RECURRENTES */
-.recs{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.recs{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
 .rec{
   background:rgba(8,17,32,.6);border:1px solid var(--border2);border-radius:16px;
   padding:28px 24px;transition:transform .2s,border-color .2s;
@@ -734,6 +734,7 @@ footer{
     <li><a href="#mensuales">Mensuales</a></li>
     <li><a href="#portfolio">Portfolio</a></li>
     <li><a href="#contacto">Contacto</a></li>
+    <li><a href="/autos/alby/index.html" style="color:var(--cyan);font-weight:600">✦ Alby IA</a></li>
     <li><a href="https://wa.me/541168115491" target="_blank" class="nav-cta">Consultar</a></li>
   </ul>
 </nav>
@@ -926,6 +927,14 @@ footer{
       <p class="rec-desc">Dominio + hosting + SSL + soporte técnico incluido. Todo en una cuota fija sin sorpresas.</p>
       <div class="rec-price">$25–$40 USD/mes</div>
       <div class="rec-note">Sin preocupaciones técnicas</div>
+    </div>
+    <div class="rec reveal" style="border-color:rgba(56,212,245,0.35);background:rgba(56,212,245,0.05);position:relative">
+      <div style="position:absolute;top:12px;right:14px;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--cyan);border:1px solid rgba(56,212,245,0.35);padding:3px 8px;border-radius:100px">Nuevo</div>
+      <span class="rec-icon">🤖</span>
+      <div class="rec-name">Contestador Automático</div>
+      <p class="rec-desc">Alby atiende a tus clientes por WhatsApp, web, email y teléfono las 24 hs. Toma pedidos, responde consultas y registra reservas sin que muevas un dedo.</p>
+      <div class="rec-price" style="margin-bottom:14px">Consultar precio</div>
+      <a href="/autos/alby/index.html" style="display:inline-block;font-size:12px;font-weight:700;color:var(--bg);background:var(--cyan);padding:8px 18px;border-radius:8px;box-shadow:0 0 18px rgba(56,212,245,0.4);transition:box-shadow .2s" onmouseover="this.style.boxShadow='0 0 32px rgba(56,212,245,0.7)'" onmouseout="this.style.boxShadow='0 0 18px rgba(56,212,245,0.4)'">Ver más →</a>
     </div>
   </div>
 </div>
