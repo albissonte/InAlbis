@@ -174,7 +174,7 @@ nav{
 /* channel icon bubbles */
 .chan-bubble{
   position:absolute;z-index:4;
-  width:100px;height:100px;border-radius:14px;
+  width:50px;height:50px;border-radius:14px;
   display:flex;align-items:center;justify-content:center;font-size:1.5rem;
   backdrop-filter:blur(12px);
   animation:bubFloat 3s ease-in-out infinite;
@@ -238,14 +238,14 @@ nav{
 }
 .card-bg{position:absolute;inset:0;border-radius:12px;background-size:cover;background-position:center top;opacity:.06;transition:opacity .3s;pointer-events:none}
 .card:hover .card-bg{opacity:.14}
-.card-over{position:absolute;inset:0;border-radius:12px;background:rgba(2,8,24,.7);pointer-events:none;z-index:0}
+.card-over{position:absolute;inset:0;border-radius:12px;background:rgba(2,8,24,.5);pointer-events:none;z-index:0}
 .card>*:not(.card-bg):not(.card-over){position:relative;z-index:2}
 .card[data-canal]{--c-rgb:0,212,255;--c:#00d4ff}
 .card[data-canal="wa"]{--c-rgb:var(--wa-rgb);--c:var(--wa)}
 .card[data-canal="web"]{--c-rgb:var(--web-rgb);--c:var(--web)}
 .card[data-canal="mail"]{--c-rgb:var(--mail-rgb);--c:var(--mail)}
 .card[data-canal="tel"]{--c-rgb:var(--tel-rgb);--c:var(--tel)}
-.card[data-canal]{border:2px solid rgba(var(--c-rgb),.3);background:rgba(0,10,30,.6);box-shadow:0 0 18px rgba(var(--c-rgb),.08),inset 0 0 30px rgba(var(--c-rgb),.04)}
+.card[data-canal]{border:2px solid rgba(var(--c-rgb),.3);background:rgba(0,10,30,.4);box-shadow:0 0 18px rgba(var(--c-rgb),.08),inset 0 0 30px rgba(var(--c-rgb),.04)}
 .card[data-canal]:hover{transform:translateY(-6px);border-color:rgba(var(--c-rgb),.7);box-shadow:0 0 0 1px rgba(var(--c-rgb),.15),0 0 30px rgba(var(--c-rgb),.35),0 0 70px rgba(var(--c-rgb),.15),inset 0 0 40px rgba(var(--c-rgb),.06)}
 .card[data-canal]::after{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:12px 12px 0 0;background:linear-gradient(90deg,transparent,rgba(var(--c-rgb),1),transparent);box-shadow:0 0 12px rgba(var(--c-rgb),.8),0 0 24px rgba(var(--c-rgb),.4);opacity:.4;transition:opacity .3s;z-index:3}
 .card[data-canal]:hover::after{opacity:1}
@@ -463,9 +463,9 @@ nav{
   <div class="cards">
 
     <div class="card" data-canal="mail" onclick="location.href='email/'">
-      <div class="card-bg" style="background-image:url('1000783802.jpg')"></div>
+      <div class="card-bg" style="background-image:url('Albyemail.png')"></div>
       <div class="card-over"></div>
-      <div class="card-channel-tag">Canal 03</div>
+      <div class="card-channel-tag">Canal 01</div>
       <div class="card-icon-wrap">✉️</div>
       <div class="card-name">Email</div>
       <p class="card-desc">Lee, clasifica y responde emails de clientes automáticamente. Cotizaciones, consultas y reclamos.</p>
@@ -480,9 +480,9 @@ nav{
     </div>
 
     <div class="card" data-canal="wa" onclick="location.href='wa/'">
-      <div class="card-bg" style="background-image:url('1000783802.jpg')"></div>
+      <div class="card-bg" style="background-image:url('Albywa.jpg')"></div>
       <div class="card-over"></div>
-      <div class="card-channel-tag">Canal 01</div>
+      <div class="card-channel-tag">Canal 02</div>
       <div class="card-icon-wrap">💬</div>
       <div class="card-name">WhatsApp</div>
       <p class="card-desc">Responde mensajes, toma pedidos y registra reservas por WhatsApp Business las 24 hs.</p>
@@ -497,9 +497,9 @@ nav{
     </div>
 
     <div class="card" data-canal="web" onclick="location.href='web/'">
-      <div class="card-bg" style="background-image:url('1000783802.jpg')"></div>
+      <div class="card-bg" style="background-image:url('Albyweb.jpg')"></div>
       <div class="card-over"></div>
-      <div class="card-channel-tag">Canal 02</div>
+      <div class="card-channel-tag">Canal 03</div>
       <div class="card-icon-wrap">🌐</div>
       <div class="card-name">Web</div>
       <p class="card-desc">Chatbot embebido en tu sitio. Atiende visitantes y los guía hacia la conversión al instante.</p>
