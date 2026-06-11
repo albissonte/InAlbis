@@ -236,9 +236,9 @@ nav{
   cursor:pointer;position:relative;overflow:hidden;
   border:2px solid rgba(0,212,255,.2);background:rgba(0,20,50,.55);
 }
-.card-bg{position:absolute;inset:0;border-radius:12px;background-size:cover;background-position:center top;opacity:.06;transition:opacity .3s;pointer-events:none}
-.card:hover .card-bg{opacity:.14}
-.card-over{position:absolute;inset:0;border-radius:12px;background:rgba(2,8,24,.5);pointer-events:none;z-index:0}
+.card-bg{position:absolute;inset:0;border-radius:12px;background-size:cover;background-position:center top;opacity:.28;transition:opacity .3s;pointer-events:none}
+.card:hover .card-bg{opacity:.45}
+.card-over{position:absolute;inset:0;border-radius:12px;background:rgba(2,8,24,.25);pointer-events:none;z-index:0}
 .card>*:not(.card-bg):not(.card-over){position:relative;z-index:2}
 .card[data-canal]{--c-rgb:0,212,255;--c:#00d4ff}
 .card[data-canal="wa"]{--c-rgb:var(--wa-rgb);--c:var(--wa)}
@@ -268,7 +268,8 @@ nav{
 .card:hover .card-btn{border-color:rgba(var(--c-rgb),.7);color:rgba(var(--c-rgb),1);box-shadow:0 0 18px rgba(var(--c-rgb),.25);background:rgba(var(--c-rgb),.1)}
 .card[data-canal="tel"] .card-btn{border-color:rgba(191,0,255,.3);color:rgba(191,0,255,.8);background:rgba(191,0,255,.05)}
 .card[data-canal="tel"]:hover .card-btn{border-color:rgba(191,0,255,.75);color:var(--tel);box-shadow:0 0 20px rgba(191,0,255,.3)}
-.badge-premium{position:absolute;top:12px;right:12px;z-index:4;font-size:.5rem;letter-spacing:.18em;text-transform:uppercase;color:var(--tel);border:1px solid rgba(191,0,255,.4);padding:3px 8px;border-radius:100px;font-family:var(--mono);background:rgba(80,0,120,.25);box-shadow:0 0 10px rgba(191,0,255,.3)}
+.badge-premium{position:absolute !important;top:12px;right:12px;z-index:10;font-size:.5rem;letter-spacing:.18em;text-transform:uppercase;color:#e080ff;border:1px solid rgba(191,0,255,.75);padding:3px 10px;border-radius:100px;font-family:var(--mono);background:rgba(90,0,140,.75);box-shadow:0 0 16px rgba(191,0,255,.55),inset 0 0 8px rgba(191,0,255,.2);pointer-events:none;width:auto;display:inline-block}
+
 
 /* FULL PLAN */
 .card-full{background:rgba(20,12,0,.65);border:2px solid rgba(245,158,11,.3);border-radius:12px;padding:28px 32px;display:flex;align-items:center;gap:32px;flex-wrap:wrap;cursor:pointer;position:relative;overflow:hidden;transition:all .3s;box-shadow:0 0 20px rgba(245,158,11,.08),inset 0 0 40px rgba(245,158,11,.04)}
@@ -480,7 +481,7 @@ nav{
     </div>
 
     <div class="card" data-canal="wa" onclick="location.href='wa/'">
-      <div class="card-bg" style="background-image:url('Albywa.jpg')"></div>
+      <div class="card-bg" style="background-image:url('Albywa.png')"></div>
       <div class="card-over"></div>
       <div class="card-channel-tag">Canal 02</div>
       <div class="card-icon-wrap">💬</div>
@@ -497,7 +498,7 @@ nav{
     </div>
 
     <div class="card" data-canal="web" onclick="location.href='web/'">
-      <div class="card-bg" style="background-image:url('Albyweb.jpg')"></div>
+      <div class="card-bg" style="background-image:url('Albyweb.png')"></div>
       <div class="card-over"></div>
       <div class="card-channel-tag">Canal 03</div>
       <div class="card-icon-wrap">🌐</div>
@@ -534,7 +535,7 @@ nav{
   </div>
 
   <!-- FULL PLAN -->
-  <div class="card-full" onclick="location.href='habla/'">
+  <div class="card-full" onclick="location.href='https://wa.me/46760684744'">
     <div class="full-icon">⚡</div>
     <div class="full-body">
       <div class="full-tag">Paquete completo</div>
@@ -545,7 +546,7 @@ nav{
       <div class="full-price">$400</div>
       <div class="full-price-label">USD/mes</div>
       <div class="full-price-sub">+ $200 setup único aparte</div>
-      <span class="full-btn">Ver Alby completo →</span>
+      <span class="full-btn">Ver Alby completo</span>
     </div>
   </div>
 </div>
