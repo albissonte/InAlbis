@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Alby IA · Tu Asistente Multicanal — inAlbis Pages</title>
+<title>Alby · Tu Asistente IA — Páginas inAlbis</title>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -174,14 +174,14 @@ nav{
 /* channel icon bubbles */
 .chan-bubble{
   position:absolute;z-index:4;
-  width:50px;height:50px;border-radius:14px;
+  width:100px;height:100px;border-radius:14px;
   display:flex;align-items:center;justify-content:center;font-size:1.5rem;
   backdrop-filter:blur(12px);
   animation:bubFloat 3s ease-in-out infinite;
 }
-.chan-bubble.wa {top:16%;left:2%; background:rgba(37,211,102,.14);border:2px solid rgba(37,211,102,.45);box-shadow:0 0 18px rgba(37,211,102,.2);animation-delay:0s}
+.chan-bubble.wa {bottom:26%;right:3%; background:rgba(37,211,102,.14);border:2px solid rgba(37,211,102,.45);box-shadow:0 0 18px rgba(37,211,102,.2);animation-delay:0s}
 .chan-bubble.web{top:10%;right:6%;background:rgba(0,180,255,.14);border:2px solid rgba(0,180,255,.45);box-shadow:0 0 18px rgba(0,180,255,.2);animation-delay:.5s}
-.chan-bubble.tel{bottom:26%;right:3%;background:rgba(168,85,247,.14);border:2px solid rgba(168,85,247,.45);box-shadow:0 0 18px rgba(168,85,247,.2);animation-delay:1s}
+.chan-bubble.tel{top:16%;left:2%;background:rgba(168,85,247,.14);border:2px solid rgba(168,85,247,.45);box-shadow:0 0 18px rgba(168,85,247,.2);animation-delay:1s}
 .chan-bubble.mail{bottom:18%;left:3%;background:rgba(255,59,59,.14);border:2px solid rgba(255,59,59,.45);box-shadow:0 0 18px rgba(255,59,59,.2);animation-delay:1.5s}
 @keyframes bubFloat{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-10px) rotate(3deg)}}
 
@@ -296,10 +296,10 @@ nav{
 .combo-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(var(--cc-rgb),.9),transparent);box-shadow:0 0 10px rgba(var(--cc-rgb),.5);opacity:.5;transition:opacity .25s}
 .combo-card:hover{transform:translateY(-4px);border-color:rgba(var(--cc-rgb),.55);box-shadow:0 0 30px rgba(var(--cc-rgb),.2),inset 0 0 30px rgba(var(--cc-rgb),.04)}
 .combo-card:hover::before{opacity:1}
-.combo-card[data-combo="duo"]{--cc-rgb:0,212,255}
 .combo-card[data-combo="wa-mail"]{--cc-rgb:37,211,102}
 .combo-card[data-combo="web-mail"]{--cc-rgb:255,59,59}
-.combo-card[data-combo="business"]{--cc-rgb:0,212,255}
+.combo-card[data-combo="duo"]{--cc-rgb:0,212,255}
+.combo-card[data-combo="business"]{--cc-rgb:191,0,255}
 .combo-card[data-combo="full"]{--cc-rgb:245,158,11}
 .combo-card.highlight{border-color:rgba(var(--cc-rgb),.3);background:rgba(var(--cc-rgb),.04)}
 .combo-card[data-combo="full"]{border-color:rgba(245,158,11,.25);background:rgba(245,158,11,.04)}
@@ -384,8 +384,8 @@ nav{
       </div>
 
       <div class="hero-cta">
-        <a href="https://wa.me/541168115491" target="_blank" class="btn-primary">Ver servicios →</a>
-        <a href="#canales" class="btn-ghost">Ver precios ♡</a>
+        <a href="https://wa.me/541168115491" target="_blank" class="btn-primary">Ver servicios</a>
+        <a href="#canales" class="btn-ghost">Ver precios</a>
       </div>
     </div>
 
@@ -395,9 +395,9 @@ nav{
       <div class="hero-ring"></div>
 
       <!-- channel bubbles -->
-      <div class="chan-bubble wa">💬</div>
-      <div class="chan-bubble web">🌐</div>
       <div class="chan-bubble tel">📞</div>
+      <div class="chan-bubble web">🌐</div>
+      <div class="chan-bubble wa">💬</div>
       <div class="chan-bubble mail">✉️</div>
 
       <img
@@ -462,6 +462,23 @@ nav{
 <div class="cards-wrap">
   <div class="cards">
 
+    <div class="card" data-canal="mail" onclick="location.href='email/'">
+      <div class="card-bg" style="background-image:url('1000783802.jpg')"></div>
+      <div class="card-over"></div>
+      <div class="card-channel-tag">Canal 03</div>
+      <div class="card-icon-wrap">✉️</div>
+      <div class="card-name">Email</div>
+      <p class="card-desc">Lee, clasifica y responde emails de clientes automáticamente. Cotizaciones, consultas y reclamos.</p>
+      <div class="card-features">
+        <span class="feat">Responde automáticamente</span>
+        <span class="feat">Ahorra tiempo operativo</span>
+        <span class="feat">Mejora experiencia del cliente</span>
+      </div>
+      <div class="card-price">$50 USD/mes</div>
+      <div class="card-setup">+ $200 setup único aparte</div>
+      <span class="card-btn">Ver más →</span>
+    </div>
+
     <div class="card" data-canal="wa" onclick="location.href='wa/'">
       <div class="card-bg" style="background-image:url('1000783802.jpg')"></div>
       <div class="card-over"></div>
@@ -496,25 +513,8 @@ nav{
       <span class="card-btn">Ver más →</span>
     </div>
 
-    <div class="card" data-canal="mail" onclick="location.href='email/'">
-      <div class="card-bg" style="background-image:url('1000783802.jpg')"></div>
-      <div class="card-over"></div>
-      <div class="card-channel-tag">Canal 03</div>
-      <div class="card-icon-wrap">✉️</div>
-      <div class="card-name">Email</div>
-      <p class="card-desc">Lee, clasifica y responde emails de clientes automáticamente. Cotizaciones, consultas y reclamos.</p>
-      <div class="card-features">
-        <span class="feat">Responde automáticamente</span>
-        <span class="feat">Ahorra tiempo operativo</span>
-        <span class="feat">Mejora experiencia del cliente</span>
-      </div>
-      <div class="card-price">$50 USD/mes</div>
-      <div class="card-setup">+ $200 setup único aparte</div>
-      <span class="card-btn">Ver más →</span>
-    </div>
-
     <div class="card" data-canal="tel" onclick="location.href='habla/'">
-      <div class="card-bg" style="background-image:url('1000783802.jpg')"></div>
+      <div class="card-bg" style="background-image:url('Albyhabla.png')"></div>
       <div class="card-over"></div>
       <div class="badge-premium">★ Premium</div>
       <div class="card-channel-tag">Canal 04</div>
@@ -565,14 +565,6 @@ nav{
 
 <div class="combo-section" style="padding-top:0">
   <div class="combo-grid">
-    <div class="combo-card highlight" data-combo="duo">
-      <div class="combo-tag">Dúo popular</div>
-      <div class="combo-name">WA + Web</div>
-      <div class="combo-channels">WhatsApp $100 + Web a mitad ($50)</div>
-      <div class="combo-price-row"><div class="combo-price">$150</div><div class="combo-price-label">USD/mes</div></div>
-      <div class="combo-saving">Ahorrás $50/mes</div>
-      <div class="combo-setup">+ $200 setup único aparte</div>
-    </div>
     <div class="combo-card" data-combo="wa-mail">
       <div class="combo-tag">Dúo</div>
       <div class="combo-name">WA + Email</div>
@@ -587,6 +579,14 @@ nav{
       <div class="combo-channels">Web $100 + Email a mitad ($25)</div>
       <div class="combo-price-row"><div class="combo-price">$125</div><div class="combo-price-label">USD/mes</div></div>
       <div class="combo-saving">Ahorrás $25/mes</div>
+      <div class="combo-setup">+ $200 setup único aparte</div>
+    </div>
+    <div class="combo-card highlight" data-combo="duo">
+      <div class="combo-tag">Dúo popular</div>
+      <div class="combo-name">WA + Web</div>
+      <div class="combo-channels">WhatsApp $100 + Web a mitad ($50)</div>
+      <div class="combo-price-row"><div class="combo-price">$150</div><div class="combo-price-label">USD/mes</div></div>
+      <div class="combo-saving">Ahorrás $50/mes</div>
       <div class="combo-setup">+ $200 setup único aparte</div>
     </div>
     <div class="combo-card highlight" data-combo="business">
