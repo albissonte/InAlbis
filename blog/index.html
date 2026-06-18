@@ -179,12 +179,41 @@ nav{
   grid-column:1/-1;
   background:rgba(91,224,255,0.1);
   border-color:rgba(91,224,255,0.3);
+  position:relative;
+  overflow:hidden;
+  min-height:220px;
 }
 .blog-card.featured .blog-title{font-size:clamp(20px,2.5vw,26px)}
 .blog-card.featured .blog-card-inner{
   display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:center;
+  position:relative;z-index:2;
 }
 .blog-card.featured .blog-tag{font-size:11px}
+/* imagen de fondo: visible en la derecha, fade hacia la izquierda */
+.blog-card.featured .card-bg-img{
+  position:absolute;
+  inset:0;
+  background-image:url('b1.png');
+  background-size:cover;
+  background-position:center 25%;
+  opacity:0.72;
+  mask-image:linear-gradient(to right,
+    transparent 0%,
+    transparent 30%,
+    rgba(0,0,0,0.6) 48%,
+    rgba(0,0,0,1) 62%,
+    rgba(0,0,0,1) 100%
+  );
+  -webkit-mask-image:linear-gradient(to right,
+    transparent 0%,
+    transparent 30%,
+    rgba(0,0,0,0.6) 48%,
+    rgba(0,0,0,1) 62%,
+    rgba(0,0,0,1) 100%
+  );
+  z-index:1;
+  border-radius:inherit;
+}
 
 /* FOOTER */
 footer{
@@ -202,8 +231,28 @@ footer{
 @media(max-width:768px){
   nav{padding:0 20px}
   .nav-links{display:none}
-  .blog-card.featured .blog-card-inner{grid-template-columns:1fr}
   .blog-grid{grid-template-columns:1fr}
+  .blog-card.featured .blog-card-inner{
+    grid-template-columns:1fr;
+    padding-top:210px;
+  }
+  .blog-card.featured .card-bg-img{
+    opacity:0.60;
+    background-position:center 15%;
+    mask-image:linear-gradient(to bottom,
+      rgba(0,0,0,1) 0%,
+      rgba(0,0,0,1) 42%,
+      rgba(0,0,0,0.35) 62%,
+      transparent 100%
+    );
+    -webkit-mask-image:linear-gradient(to bottom,
+      rgba(0,0,0,1) 0%,
+      rgba(0,0,0,1) 42%,
+      rgba(0,0,0,0.35) 62%,
+      transparent 100%
+    );
+  }
+  .blog-card.featured .featured-img-col{display:none}
 }
 </style>
 </head>
@@ -256,6 +305,7 @@ footer{
 
     <!-- FEATURED -->
     <div class="blog-card featured">
+      <div class="card-bg-img"></div>
       <div class="blog-card-inner">
         <div>
           <span class="blog-tag">SEO · Destacado</span>
@@ -269,9 +319,7 @@ footer{
             <a href="/blog/b1/" class="blog-read-btn">Leer artículo</a>
           </div>
         </div>
-        <div style="display:flex;align-items:center;justify-content:center;padding:20px 0">
-          <div style="font-size:72px;filter:drop-shadow(0 0 20px rgba(56,212,245,0.4))">💻</div>
-        </div>
+        <div class="featured-img-col"></div>
       </div>
     </div>
 
