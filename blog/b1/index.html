@@ -88,29 +88,58 @@ nav{
 }
 .breadcrumb a:hover{color:var(--cyan)}
 
-/* ARTICLE HERO */
+/* ARTICLE HERO BANNER */
 .article-hero{
-  max-width:720px;margin:0 auto 40px;position:relative;z-index:2;
+  max-width:720px;margin:0 auto 32px;position:relative;z-index:2;
+  border-radius:22px;overflow:hidden;
+  min-height:380px;
+  display:flex;align-items:flex-end;
+  box-shadow:0 10px 40px rgba(15,30,45,0.35);
+  border:1px solid rgba(255,255,255,0.18);
+}
+.article-hero .hero-bg{
+  position:absolute;inset:0;
+  background-image:url('../b1.png');
+  background-size:cover;
+  background-position:center 22%;
+  z-index:0;
+}
+.article-hero .hero-bg::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(
+    to bottom,
+    rgba(77,100,120,0.1) 0%,
+    rgba(77,100,120,0.18) 35%,
+    rgba(30,50,68,0.72) 62%,
+    rgba(20,36,52,0.92) 100%
+  );
+}
+.article-hero-content{
+  position:relative;z-index:2;
+  padding:32px 36px 34px;
+  width:100%;
 }
 .article-tag{
   display:inline-flex;align-items:center;gap:8px;
   font-size:11px;letter-spacing:2.5px;text-transform:uppercase;
-  color:var(--cyan);border:1px solid var(--border);
-  background:rgba(91,224,255,0.08);
-  padding:7px 18px;border-radius:100px;margin-bottom:24px;
+  color:var(--cyan);border:1px solid rgba(91,224,255,0.45);
+  background:rgba(0,0,0,0.25);
+  padding:7px 18px;border-radius:100px;margin-bottom:20px;
   backdrop-filter:blur(10px);
 }
 .article-hero h1{
   font-family:'Syne',sans-serif;
-  font-size:clamp(28px,4.5vw,46px);
-  font-weight:800;line-height:1.12;letter-spacing:-.5px;
-  margin-bottom:22px;
+  font-size:clamp(26px,4vw,42px);
+  font-weight:800;line-height:1.1;letter-spacing:-.5px;
+  margin-bottom:18px;
+  color:#fff;
+  text-shadow:0 2px 12px rgba(0,0,0,0.4);
 }
 .article-hero h1 em{color:var(--cyan);font-style:italic}
 .article-meta{
   display:flex;align-items:center;gap:18px;flex-wrap:wrap;
-  font-size:12px;color:var(--muted);font-family:'IBM Plex Mono',monospace;
-  padding-top:18px;border-top:1px solid rgba(255,255,255,0.14);
+  font-size:12px;color:rgba(255,255,255,0.75);
+  font-family:'IBM Plex Mono',monospace;
 }
 .article-meta span{display:flex;align-items:center;gap:6px}
 
@@ -202,6 +231,8 @@ nav{
 }
 .cta-btn:hover{transform:translateY(-2px)}
 
+
+
 /* RELATED */
 .related-section{
   max-width:720px;margin:56px auto 0;position:relative;z-index:2;
@@ -243,6 +274,8 @@ footer{
   .related-grid{grid-template-columns:1fr}
   .price-row{flex-direction:column;align-items:flex-start;gap:6px}
   .price-amount{padding-left:0}
+  .article-hero{min-height:260px;border-radius:16px}
+  .article-hero-content{padding:20px 18px 22px}
 }
 </style>
 </head>
@@ -275,14 +308,17 @@ footer{
     <a href="/">Inicio</a> / <a href="/blog/">Blog</a> / <span>Cuánto cuesta una web</span>
   </div>
 
-  <!-- ARTICLE HERO -->
+  <!-- ARTICLE HERO BANNER -->
   <div class="article-hero">
-    <span class="article-tag">SEO · Destacado</span>
-    <h1>¿Cuánto cuesta una <em>página web</em> en Argentina en 2026?</h1>
-    <div class="article-meta">
-      <span>📅 Junio 2026</span>
-      <span>⏱ 7 min de lectura</span>
-      <span>✍️ inAlbis Pages</span>
+    <div class="hero-bg"></div>
+    <div class="article-hero-content">
+      <span class="article-tag">SEO · Destacado</span>
+      <h1>¿Cuánto cuesta una <em>página web</em> en Argentina en 2026?</h1>
+      <div class="article-meta">
+        <span>📅 Junio 2026</span>
+        <span>⏱ 7 min de lectura</span>
+        <span>✍️ inAlbis Pages</span>
+      </div>
     </div>
   </div>
 
