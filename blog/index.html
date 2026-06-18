@@ -3,42 +3,30 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>¿Cuánto cuesta una página web en Argentina en 2026? · inAlbis Pages</title>
-<meta name="description" content="Comparamos precios reales de páginas web en Argentina en 2026: qué incluye cada opción, qué evitar y cómo elegir bien antes de contratar.">
+<title>Blog · inAlbis Pages · Diseño Web y Marketing Digital en Argentina</title>
+<meta name="description" content="Consejos, guías y recursos sobre diseño web, SEO y marketing digital para negocios argentinos. Aprendé a crecer online.">
 <meta name="robots" content="index, follow">
-<link rel="canonical" href="https://www.inalbispages.com/blog/cuanto-cuesta-pagina-web-argentina/">
+<link rel="canonical" href="https://www.inalbispages.com/blog/">
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" href="/favicon-32x32.png" type="image/png" sizes="32x32">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-<meta property="og:type" content="article">
-<meta property="og:url" content="https://www.inalbispages.com/blog/cuanto-cuesta-pagina-web-argentina/">
-<meta property="og:title" content="¿Cuánto cuesta una página web en Argentina en 2026?">
-<meta property="og:description" content="Comparamos precios reales, qué incluye cada opción y cómo no caer en una web barata que no posiciona ni convierte.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.inalbispages.com/blog/">
+<meta property="og:title" content="Blog · inAlbis Pages">
+<meta property="og:description" content="Consejos, guías y recursos sobre diseño web, SEO y marketing digital para negocios argentinos.">
 <meta property="og:image" content="https://www.inalbispages.com/og-image.jpg">
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Article",
-  "headline": "¿Cuánto cuesta una página web en Argentina en 2026?",
-  "description": "Comparamos precios reales de páginas web en Argentina en 2026: qué incluye cada opción, qué evitar y cómo elegir bien antes de contratar.",
-  "author": {"@type": "Organization", "name": "inAlbis Pages"},
-  "publisher": {"@type": "Organization", "name": "inAlbis Pages"},
-  "datePublished": "2026-06-10",
-  "dateModified": "2026-06-18"
-}
-</script>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=IBM+Plex+Mono:wght@400;500&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#5a7388;
-  --cyan:#0aa8d6;
+  --bg:#adc6db;
+  --cyan: #0aa8d6;
   --cyan-glow:rgba(91,224,255,0.22);
   --border:rgba(91,224,255,0.3);
   --border2:rgba(255,255,255,0.12);
   --white:rgba(2,76,138,1);
-  --muted:rgba(2,76,138,.62);
-  --glass:rgba(180,195,205,0.4);
+  --muted:rgba(2,76,138,0.62);
+  --glass:rgba(121,149,168,0.4);
   --card-bg:rgba(150,168,182,0.34);
 }
 html{scroll-behavior:smooth}
@@ -58,14 +46,13 @@ nav{
   position:fixed;top:0;left:0;right:0;z-index:100;
   display:flex;align-items:center;justify-content:space-between;
   padding:0 48px;height:64px;
-  background:linear-gradient(90deg, rgba(195,228,250,0.92) 0%, rgba(225,242,253,0.88) 45%, rgba(248,251,254,0.85) 100%);
   backdrop-filter:blur(20px);
   border-bottom:1px solid var(--border2);
 }
-.nav-logo{display:flex;align-items:center;gap:8px;font-family:'Syne',sans-serif;font-weight:800;font-size:17px;color:#024c8a}
+.nav-logo{display:flex;align-items:center;gap:8px;font-family:'Syne',sans-serif;font-weight:800;font-size:17px;color:rgba(2,76,138)}
 .nav-logo span{color:#0aa8d6}
-.nav-links{display:flex;gap:28px;list-style:none;font-size:13px;color:rgba(2,76,138,.62)}
-.nav-links a:hover{color:#024c8a;transition:color .2s}
+.nav-links{display:flex;gap:28px;list-style:none;font-size:13px;color:rgba(2,76,138)}
+.nav-links a:hover{color:#13202c;transition:color .2s}
 .nav-cta{
   background:#0aa8d6;color:#fff;
   font-family:'Syne',sans-serif;font-size:12px;font-weight:700;
@@ -79,149 +66,125 @@ nav{
   padding:110px 24px 80px;
   z-index:1;
 }
+
+/* Canvas-based drifting cloud texture lives in #cloudcanvas, see JS below */
 #cloudcanvas{position:fixed;inset:0;z-index:0;pointer-events:none}
 
-/* BREADCRUMB */
-.breadcrumb{
-  max-width:720px;margin:0 auto 28px;position:relative;z-index:2;
-  font-size:12px;color:var(--muted);display:flex;align-items:center;gap:8px;
+/* HERO BLOG */
+.blog-hero{
+  max-width:780px;margin:0 auto 64px;text-align:center;
+  position:relative;z-index:2;
 }
-.breadcrumb a:hover{color:var(--cyan)}
-
-/* ARTICLE HERO */
-.article-hero{
-  max-width:720px;margin:0 auto 40px;position:relative;z-index:2;
-}
-.article-tag{
+.blog-hero-label{
   display:inline-flex;align-items:center;gap:8px;
   font-size:11px;letter-spacing:2.5px;text-transform:uppercase;
   color:var(--cyan);border:1px solid var(--border);
-  background:rgba(91,224,255,0.08);
-  padding:7px 18px;border-radius:100px;margin-bottom:24px;
+  background:rgba(56,212,245,0.06);
+  padding:7px 18px;border-radius:100px;margin-bottom:28px;
   backdrop-filter:blur(10px);
 }
-.article-hero h1{
+.blog-hero h1{
   font-family:'Syne',sans-serif;
-  font-size:clamp(28px,4.5vw,46px);
-  font-weight:800;line-height:1.12;letter-spacing:-.5px;
-  margin-bottom:22px;
+  font-size:clamp(32px,5vw,58px);
+  font-weight:800;line-height:1.06;letter-spacing:-.5px;
+  margin-bottom:20px;
 }
-.article-hero h1 em{color:var(--cyan);font-style:italic}
-.article-meta{
-  display:flex;align-items:center;gap:18px;flex-wrap:wrap;
-  font-size:12px;color:var(--muted);font-family:'IBM Plex Mono',monospace;
-  padding-top:18px;border-top:1px solid rgba(255,255,255,0.14);
+.blog-hero h1 em{color:var(--cyan);font-style:italic}
+.blog-hero p{
+  font-size:16px;color:var(--muted);line-height:1.75;max-width:520px;margin:0 auto;
 }
-.article-meta span{display:flex;align-items:center;gap:6px}
 
-/* ARTICLE BODY CARD */
-.article-card{
-  max-width:720px;margin:0 auto;position:relative;z-index:2;
+/* FILTER TAGS */
+.blog-filters{
+  display:flex;gap:10px;flex-wrap:wrap;justify-content:center;
+  margin-bottom:48px;position:relative;z-index:2;
+}
+.filter-tag{
+  font-size:11px;letter-spacing:1px;text-transform:uppercase;
+  padding:7px 18px;border-radius:100px;cursor:pointer;
+  border:1px solid rgba(255,255,255,0.18);color:var(--muted);
+  background:rgba(150,168,182,0.25);backdrop-filter:blur(6px);
+  transition:all .2s;
+}
+.filter-tag:hover,.filter-tag.active{
+  border-color:var(--cyan);color:var(--cyan);
+  background:rgba(91,224,255,0.12);
+}
+
+/* GRID */
+.blog-grid{
+  max-width:1100px;margin:0 auto;
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));
+  gap:28px;position:relative;z-index:2;
+}
+
+/* CARD */
+.blog-card{
+  position:relative;
   background:var(--card-bg);
   border:1px solid rgba(255,255,255,0.22);
-  border-radius:26px;overflow:hidden;
+  border-radius:22px;overflow:hidden;
   backdrop-filter:blur(8px) saturate(0.9);
+  transition:transform .3s,box-shadow .3s,border-color .3s;
+  display:flex;flex-direction:column;
   box-shadow:0 8px 32px rgba(15,30,45,0.25);
-  padding:44px 40px;
 }
-.article-card::before{
-  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+.blog-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;
+  height:1px;
   background:linear-gradient(90deg,transparent,rgba(255,255,255,0.55),transparent);
 }
+.blog-card::after{
+  content:'';position:absolute;
+  top:0;left:0;right:0;bottom:0;pointer-events:none;
+  background:radial-gradient(ellipse 220px 140px at 20% 10%, rgba(255,255,255,0.18) 0%, transparent 100%);
+}
+.blog-card:hover{
+  transform:translateY(-7px);
+  border-color:rgba(91,224,255,0.45);
+  box-shadow:0 22px 55px rgba(15,30,45,0.32), 0 0 35px rgba(91,224,255,0.15);
+}
+.blog-card-inner{padding:28px 26px;flex:1;display:flex;flex-direction:column}
+.blog-tag{
+  font-size:10px;letter-spacing:2px;text-transform:uppercase;
+  color:var(--cyan);font-family:'IBM Plex Mono',monospace;
+  margin-bottom:14px;display:block;
+}
+.blog-title{
+  font-family:'Syne',sans-serif;font-size:19px;font-weight:700;
+  line-height:1.3;color:var(--white);margin-bottom:12px;
+}
+.blog-excerpt{
+  font-size:13px;color:var(--muted);line-height:1.75;flex:1;
+}
+.blog-footer{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-top:20px;padding-top:18px;
+  border-top:1px solid rgba(18,119,231,0.14);
+}
+.blog-meta{
+  display:flex;flex-direction:column;gap:2px;
+}
+.blog-date{font-size:11px;color:rgba(26,55,82,0.45);font-family:'IBM Plex Mono',monospace}
+.blog-readtime{font-size:11px;color:rgba(26,55,82,0.45);font-family:'IBM Plex Mono',monospace}
+.blog-read-btn{
+  font-size:12px;font-weight:700;color:var(--cyan);
+  display:inline-flex;align-items:center;gap:6px;
+  transition:gap .2s;
+}
+.blog-card:hover .blog-read-btn{gap:10px}
 
-.article-body h2{
-  font-family:'Syne',sans-serif;font-size:clamp(20px,3vw,26px);font-weight:700;
-  margin:38px 0 16px;color:var(--white);line-height:1.3;
-}
-.article-body h2:first-child{margin-top:0}
-.article-body h3{
-  font-family:'Syne',sans-serif;font-size:18px;font-weight:700;
-  margin:28px 0 12px;color:var(--white);
-}
-.article-body p{
-  font-size:15.5px;color:rgba(2,76,138,0.61);line-height:1.85;margin-bottom:18px;
-}
-.article-body strong{color:var(--white);font-weight:600}
-.article-body ul{margin:0 0 20px 0;padding-left:0;list-style:none}
-.article-body li{
-  font-size:15px;color:rgba(2,76,138,0.61);line-height:1.7;
-  padding-left:26px;position:relative;margin-bottom:12px;
-}
-.article-body li::before{
-  content:'';position:absolute;left:0;top:9px;
-  width:7px;height:7px;border-radius:50%;
-  background:var(--cyan);box-shadow:0 0 8px rgba(91,224,255,0.6);
-}
-
-/* PRICE TABLE */
-.price-table{
-  margin:24px 0 28px;border-radius:16px;overflow:hidden;
-  border:1px solid rgba(255,255,255,0.18);
-  background:rgba(255,255,255,0.06);
-}
-.price-row{
-  display:flex;justify-content:space-between;align-items:center;
-  padding:16px 20px;border-bottom:1px solid rgba(255,255,255,0.1);
-}
-.price-row:last-child{border-bottom:none}
-.price-row.head{background:rgba(91,224,255,0.1)}
-.price-name{font-weight:600;font-size:14px;color:var(--white)}
-.price-desc{font-size:12px;color:var(--muted);margin-top:2px}
-.price-amount{
-  font-family:'IBM Plex Mono',monospace;font-weight:600;color:var(--cyan);font-size:15px;
-  white-space:nowrap;padding-left:16px;
-}
-
-/* CALLOUT */
-.callout{
+/* FEATURED CARD */
+.blog-card.featured{
+  grid-column:1/-1;
   background:rgba(91,224,255,0.1);
-  border:1px solid rgba(91,224,255,0.28);
-  border-radius:16px;padding:22px 24px;margin:28px 0;
+  border-color:rgba(91,224,255,0.3);
 }
-.callout-label{
-  font-size:11px;letter-spacing:1.5px;text-transform:uppercase;
-  color:var(--cyan);font-weight:700;margin-bottom:8px;display:block;
+.blog-card.featured .blog-title{font-size:clamp(20px,2.5vw,26px)}
+.blog-card.featured .blog-card-inner{
+  display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:center;
 }
-.callout p{margin-bottom:0;font-size:14.5px}
-
-/* CTA BOX */
-.article-cta{
-  margin-top:44px;padding:32px;border-radius:20px;text-align:center;
-  background:rgba(91,224,255,0.12);
-  border:1px solid rgba(91,224,255,0.3);
-}
-.article-cta h3{margin-top:0;font-size:20px}
-.article-cta p{color:var(--muted);font-size:14px;margin-bottom:22px}
-.cta-btn{
-  display:inline-flex;align-items:center;gap:8px;
-  background:var(--cyan);color:#fff;
-  font-family:'Syne',sans-serif;font-weight:700;font-size:14px;
-  padding:13px 30px;border-radius:12px;
-  box-shadow:0 0 24px rgba(91,224,255,.35);
-  transition:transform .2s;
-}
-.cta-btn:hover{transform:translateY(-2px)}
-
-/* RELATED */
-.related-section{
-  max-width:720px;margin:56px auto 0;position:relative;z-index:2;
-}
-.related-label{
-  font-size:12px;letter-spacing:2px;text-transform:uppercase;
-  color:var(--muted);margin-bottom:18px;
-}
-.related-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
-.related-card{
-  background:var(--card-bg);
-  border:1px solid rgba(255,255,255,0.2);
-  border-radius:16px;padding:20px;
-  backdrop-filter:blur(6px);
-  transition:transform .25s,border-color .25s;
-}
-.related-card:hover{transform:translateY(-4px);border-color:rgba(91,224,255,0.4)}
-.related-tag{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--cyan);font-family:'IBM Plex Mono',monospace}
-.related-title{font-family:'Syne',sans-serif;font-weight:700;font-size:14.5px;margin:8px 0;line-height:1.3}
-.related-link{font-size:12px;color:var(--cyan);font-weight:600}
+.blog-card.featured .blog-tag{font-size:11px}
 
 /* FOOTER */
 footer{
@@ -239,10 +202,8 @@ footer{
 @media(max-width:768px){
   nav{padding:0 20px}
   .nav-links{display:none}
-  .article-card{padding:30px 22px;border-radius:20px}
-  .related-grid{grid-template-columns:1fr}
-  .price-row{flex-direction:column;align-items:flex-start;gap:6px}
-  .price-amount{padding-left:0}
+  .blog-card.featured .blog-card-inner{grid-template-columns:1fr}
+  .blog-grid{grid-template-columns:1fr}
 }
 </style>
 </head>
@@ -255,14 +216,14 @@ footer{
 <nav>
   <div class="nav-logo">
     <img src="/iA.png" alt="iA" style="height:40px;width:40px;object-fit:contain;filter:drop-shadow(0 0 10px rgba(56,212,245,0.4))">
-    Páginas <span>inAlbis</span> 
+    Páginas <span>inAlbis</span>
   </div>
   <ul class="nav-links">
     <li><a href="/#paquetes">Paquetes</a></li>
     <li><a href="/#portfolio">Portfolio</a></li>
-    <li><a href="/blog/" style="color:#0aa8d6">Blog</a></li>
+    <li><a href="/blog/" style="color:var(--cyan)">Blog</a></li>
     <li><a href="/#contacto">Contacto</a></li>
-    <li><a href="/Alby/index.html" style="color:#0aa8d6;font-weight:600">✦ Alby IA</a></li>
+    <li><a href="/Alby/index.html" style="color:var(--cyan);font-weight:600">✦ Alby IA</a></li>
     <li><a href="https://wa.me/541168115491" target="_blank" class="nav-cta">Consultar</a></li>
   </ul>
 </nav>
@@ -270,106 +231,99 @@ footer{
 <!-- CLOUD PAGE -->
 <div class="cloud-page">
 
-  <!-- BREADCRUMB -->
-  <div class="breadcrumb">
-    <a href="/">Inicio</a> / <a href="/blog/">Blog</a> / <span>Cuánto cuesta una web</span>
+  <!-- HERO -->
+  <div class="blog-hero">
+    <div class="blog-hero-label">
+      <span style="width:6px;height:6px;background:var(--cyan);border-radius:50%;display:inline-block;animation:blink 1.6s ease-in-out infinite"></span>
+      Recursos · Negocios Argentinos
+    </div>
+    <h1>Ideas para <em>crecer</em><br>en internet</h1>
+    <p>Guías prácticas sobre diseño web, SEO local e inteligencia artificial para negocios que quieren más clientes.</p>
   </div>
 
-  <!-- ARTICLE HERO -->
-  <div class="article-hero">
-    <span class="article-tag">SEO · Destacado</span>
-    <h1>¿Cuánto cuesta una <em>página web</em> en Argentina en 2026?</h1>
-    <div class="article-meta">
-      <span>📅 Junio 2026</span>
-      <span>⏱ 7 min de lectura</span>
-      <span>✍️ inAlbis Pages</span>
-    </div>
+  <!-- FILTROS -->
+  <div class="blog-filters">
+    <span class="filter-tag active">Todos</span>
+    <span class="filter-tag">SEO</span>
+    <span class="filter-tag">Diseño Web</span>
+    <span class="filter-tag">Google</span>
+    <span class="filter-tag">Inteligencia Artificial</span>
+    <span class="filter-tag">Negocios</span>
   </div>
 
-  <!-- ARTICLE BODY -->
-  <article class="article-card">
-    <div class="article-body">
+  <!-- GRID -->
+  <div class="blog-grid">
 
-      <p>Si estás buscando una página web para tu negocio en Argentina, seguramente ya te encontraste con presupuestos que van desde los $50.000 hasta varios miles de dólares. Esa diferencia no es casualidad: cada precio responde a un tipo de trabajo distinto, y entender qué hay detrás de cada número te va a ahorrar dolores de cabeza (y plata).</p>
-
-      <h2>Los tres niveles de precio que vas a encontrar</h2>
-      <p>En el mercado argentino, los presupuestos para páginas web se agrupan en tres grandes franjas. Conocerlas te ayuda a entender qué estás pagando realmente.</p>
-
-      <div class="price-table">
-        <div class="price-row head">
-          <div>
-            <div class="price-name">Plantillas autoadministrables</div>
-            <div class="price-desc">Wix, Canva Sites, constructores genéricos</div>
+    <!-- FEATURED -->
+    <div class="blog-card featured">
+      <div class="blog-card-inner">
+        <div>
+          <span class="blog-tag">SEO · Destacado</span>
+          <div class="blog-title">¿Cuánto cuesta una página web en Argentina en 2026?</div>
+          <p class="blog-excerpt">Comparamos precios, qué incluye cada opción y cómo no caer en una web barata que no posiciona ni convierte. La guía definitiva antes de contratar.</p>
+          <div class="blog-footer">
+            <div class="blog-meta">
+              <span class="blog-date">Junio 2026</span>
+              <span class="blog-readtime">7 min de lectura</span>
+            </div>
+            <a href="/blog/b1/" class="blog-read-btn">Leer artículo</a>
           </div>
-          <div class="price-amount">$30.000 – $90.000</div>
         </div>
-        <div class="price-row">
-          <div>
-            <div class="price-name">Diseño profesional a medida</div>
-            <div class="price-desc">Diseño propio, SEO técnico, hosting, mantenimiento</div>
-          </div>
-          <div class="price-amount">USD 249 – 700</div>
-        </div>
-        <div class="price-row">
-          <div>
-            <div class="price-name">Plataformas grandes / e-commerce complejo</div>
-            <div class="price-desc">Agencias grandes, integraciones múltiples</div>
-          </div>
-          <div class="price-amount">USD 1.500+</div>
+        <div style="display:flex;align-items:center;justify-content:center;padding:20px 0">
+          <div style="font-size:72px;filter:drop-shadow(0 0 20px rgba(56,212,245,0.4))">💻</div>
         </div>
       </div>
-
-      <h2>Por qué una web "barata" puede salir cara</h2>
-      <p>El problema no es elegir la opción más económica — es no saber qué te estás perdiendo al hacerlo. Las plantillas genéricas suelen fallar en estos puntos:</p>
-      <ul>
-        <li><strong>No están optimizadas para Google.</strong> Cargan lento y no tienen estructura SEO, así que por más linda que se vea, nadie la encuentra buscando en internet.</li>
-        <li><strong>No son realmente tuyas.</strong> Si dejás de pagar la plataforma, perdés el sitio completo — dominio, diseño y contenido.</li>
-        <li><strong>No escalan.</strong> Agregar una sección de turnos, pagos o un catálogo termina siendo más caro que haberlo armado bien desde el principio.</li>
-      </ul>
-
-      <div class="callout">
-        <span class="callout-label">Dato clave</span>
-        <p>Una página que no aparece en los primeros resultados de Google es, para fines prácticos, invisible. El 75% de los usuarios no pasa de la primera página de resultados.</p>
-      </div>
-
-      <h2>Qué deberías exigir sin importar el presupuesto</h2>
-      <ul>
-        <li><strong>Dominio propio</strong> (tuempresa.com, no tuempresa.wixsite.com)</li>
-        <li><strong>Velocidad de carga</strong> menor a 3 segundos en celular</li>
-        <li><strong>Diseño responsive</strong> que se vea bien en cualquier pantalla</li>
-        <li><strong>SEO básico</strong>: títulos, descripciones y estructura pensada para buscadores</li>
-        <li><strong>Certificado SSL</strong> (el candadito verde de seguridad)</li>
-      </ul>
-
-      <h2>Nuestra recomendación honesta</h2>
-      <p>Si tu negocio recién está empezando y necesitás presencia online rápido, una landing page bien hecha con SEO básico ya es un salto enorme frente a no tener nada. Si en cambio buscás generar ventas constantes desde internet, vale la pena invertir en un sitio institucional completo con seguimiento de SEO local — es lo que realmente termina trayendo clientes nuevos mes a mes.</p>
-
-      <div class="article-cta">
-        <h3>¿Querés saber cuánto te costaría tu proyecto?</h3>
-        <p>Te armamos una cotización personalizada sin compromiso, basada en lo que tu negocio realmente necesita.</p>
-        <a href="https://wa.me/541168115491" target="_blank" class="cta-btn">Consultar por WhatsApp</a>
-      </div>
-
     </div>
-  </article>
 
-  <!-- RELATED -->
-  <div class="related-section">
-    <div class="related-label">Seguí leyendo</div>
-    <div class="related-grid">
-      <a href="/blog/b2/" class="related-card">
-        <span class="related-tag">Google · Visibilidad</span>
-        <div class="related-title">Por qué tu negocio no aparece en Google</div>
-        <span class="related-link">Leer...</span>
-      </a>
-      <a href="/blog/b4/" class="related-card">
-        <span class="related-tag">Negocios · Estrategia</span>
-        <div class="related-title">Redes sociales vs. página web propia</div>
-        <span class="related-link">Leer...</span>
-      </a>
+    <!-- CARD 2 -->
+    <div class="blog-card">
+      <div class="blog-card-inner">
+        <span class="blog-tag">Google · Visibilidad</span>
+        <div class="blog-title">Por qué tu negocio no aparece en Google (y cómo solucionarlo)</div>
+        <p class="blog-excerpt">Los errores más comunes y los pasos exactos para empezar a aparecer en búsquedas locales sin pagar publicidad.</p>
+        <div class="blog-footer">
+          <div class="blog-meta">
+            <span class="blog-date">Junio 2026</span>
+            <span class="blog-readtime">5 min de lectura</span>
+          </div>
+          <a href="/blog/b2/" class="blog-read-btn">Leer más...</a>
+        </div>
+      </div>
     </div>
-  </div>
 
+    <!-- CARD 3 -->
+    <div class="blog-card">
+      <div class="blog-card-inner">
+        <span class="blog-tag">IA · Automatización</span>
+        <div class="blog-title">Cómo la inteligencia artificial puede atender clientes las 24 hs</div>
+        <p class="blog-excerpt">Desde WhatsApp hasta el teléfono: cómo un contestador automático con IA puede transformar la atención de tu negocio.</p>
+        <div class="blog-footer">
+          <div class="blog-meta">
+            <span class="blog-date">Junio 2026</span>
+            <span class="blog-readtime">6 min de lectura</span>
+          </div>
+          <a href="/blog/b3/" class="blog-read-btn">Seguir leyendo</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- CARD 4 -->
+    <div class="blog-card">
+      <div class="blog-card-inner">
+        <span class="blog-tag">Negocios · Estrategia</span>
+        <div class="blog-title">Redes sociales vs. página web propia: ¿qué necesita realmente tu negocio?</div>
+        <p class="blog-excerpt">Instagram suma seguidores, pero no te hace dueño de tus clientes. Te mostramos por qué los negocios que más crecen usan ambas cosas, no una sola.</p>
+        <div class="blog-footer">
+          <div class="blog-meta">
+            <span class="blog-date">Junio 2026</span>
+            <span class="blog-readtime">6 min de lectura</span>
+          </div>
+          <a href="/blog/b4/" class="blog-read-btn">Leer completo</a>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /blog-grid -->
 </div><!-- /cloud-page -->
 
 <!-- FOOTER -->
@@ -384,6 +338,10 @@ footer{
     <a href="mailto:albissonte@gmail.com">Email</a>
   </div>
 </footer>
+
+<style>
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+</style>
 
 <script>
 /* STARFIELD */
@@ -411,6 +369,14 @@ footer{
   resize();init();window.addEventListener('resize',()=>{resize();init()});requestAnimationFrame(draw);
 })();
 
+/* FILTER TAGS */
+document.querySelectorAll('.filter-tag').forEach(tag => {
+  tag.addEventListener('click', () => {
+    document.querySelectorAll('.filter-tag').forEach(t => t.classList.remove('active'));
+    tag.classList.add('active');
+  });
+});
+
 /* PROCEDURAL DRIFTING CLOUDS — forming/dissolving with light wind */
 (function(){
   const canvas=document.getElementById('cloudcanvas');
@@ -423,6 +389,7 @@ footer{
     H=canvas.height=window.innerHeight;
   }
 
+  // each cloud = cluster of soft blobs; lifecycle: fade in -> hold -> fade out -> respawn elsewhere
   function makeCloud(forceX){
     const blobCount=6+Math.floor(Math.random()*6);
     const baseR=80+Math.random()*150;
@@ -443,7 +410,7 @@ footer{
       bob: Math.random()*Math.PI*2,
       bobSpeed: 0.0015+Math.random()*0.001,
       life:0,
-      maxLife: 1800+Math.random()*1400,
+      maxLife: 1800+Math.random()*1400, // frames before respawn (~30-55s @60fps)
       fadeFrames: 260
     };
   }
@@ -464,10 +431,10 @@ footer{
     ctx.clearRect(0,0,W,H);
     clouds.forEach(c=>{
       c.life++;
-      c.x+=c.windSpeed;
+      c.x+=c.windSpeed; // light wind drifting left -> right
       c.bob+=c.bobSpeed;
       const driftY=Math.sin(c.bob)*6;
-      const a=cloudAlpha(c)*0.65;
+      const a=cloudAlpha(c)*0.65; // overall max ~0.65 opacity, soft & white, pops against darker sky
 
       if(a>0.003){
         c.blobs.forEach(b=>{
@@ -483,6 +450,7 @@ footer{
         });
       }
 
+      // respawn once faded out and drifted off-screen lifecycle ends
       if(c.life>=c.maxLife || c.x>W+260){
         const idx=clouds.indexOf(c);
         clouds[idx]=makeCloud(-200-Math.random()*150);
@@ -495,6 +463,7 @@ footer{
   window.addEventListener('resize',()=>{resize();init()});
   requestAnimationFrame(draw);
 })();
+
 </script>
 </body>
 </html>
