@@ -1,1 +1,613 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Por qué tu negocio no aparece en Google (y cómo solucionarlo) · inAlbis Pages</title>
+<meta name="description" content="Si buscás tu empresa en Google y no aparece, estás perdiendo clientes cada día. Descubrí las 5 causas más comunes y cómo resolverlas paso a paso.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://www.inalbispages.com/blog/por-que-no-aparezco-en-google/">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://www.inalbispages.com/blog/por-que-no-aparezco-en-google/">
+<meta property="og:title" content="Por qué tu negocio no aparece en Google (y cómo solucionarlo)">
+<meta property="og:description" content="5 causas reales por las que tu negocio es invisible en Google — y la ruta práctica para aparecer en búsquedas locales.">
+<meta property="og:image" content="https://www.inalbispages.com/og-image.jpg">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Por qué tu negocio no aparece en Google (y cómo solucionarlo)",
+  "description": "Si buscás tu empresa en Google y no aparece, estás perdiendo clientes cada día. Descubrí las 5 causas más comunes y cómo resolverlas paso a paso.",
+  "author": {"@type": "Organization", "name": "inAlbis Pages"},
+  "publisher": {"@type": "Organization", "name": "inAlbis Pages"},
+  "datePublished": "2026-06-17",
+  "dateModified": "2026-06-17"
+}
+</script>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=IBM+Plex+Mono:wght@400;500&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#5a7388;
+  --cyan:#0aa8d6;
+  --cyan-glow:rgba(91,224,255,0.22);
+  --border:rgba(91,224,255,0.3);
+  --border2:rgba(255,255,255,0.12);
+  --white:rgba(2,76,138,1);
+  --muted:rgba(2,76,138,.62);
+  --glass:rgba(180,195,205,0.4);
+  --card-bg:rgba(150,168,182,0.34);
+}
+html{scroll-behavior:smooth}
+body{
+  background:linear-gradient(160deg, #4d6478 0%, #6b8298 45%, #8aa0b2 100%);
+  color:var(--white);
+  font-family:'Poppins',system-ui,sans-serif;
+  line-height:1.65;overflow-x:hidden;
+}
+a{text-decoration:none;color:inherit}
 
+/* STARFIELD */
+#starfield{position:fixed;inset:0;z-index:0;pointer-events:none}
+
+/* NAV */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 48px;height:64px;
+  background:linear-gradient(90deg, rgba(195,228,250,0.92) 0%, rgba(225,242,253,0.88) 45%, rgba(248,251,254,0.85) 100%);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border2);
+}
+.nav-logo{display:flex;align-items:center;gap:8px;font-family:'Syne',sans-serif;font-weight:800;font-size:17px;color:#024c8a}
+.nav-logo span{color:#0aa8d6}
+.nav-links{display:flex;gap:28px;list-style:none;font-size:13px;color:rgba(2,76,138,.62)}
+.nav-links a:hover{color:#024c8a;transition:color .2s}
+.nav-cta{
+  background:#0aa8d6;color:#fff;
+  font-family:'Syne',sans-serif;font-size:12px;font-weight:700;
+  padding:9px 22px;border-radius:10px;
+  box-shadow:0 0 22px rgba(10,168,214,.35);
+}
+
+/* CLOUD PAGE BG */
+.cloud-page{
+  position:relative;min-height:100vh;
+  padding:110px 24px 80px;
+  z-index:1;
+}
+#cloudcanvas{position:fixed;inset:0;z-index:0;pointer-events:none}
+
+/* BREADCRUMB */
+.breadcrumb{
+  max-width:720px;margin:0 auto 28px;position:relative;z-index:2;
+  font-size:12px;color:var(--muted);display:flex;align-items:center;gap:8px;
+}
+.breadcrumb a:hover{color:var(--cyan)}
+
+/* ARTICLE HERO */
+.article-hero{
+  max-width:720px;margin:0 auto 40px;position:relative;z-index:2;
+}
+.article-tag{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:11px;letter-spacing:2.5px;text-transform:uppercase;
+  color:var(--cyan);border:1px solid var(--border);
+  background:rgba(91,224,255,0.08);
+  padding:7px 18px;border-radius:100px;margin-bottom:24px;
+  backdrop-filter:blur(10px);
+}
+.article-hero h1{
+  font-family:'Syne',sans-serif;
+  font-size:clamp(28px,4.5vw,46px);
+  font-weight:800;line-height:1.12;letter-spacing:-.5px;
+  margin-bottom:22px;
+}
+.article-hero h1 em{color:var(--cyan);font-style:italic}
+.article-meta{
+  display:flex;align-items:center;gap:18px;flex-wrap:wrap;
+  font-size:12px;color:var(--muted);font-family:'IBM Plex Mono',monospace;
+  padding-top:18px;border-top:1px solid rgba(255,255,255,0.14);
+}
+.article-meta span{display:flex;align-items:center;gap:6px}
+
+/* ARTICLE BODY CARD */
+.article-card{
+  max-width:720px;margin:0 auto;position:relative;z-index:2;
+  background:var(--card-bg);
+  border:1px solid rgba(255,255,255,0.22);
+  border-radius:26px;overflow:hidden;
+  backdrop-filter:blur(8px) saturate(0.9);
+  box-shadow:0 8px 32px rgba(15,30,45,0.25);
+  padding:44px 40px;
+}
+.article-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,0.55),transparent);
+}
+
+.article-body h2{
+  font-family:'Syne',sans-serif;font-size:clamp(20px,3vw,26px);font-weight:700;
+  margin:38px 0 16px;color:var(--white);line-height:1.3;
+}
+.article-body h2:first-child{margin-top:0}
+.article-body h3{
+  font-family:'Syne',sans-serif;font-size:18px;font-weight:700;
+  margin:28px 0 12px;color:var(--white);
+}
+.article-body p{
+  font-size:15.5px;color:rgba(2,76,138,0.61);line-height:1.85;margin-bottom:18px;
+}
+.article-body strong{color:var(--white);font-weight:600}
+.article-body ul{margin:0 0 20px 0;padding-left:0;list-style:none}
+.article-body li{
+  font-size:15px;color:rgba(2,76,138,0.61);line-height:1.7;
+  padding-left:26px;position:relative;margin-bottom:12px;
+}
+.article-body li::before{
+  content:'';position:absolute;left:0;top:9px;
+  width:7px;height:7px;border-radius:50%;
+  background:var(--cyan);box-shadow:0 0 8px rgba(91,224,255,0.6);
+}
+
+/* CAUSA TABLE */
+.causa-table{
+  margin:24px 0 32px;border-radius:16px;overflow:hidden;
+  border:1px solid rgba(255,255,255,0.18);
+  background:rgba(255,255,255,0.06);
+  width:100%;
+}
+.causa-row{
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  border-bottom:1px solid rgba(255,255,255,0.1);
+}
+.causa-row:last-child{border-bottom:none}
+.causa-row.head{
+  background:rgba(91,224,255,0.1);
+}
+.causa-row.head .causa-cell{
+  font-family:'Syne',sans-serif;
+  font-weight:700;font-size:12px;
+  letter-spacing:1.5px;text-transform:uppercase;
+  color:var(--cyan);
+}
+.causa-cell{
+  padding:16px 18px;
+  font-size:14px;color:rgba(2,76,138,0.75);
+  border-right:1px solid rgba(255,255,255,0.1);
+  line-height:1.55;
+}
+.causa-cell:last-child{border-right:none}
+.causa-cell strong{color:var(--white);font-size:14px}
+
+/* NUMBERED STEPS */
+.steps{margin:24px 0 28px;list-style:none;padding:0;counter-reset:step}
+.steps li{
+  counter-increment:step;
+  display:flex;gap:16px;align-items:flex-start;
+  padding:18px 0;border-bottom:1px solid rgba(255,255,255,0.1);
+  font-size:15px;color:rgba(2,76,138,0.72);line-height:1.65;
+}
+.steps li:last-child{border-bottom:none}
+.steps li::before{
+  content:counter(step);
+  min-width:32px;height:32px;border-radius:50%;
+  background:rgba(91,224,255,0.15);
+  border:1px solid rgba(91,224,255,0.35);
+  color:var(--cyan);
+  font-family:'IBM Plex Mono',monospace;font-weight:700;font-size:13px;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  margin-top:2px;
+}
+.steps li strong{color:var(--white)}
+
+/* PRICE TABLE */
+.price-table{
+  margin:24px 0 28px;border-radius:16px;overflow:hidden;
+  border:1px solid rgba(255,255,255,0.18);
+  background:rgba(255,255,255,0.06);
+}
+.price-row{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:16px 20px;border-bottom:1px solid rgba(255,255,255,0.1);
+}
+.price-row:last-child{border-bottom:none}
+.price-row.head{background:rgba(91,224,255,0.1)}
+.price-name{font-weight:600;font-size:14px;color:var(--white)}
+.price-desc{font-size:12px;color:var(--muted);margin-top:2px}
+.price-amount{
+  font-family:'IBM Plex Mono',monospace;font-weight:600;color:var(--cyan);font-size:15px;
+  white-space:nowrap;padding-left:16px;
+}
+
+/* CALLOUT */
+.callout{
+  background:rgba(91,224,255,0.1);
+  border:1px solid rgba(91,224,255,0.28);
+  border-radius:16px;padding:22px 24px;margin:28px 0;
+}
+.callout-label{
+  font-size:11px;letter-spacing:1.5px;text-transform:uppercase;
+  color:var(--cyan);font-weight:700;margin-bottom:8px;display:block;
+}
+.callout p{margin-bottom:0;font-size:14.5px}
+
+/* TIEMPO BADGE */
+.tiempo-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:24px 0 28px;
+}
+.tiempo-card{
+  background:rgba(255,255,255,0.07);
+  border:1px solid rgba(255,255,255,0.16);
+  border-radius:14px;padding:18px 20px;
+}
+.tiempo-card .t-label{
+  font-size:11px;letter-spacing:1.5px;text-transform:uppercase;
+  color:var(--muted);margin-bottom:8px;display:block;
+}
+.tiempo-card .t-value{
+  font-family:'IBM Plex Mono',monospace;font-weight:700;
+  font-size:22px;color:var(--cyan);
+}
+.tiempo-card .t-desc{
+  font-size:13px;color:rgba(2,76,138,0.6);margin-top:6px;line-height:1.5;
+}
+
+/* CTA BOX */
+.article-cta{
+  margin-top:44px;padding:32px;border-radius:20px;text-align:center;
+  background:rgba(91,224,255,0.12);
+  border:1px solid rgba(91,224,255,0.3);
+}
+.article-cta h3{margin-top:0;font-size:20px;margin-bottom:12px}
+.article-cta p{color:var(--muted);font-size:14px;margin-bottom:22px}
+.cta-btn{
+  display:inline-flex;align-items:center;gap:8px;
+  background:var(--cyan);color:#fff;
+  font-family:'Syne',sans-serif;font-weight:700;font-size:14px;
+  padding:13px 30px;border-radius:12px;
+  box-shadow:0 0 24px rgba(91,224,255,.35);
+  transition:transform .2s;
+}
+.cta-btn:hover{transform:translateY(-2px)}
+
+/* RELATED */
+.related-section{
+  max-width:720px;margin:56px auto 0;position:relative;z-index:2;
+}
+.related-label{
+  font-size:12px;letter-spacing:2px;text-transform:uppercase;
+  color:var(--muted);margin-bottom:18px;
+}
+.related-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.related-card{
+  background:var(--card-bg);
+  border:1px solid rgba(255,255,255,0.2);
+  border-radius:16px;padding:20px;
+  backdrop-filter:blur(6px);
+  transition:transform .25s,border-color .25s;
+}
+.related-card:hover{transform:translateY(-4px);border-color:rgba(91,224,255,0.4)}
+.related-tag{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--cyan);font-family:'IBM Plex Mono',monospace}
+.related-title{font-family:'Syne',sans-serif;font-weight:700;font-size:14.5px;margin:8px 0;line-height:1.3}
+.related-link{font-size:12px;color:var(--cyan);font-weight:600}
+
+/* FOOTER */
+footer{
+  position:relative;z-index:2;
+  text-align:center;padding:40px 24px;
+  border-top:1px solid rgba(255,255,255,0.14);
+  margin-top:80px;
+}
+.footer-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:18px;margin-bottom:10px;color:var(--white)}
+.footer-logo span{color:var(--cyan)}
+.footer-text{font-size:12px;color:var(--muted);margin-bottom:16px}
+.footer-links{display:flex;gap:24px;justify-content:center;font-size:13px;color:var(--muted)}
+.footer-links a:hover{color:var(--white)}
+
+@media(max-width:768px){
+  nav{padding:0 20px}
+  .nav-links{display:none}
+  .article-card{padding:30px 22px;border-radius:20px}
+  .related-grid{grid-template-columns:1fr}
+  .causa-row{grid-template-columns:1fr}
+  .causa-cell{border-right:none;padding:12px 16px}
+  .causa-row.head .causa-cell:not(:first-child){display:none}
+  .tiempo-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<canvas id="starfield"></canvas>
+<canvas id="cloudcanvas"></canvas>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">
+    <img src="/iA.png" alt="iA" style="height:40px;width:40px;object-fit:contain;filter:drop-shadow(0 0 10px rgba(56,212,245,0.4))">
+    Páginas <span>inAlbis</span>
+  </div>
+  <ul class="nav-links">
+    <li><a href="/#paquetes">Paquetes</a></li>
+    <li><a href="/#portfolio">Portfolio</a></li>
+    <li><a href="/blog/" style="color:#0aa8d6">Blog</a></li>
+    <li><a href="/#contacto">Contacto</a></li>
+    <li><a href="/Alby/index.html" style="color:#0aa8d6;font-weight:600">✦ Alby IA</a></li>
+    <li><a href="https://wa.me/541168115491" target="_blank" class="nav-cta">Consultar</a></li>
+  </ul>
+</nav>
+
+<!-- CLOUD PAGE -->
+<div class="cloud-page">
+
+  <!-- BREADCRUMB -->
+  <div class="breadcrumb">
+    <a href="/">Inicio</a> / <a href="/blog/">Blog</a> / <span>Por qué no aparecés en Google</span>
+  </div>
+
+  <!-- ARTICLE HERO -->
+  <div class="article-hero">
+    <span class="article-tag">Google · Visibilidad · SEO</span>
+    <h1>Por qué tu negocio no aparece en <em>Google</em> (y cómo solucionarlo)</h1>
+    <div class="article-meta">
+      <span>📅 Junio 2026</span>
+      <span>⏱ 6 min de lectura</span>
+      <span>✍️ inAlbis Pages</span>
+    </div>
+  </div>
+
+  <!-- ARTICLE BODY -->
+  <article class="article-card">
+    <div class="article-body">
+
+      <p>Si buscás tu empresa en Google y no la encontrás, no es un problema menor: estás perdiendo clientes cada día. En Argentina, más del <strong>46% de las búsquedas son locales</strong>. Si alguien busca "fotógrafo en Buenos Aires" o "reparación de Aires en CABA" y tu negocio no sale, ese cliente va directo a la competencia.</p>
+
+      <div class="callout">
+        <span class="callout-label">Dato clave</span>
+        <p>El <strong>75% de los usuarios nunca pasa de la primera página</strong> de resultados. Si no estás ahí arriba, para fines prácticos no existís en internet.</p>
+      </div>
+
+      <h2>Las 5 causas más comunes (y cómo arreglarlas)</h2>
+
+      <div class="causa-table">
+        <div class="causa-row head">
+          <div class="causa-cell">Causa</div>
+          <div class="causa-cell">Por qué afecta</div>
+          <div class="causa-cell">Solución rápida</div>
+        </div>
+        <div class="causa-row">
+          <div class="causa-cell"><strong>No tenés página web</strong> (o está abandonada)</div>
+          <div class="causa-cell">Google es una guía digital: sin web, no tenés "dirección" para que te encuentren</div>
+          <div class="causa-cell">Tené una web profesional, clara, rápida y pensada para que Google la entienda</div>
+        </div>
+        <div class="causa-row">
+          <div class="causa-cell"><strong>No tenés ficha de Google Business</strong> (o está mal hecha)</div>
+          <div class="causa-cell">Sin perfil de Negocio de Google, estás "fuera del mapa" en Google Maps y búsquedas locales</div>
+          <div class="causa-cell">Crear o optimizar tu ficha con nombre, categoría, horario, fotos y dirección verificada</div>
+        </div>
+        <div class="causa-row">
+          <div class="causa-cell"><strong>Tu web no está optimizada para SEO</strong></div>
+          <div class="causa-cell">Si la web no usa títulos, palabras clave, metadatos y velocidad adecuada, Google no sabe de qué va</div>
+          <div class="causa-cell">Hacer SEO básico: palabras clave relevantes, títulos claros, metadatos e imágenes optimizadas</div>
+        </div>
+        <div class="causa-row">
+          <div class="causa-cell"><strong>No usás las palabras clave que tus clientes buscan</strong></div>
+          <div class="causa-cell">Muchas PyMEs no investigan qué términos usan sus clientes; sin eso, el tráfico deseado no llega</div>
+          <div class="causa-cell">Investigar y usar las palabras que tu cliente potencial escribe ("panadería en Palermo", "PACKET en Buenos Aires")</div>
+        </div>
+        <div class="causa-row">
+          <div class="causa-cell"><strong>Web lenta y sin optimización móvil</strong></div>
+          <div class="causa-cell">Un sitio lento pierde visitantes y posiciones; Google prioriza experiencias rápidas y móviles</div>
+          <div class="causa-cell">Optimizar velocidad (compresión de imágenes, caché) y asegurarse que sea 100% responsive</div>
+        </div>
+      </div>
+
+      <h2>Ruta práctica para empezar a salir en Google</h2>
+      <p>No necesitás hacer todo al mismo tiempo. Con esta ordenación, los resultados llegan más rápido:</p>
+
+      <ol class="steps">
+        <li>
+          <div>
+            <strong>Tené una web clara, rápida y orientada a captar clientes</strong><br>
+            Diseño responsive, secciones clave (qué hacés, dónde estás, cómo contactar) y un CTA visible.
+          </div>
+        </li>
+        <li>
+          <div>
+            <strong>Date de alta (o mejorá) tu ficha de Google Business</strong><br>
+            Nombre exacto, categoría correcta, horarios reales, fotos recientes y dirección verificada por correo.
+          </div>
+        </li>
+        <li>
+          <div>
+            <strong>Poné textos que expliquen bien qué hacés, dónde estás y cómo contactar</strong><br>
+            Usá palabras clave locales: "en Buenos Aires", "en CABA", "en Palermo", etc.
+          </div>
+        </li>
+        <li>
+          <div>
+            <strong>Pedí reseñas a clientes reales</strong><br>
+            Las reseñas positivas aumentan la confianza y ayudan directamente al posicionamiento local.
+          </div>
+        </li>
+        <li>
+          <div>
+            <strong>Publicá contenido útil, aunque sea poco pero relevante</strong><br>
+            Posts, consejos, casos de éxito. Google prioriza sitios con contenido fresco y actualizado.
+          </div>
+        </li>
+      </ol>
+
+      <h2>¿Cuánto tarda en verse el resultado?</h2>
+
+      <div class="tiempo-grid">
+        <div class="tiempo-card">
+          <span class="t-label">Primeros resultados</span>
+          <div class="t-value">2–6 sem</div>
+          <div class="t-desc">Con web nueva + ficha de Google Business bien configurada + SEO básico ya podrías empezar a aparecer en búsquedas locales.</div>
+        </div>
+        <div class="tiempo-card">
+          <span class="t-label">Posiciones sólidas</span>
+          <div class="t-value">3–6 meses</div>
+          <div class="t-desc">Para tráfico constante y posiciones fuertes, el trabajo continuo de SEO y contenido da los mejores resultados.</div>
+        </div>
+      </div>
+
+      <h2>Cómo te ayudamos (paquetes orientados a resultados)</h2>
+      <p>Arrancamos con un diagnóstico gratuito de 15 minutos: analizamos tu web, ficha de Google Business y SEO actual, y te damos un plan de acción con prioridades reales.</p>
+
+      <div class="price-table">
+        <div class="price-row head">
+          <div>
+            <div class="price-name">Diagnóstico gratuito de visibilidad en Google</div>
+            <div class="price-desc">Revisamos tu web, ficha y SEO actual — 15 minutos, sin compromiso</div>
+          </div>
+          <div class="price-amount">GRATIS</div>
+        </div>
+        <div class="price-row">
+          <div>
+            <div class="price-name">Pack "Aparece en Google Local"</div>
+            <div class="price-desc">Google Business + SEO básico + velocidad móvil + 1 mes de soporte</div>
+          </div>
+          <div class="price-amount">Desde USD 249</div>
+        </div>
+        <div class="price-row">
+          <div>
+            <div class="price-name">Pack "Crecimiento SEO"</div>
+            <div class="price-desc">Estrategia de palabras clave + contenido mensual + reporte de posiciones + soporte continuo</div>
+          </div>
+          <div class="price-amount">Desde USD 499</div>
+        </div>
+      </div>
+
+      <div class="callout">
+        <span class="callout-label">Lo que incluye cada pack</span>
+        <p><strong>Pack Google Local:</strong> creación/optimización de Google Business · SEO básico (palabras clave, títulos, metadatos, imágenes) · optimización de velocidad y móvil · 1 mes de soporte y ajustes.<br><br>
+        <strong>Pack Crecimiento SEO:</strong> estrategia de palabras clave + contenido mensual · mejoras técnicas de SEO · reporte mensual de posiciones y tráfico · soporte continuo.</p>
+      </div>
+
+      <div class="article-cta">
+        <h3>¿Querés que tu negocio aparezca cuando los clientes buscan lo que vendés?</h3>
+        <p>Reservá tu diagnóstico gratuito de 15 minutos y te decimos qué está bloqueando tu visibilidad en Google y cómo solucionarlo paso a paso.</p>
+        <a href="https://wa.me/541168115491" target="_blank" class="cta-btn">👉 Agendar mi diagnóstico gratuito</a>
+      </div>
+
+    </div>
+  </article>
+
+  <!-- RELATED -->
+  <div class="related-section">
+    <div class="related-label">Seguí leyendo</div>
+    <div class="related-grid">
+      <a href="/blog/cuanto-cuesta-pagina-web-argentina/" class="related-card">
+        <span class="related-tag">Precios · Web</span>
+        <div class="related-title">¿Cuánto cuesta una página web en Argentina en 2026?</div>
+        <span class="related-link">Leer...</span>
+      </a>
+      <a href="/blog/b4/" class="related-card">
+        <span class="related-tag">Estrategia · Redes</span>
+        <div class="related-title">Redes sociales vs. página web propia: ¿qué conviene?</div>
+        <span class="related-link">Leer...</span>
+      </a>
+    </div>
+  </div>
+
+</div><!-- /cloud-page -->
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Páginas <span>inAlbis</span></div>
+  <div class="footer-text">© 2026 Páginas inAlbis · Diseño Web Profesional en Argentina</div>
+  <div class="footer-links">
+    <a href="/">Inicio</a>
+    <a href="/#paquetes">Paquetes</a>
+    <a href="https://wa.me/541168115491">WhatsApp</a>
+    <a href="mailto:albissonte@gmail.com">Email</a>
+  </div>
+</footer>
+
+<script>
+/* STARFIELD */
+(function(){
+  const canvas=document.getElementById('starfield'),ctx=canvas.getContext('2d');
+  let W,H,stars=[];
+  function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight}
+  function init(){stars=[];for(let i=0;i<180;i++){stars.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.2+0.2,layer:Math.floor(Math.random()*3),alpha:Math.random()*0.5+0.15,twinkle:Math.random()*Math.PI*2})}}
+  let scrollY=0;
+  window.addEventListener('scroll',()=>{scrollY=window.scrollY});
+  const SPD=[0.06,0.14,0.24];
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    stars.forEach(s=>{
+      const py=(s.y-scrollY*SPD[s.layer])%H;
+      const fy=py<0?py+H:py;
+      s.twinkle+=0.01;
+      const a=s.alpha*(0.7+0.3*Math.sin(s.twinkle));
+      ctx.beginPath();ctx.arc(s.x,fy,s.r,0,Math.PI*2);
+      ctx.fillStyle=s.layer===2?`rgba(91,224,255,${a*0.5})`:`rgba(255,255,255,${a*0.4})`;
+      ctx.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+  resize();init();window.addEventListener('resize',()=>{resize();init()});requestAnimationFrame(draw);
+})();
+
+/* PROCEDURAL DRIFTING CLOUDS */
+(function(){
+  const canvas=document.getElementById('cloudcanvas');
+  if(!canvas) return;
+  const ctx=canvas.getContext('2d');
+  let W,H,clouds=[];
+  function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight;}
+  function makeCloud(forceX){
+    const blobCount=6+Math.floor(Math.random()*6);
+    const baseR=80+Math.random()*150;
+    const blobs=[];
+    for(let i=0;i<blobCount;i++){
+      blobs.push({ox:(Math.random()-0.5)*baseR*2.2,oy:(Math.random()-0.5)*baseR*0.55,r:baseR*(0.45+Math.random()*0.65)});
+    }
+    return {
+      x:forceX!==undefined?forceX:Math.random()*W,
+      y:Math.random()*H*0.9,blobs,
+      tint:Math.random()<0.5?[255,255,255]:[205,232,251],
+      windSpeed:0.06+Math.random()*0.10,
+      bob:Math.random()*Math.PI*2,
+      bobSpeed:0.0015+Math.random()*0.001,
+      life:0,maxLife:1800+Math.random()*1400,fadeFrames:260
+    };
+  }
+  function init(){clouds=[];const count=Math.max(14,Math.floor(W/110));for(let i=0;i<count;i++)clouds.push(makeCloud());}
+  function cloudAlpha(c){
+    if(c.life<c.fadeFrames)return c.life/c.fadeFrames;
+    if(c.life>c.maxLife-c.fadeFrames)return Math.max(0,(c.maxLife-c.life)/c.fadeFrames);
+    return 1;
+  }
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    clouds.forEach(c=>{
+      c.life++;c.x+=c.windSpeed;c.bob+=c.bobSpeed;
+      const driftY=Math.sin(c.bob)*6;
+      const a=cloudAlpha(c)*0.65;
+      if(a>0.003){
+        c.blobs.forEach(b=>{
+          const bx=c.x+b.ox,by=c.y+b.oy+driftY;
+          const grad=ctx.createRadialGradient(bx,by,0,bx,by,b.r);
+          grad.addColorStop(0,`rgba(${c.tint[0]},${c.tint[1]},${c.tint[2]},${a})`);
+          grad.addColorStop(1,`rgba(${c.tint[0]},${c.tint[1]},${c.tint[2]},0)`);
+          ctx.fillStyle=grad;ctx.beginPath();ctx.arc(bx,by,b.r,0,Math.PI*2);ctx.fill();
+        });
+      }
+      if(c.life>=c.maxLife||c.x>W+260){
+        const idx=clouds.indexOf(c);clouds[idx]=makeCloud(-200-Math.random()*150);
+      }
+    });
+    requestAnimationFrame(draw);
+  }
+  resize();init();window.addEventListener('resize',()=>{resize();init()});requestAnimationFrame(draw);
+})();
+</script>
+</body>
+</html>
