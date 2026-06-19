@@ -1,1 +1,464 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portfolio · inAlbis Pages · Trabajos de Diseño Web</title>
+<meta name="description" content="Proyectos reales de diseño web para negocios argentinos. Mirá los sitios que construimos y los resultados que consiguieron.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://www.inalbispages.com/portfolio/">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.inalbispages.com/portfolio/">
+<meta property="og:title" content="Portfolio · inAlbis Pages">
+<meta property="og:description" content="Sitios reales, clientes reales, resultados reales.">
+<meta property="og:image" content="https://www.inalbispages.com/og-image.jpg">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=IBM+Plex+Mono:wght@400;500&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#060f1e;
+  --cyan:#38d4f5;
+  --aurora-green:#00e5aa;
+  --aurora-magenta:#b845ff;
+  --aurora-blue:#3a8fff;
+  --white:#e8f4ff;
+  --muted:rgba(200,230,255,0.48);
+  --card-bg:rgba(8,17,36,0.72);
+  --border2:rgba(255,255,255,0.07);
+  --border:rgba(56,212,245,0.22);
+}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);color:var(--white);
+  font-family:'Poppins',system-ui,sans-serif;
+  line-height:1.65;overflow-x:hidden;min-height:100vh;
+}
+a{text-decoration:none;color:inherit}
 
+/* CANVAS */
+#star-c,#aurora-c,#cloud-c{position:fixed;inset:0;pointer-events:none}
+#star-c{z-index:0;opacity:0.6}
+#aurora-c{z-index:1;opacity:0.9}
+#cloud-c{z-index:2;opacity:1}
+
+/* NAV */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 48px;height:64px;
+  background:rgba(6,15,30,0.82);backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border2);
+  transition:background .3s;
+}
+.nav-logo{display:flex;align-items:center;gap:6px;font-family:'Syne',sans-serif;font-weight:800;font-size:17px}
+.nav-logo span{color:var(--cyan)}
+.nav-links{display:flex;gap:28px;list-style:none;font-size:13px;color:var(--muted)}
+.nav-links a:hover{color:var(--white);transition:color .2s}
+.nav-cta{
+  background:var(--cyan);color:#060f1e;
+  font-family:'Syne',sans-serif;font-size:12px;font-weight:700;
+  padding:9px 22px;border-radius:10px;
+  box-shadow:0 0 22px rgba(56,212,245,.4);
+  transition:box-shadow .25s,transform .2s;
+}
+.nav-cta:hover{box-shadow:0 0 36px rgba(56,212,245,.65);transform:translateY(-1px)}
+
+/* PAGE */
+.page{position:relative;z-index:3;padding:108px 24px 100px;max-width:1160px;margin:0 auto}
+
+/* HERO */
+.hero{text-align:center;margin-bottom:72px}
+.hero-label{
+  display:inline-flex;align-items:center;gap:10px;
+  font-size:11px;letter-spacing:3px;text-transform:uppercase;
+  color:var(--aurora-green);border:1px solid rgba(0,229,170,0.3);
+  background:rgba(0,229,170,0.06);
+  padding:7px 20px;border-radius:100px;margin-bottom:26px;
+  font-family:'IBM Plex Mono',monospace;
+}
+.hero-label::before{
+  content:'';width:6px;height:6px;border-radius:50%;
+  background:var(--aurora-green);box-shadow:0 0 10px var(--aurora-green);
+  animation:pulse-dot 2s ease-in-out infinite;
+}
+@keyframes pulse-dot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.3;transform:scale(.65)}}
+.hero h1{
+  font-family:'Syne',sans-serif;font-size:clamp(34px,5.5vw,64px);
+  font-weight:800;line-height:1.07;letter-spacing:-.5px;margin-bottom:18px;
+}
+.hero h1 em{
+  font-style:italic;
+  background:linear-gradient(90deg,var(--aurora-green),var(--cyan),var(--aurora-magenta));
+  background-size:200% auto;
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  animation:aurora-shift 6s linear infinite;
+}
+@keyframes aurora-shift{0%{background-position:0%}100%{background-position:200%}}
+.hero p{font-size:16px;color:var(--muted);max-width:480px;margin:0 auto;line-height:1.8}
+
+/* GRID */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:28px}
+
+/* PORT CARD */
+.port-card{
+  background:var(--card-bg);
+  border:1px solid var(--border2);
+  border-radius:20px;overflow:hidden;
+  backdrop-filter:blur(12px) saturate(1.3);
+  transition:transform .35s cubic-bezier(.22,.68,0,1.2),border-color .3s,box-shadow .3s;
+  display:flex;flex-direction:column;
+}
+.port-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,0.2),transparent);
+}
+.port-card:hover{
+  transform:translateY(-9px);
+  border-color:var(--c-accent,var(--cyan));
+  box-shadow:0 28px 64px rgba(0,0,0,.55),0 0 44px var(--c-glow,rgba(56,212,245,0.12));
+}
+.port-card[data-c="green"]{--c-accent:rgba(0,229,170,.5);--c-glow:rgba(0,229,170,.1)}
+.port-card[data-c="cyan"]{--c-accent:rgba(56,212,245,.5);--c-glow:rgba(56,212,245,.1)}
+.port-card[data-c="magenta"]{--c-accent:rgba(184,69,255,.5);--c-glow:rgba(184,69,255,.1)}
+
+/* IFRAME PREVIEW */
+.port-iframe-wrap{
+  position:relative;width:100%;height:260px;overflow:hidden;flex-shrink:0;
+  background:#081120;
+}
+.port-iframe-wrap iframe{
+  width:200%;height:200%;
+  transform:scale(.5);transform-origin:top left;
+  border:none;pointer-events:none;
+}
+.port-overlay{
+  position:absolute;inset:0;cursor:pointer;
+  background:linear-gradient(to bottom,transparent 50%,rgba(6,15,30,.85) 100%);
+  display:flex;align-items:flex-end;justify-content:flex-end;
+  padding:14px;opacity:0;transition:opacity .25s;
+}
+.port-card:hover .port-overlay{opacity:1}
+.port-overlay a{
+  font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.12em;
+  text-transform:uppercase;color:#060f1e;background:var(--cyan);
+  padding:8px 16px;border-radius:8px;
+  box-shadow:0 0 20px rgba(56,212,245,.4);
+}
+
+/* PORT INFO */
+.port-info{padding:20px 22px 24px;flex:1;display:flex;flex-direction:column;gap:6px}
+.port-tag{
+  font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--cyan);
+  display:flex;align-items:center;gap:6px;
+}
+.port-tag::before{content:'';width:14px;height:1px;background:var(--cyan)}
+.port-name{font-family:'Syne',sans-serif;font-size:19px;font-weight:800;color:var(--white)}
+.port-desc{font-size:12.5px;color:var(--muted);line-height:1.65;margin-top:2px}
+.port-stats{
+  display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;
+  padding-top:14px;border-top:1px solid var(--border2);
+}
+.port-stat{
+  font-size:10px;font-family:'IBM Plex Mono',monospace;
+  padding:4px 12px;border-radius:6px;
+  background:rgba(255,255,255,0.04);border:1px solid var(--border2);
+  color:rgba(200,230,255,0.55);
+}
+
+/* FEATURED spans 2 cols */
+.port-card.featured{grid-column:1 / -1;display:grid;grid-template-columns:55% 45%}
+.port-card.featured .port-iframe-wrap{height:auto;min-height:260px}
+.port-card.featured .port-info{padding:32px 28px;justify-content:center}
+.port-card.featured .port-name{font-size:clamp(20px,2.5vw,26px)}
+.featured-badge{
+  font-size:10px;letter-spacing:2px;text-transform:uppercase;
+  color:var(--aurora-green);font-family:'IBM Plex Mono',monospace;
+  margin-bottom:10px;display:flex;align-items:center;gap:6px;
+}
+.featured-badge::before{content:'★';font-size:9px}
+
+/* CTA */
+.cta-strip{
+  margin-top:72px;padding:48px 40px;border-radius:26px;text-align:center;
+  background:linear-gradient(135deg,rgba(0,229,170,.07),rgba(56,212,245,.05),rgba(184,69,255,.07));
+  border:1px solid rgba(56,212,245,.18);position:relative;overflow:hidden;
+}
+.cta-strip::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(56,212,245,.5),rgba(0,229,170,.4),transparent);
+}
+.cta-strip h2{font-family:'Syne',sans-serif;font-size:clamp(20px,3vw,30px);font-weight:800;margin-bottom:12px}
+.cta-strip p{color:var(--muted);font-size:15px;max-width:400px;margin:0 auto 26px}
+.cta-btn{
+  display:inline-flex;align-items:center;gap:10px;
+  background:var(--cyan);color:#060f1e;
+  font-family:'Syne',sans-serif;font-weight:800;font-size:14px;
+  padding:14px 34px;border-radius:13px;
+  box-shadow:0 0 30px rgba(56,212,245,.35);transition:transform .2s,box-shadow .2s;
+}
+.cta-btn:hover{transform:translateY(-3px);box-shadow:0 0 50px rgba(56,212,245,.55)}
+
+/* FOOTER */
+footer{
+  position:relative;z-index:3;text-align:center;
+  padding:44px 24px;border-top:1px solid var(--border2);margin-top:80px;
+}
+.footer-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:18px;margin-bottom:10px}
+.footer-logo span{color:var(--cyan)}
+.footer-text{font-size:11px;color:var(--muted);margin-bottom:16px;font-family:'IBM Plex Mono',monospace}
+.footer-links{display:flex;gap:24px;justify-content:center;font-size:13px;color:var(--muted)}
+.footer-links a:hover{color:var(--white)}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .7s ease,transform .7s ease}
+.reveal.visible{opacity:1;transform:none}
+
+@media(max-width:900px){
+  nav{padding:0 20px}
+  .nav-links{display:none}
+  .port-card.featured{grid-template-columns:1fr}
+  .port-card.featured .port-iframe-wrap{height:220px}
+  .grid{grid-template-columns:1fr}
+  .cta-strip{padding:36px 20px}
+}
+</style>
+</head>
+<body>
+
+<canvas id="star-c"></canvas>
+<canvas id="aurora-c"></canvas>
+<canvas id="cloud-c"></canvas>
+
+<!-- NAV -->
+<nav id="navbar">
+  <div class="nav-logo">
+    <img src="/iA.png" alt="iA" style="height:42px;width:42px;object-fit:contain;filter:drop-shadow(0 0 12px rgba(56,212,245,.5))">
+    <span>Páginas</span>
+    <img src="/inAlbis.png" alt="inAlbis" style="height:54px;width:auto;object-fit:contain;margin-left:-6px;filter:drop-shadow(0 0 8px rgba(56,212,245,0.4))">
+  </div>
+  <ul class="nav-links">
+    <li><a href="/#paquetes">Paquetes</a></li>
+    <li><a href="/#mensuales">Mensuales</a></li>
+    <li><a href="/portfolio/" style="color:var(--cyan)">Portfolio</a></li>
+    <li><a href="/#contacto">Contacto</a></li>
+    <li><a href="/blog/">Blog</a></li>
+    <li><a href="/Alby/index.html" style="color:var(--cyan);font-weight:600">✦ Alby IA</a></li>
+    <li><a href="https://wa.me/541168115491" target="_blank" class="nav-cta">Consultar</a></li>
+  </ul>
+</nav>
+
+<!-- PAGE -->
+<div class="page">
+
+  <!-- HERO -->
+  <div class="hero reveal">
+    <div class="hero-label">Portfolio · Trabajos reales</div>
+    <h1>Sitios que <em>generan</em> resultados</h1>
+    <p>Cada proyecto tiene un objetivo concreto: aparecer en Google, conseguir consultas o automatizar la atención.</p>
+  </div>
+
+  <!-- GRID -->
+  <div class="grid">
+
+    <!-- MATIAS JJ — FEATURED -->
+    <div class="port-card featured reveal" data-c="green" style="position:relative">
+      <div class="port-iframe-wrap">
+        <iframe src="https://a3a5c43f.matiasjj.pages.dev/" title="Matias Jump" loading="lazy"></iframe>
+        <div class="port-overlay"><a href="https://a3a5c43f.matiasjj.pages.dev/" target="_blank">Ver sitio →</a></div>
+      </div>
+      <div class="port-info">
+        <div class="featured-badge">Proyecto destacado</div>
+        <div class="port-tag">Tienda online · E-commerce</div>
+        <div class="port-name">Matias JJ · Inflables</div>
+        <p class="port-desc">Tienda con +30 productos, carrito de reservas por fecha, panel admin completo y gestión de stock. Construido sobre Cloudflare Pages + D1 + R2.</p>
+        <div class="port-stats">
+          <span class="port-stat">Cloudflare Pages</span>
+          <span class="port-stat">D1 · R2</span>
+          <span class="port-stat">Admin panel</span>
+          <span class="port-stat">+30% ventas</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- KRYSTIAN ALBISSON -->
+    <div class="port-card reveal" data-c="cyan" style="position:relative">
+      <div class="port-iframe-wrap">
+        <iframe src="https://krystianalbisson.carrd.co/" title="Krystian Albisson" loading="lazy"></iframe>
+        <div class="port-overlay"><a href="https://krystianalbisson.carrd.co/" target="_blank">Ver sitio →</a></div>
+      </div>
+      <div class="port-info">
+        <div class="port-tag">Servicios del hogar</div>
+        <div class="port-name">Krystian Albisson</div>
+        <p class="port-desc">Landing page optimizada para conversión local. Posicionado en Google Maps y búsquedas de servicios del hogar en su zona.</p>
+        <div class="port-stats">
+          <span class="port-stat">SEO local</span>
+          <span class="port-stat">Google Maps</span>
+          <span class="port-stat">Conversión</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- LA UNION APPLE -->
+    <div class="port-card reveal" data-c="magenta" style="position:relative">
+      <div class="port-iframe-wrap">
+        <iframe src="https://launionapple.pages.dev/#productos" title="La Unión Apple" loading="lazy"></iframe>
+        <div class="port-overlay"><a href="https://launionapple.pages.dev/" target="_blank">Ver sitio →</a></div>
+      </div>
+      <div class="port-info">
+        <div class="port-tag">Comercio · Productos</div>
+        <div class="port-name">La Unión Apple</div>
+        <p class="port-desc">Catálogo digital con SEO local activo. Diseño premium a medida para destacar productos Apple en el mercado local.</p>
+        <div class="port-stats">
+          <span class="port-stat">Catálogo digital</span>
+          <span class="port-stat">SEO local</span>
+          <span class="port-stat">Diseño premium</span>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /grid -->
+
+  <!-- CTA -->
+  <div class="cta-strip reveal">
+    <h2>¿Querés un proyecto así para tu negocio?</h2>
+    <p>Cada web la construimos con un objetivo concreto. Contanos qué necesitás.</p>
+    <a href="https://wa.me/541168115491" target="_blank" class="cta-btn">💬 Hablar por WhatsApp</a>
+  </div>
+
+</div><!-- /page -->
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Páginas <span>inAlbis</span></div>
+  <div class="footer-text">© 2026 Páginas inAlbis · Diseño Web Profesional en Argentina</div>
+  <div class="footer-links">
+    <a href="/">Inicio</a>
+    <a href="/#paquetes">Paquetes</a>
+    <a href="/blog/">Blog</a>
+    <a href="https://wa.me/541168115491">WhatsApp</a>
+    <a href="mailto:albissonte@gmail.com">Email</a>
+  </div>
+</footer>
+
+<script>
+/* STARFIELD */
+(function(){
+  const c=document.getElementById('star-c'),ctx=c.getContext('2d');
+  let W,H,stars=[];
+  function resize(){W=c.width=innerWidth;H=c.height=innerHeight}
+  function init(){stars=[];for(let i=0;i<220;i++)stars.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.3+0.2,layer:Math.floor(Math.random()*3),a:Math.random()*0.6+0.2,tw:Math.random()*Math.PI*2})}
+  let sy=0;addEventListener('scroll',()=>sy=scrollY);
+  const SPD=[0.06,0.14,0.24];
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    stars.forEach(s=>{
+      const py=(s.y-sy*SPD[s.layer])%H;const fy=py<0?py+H:py;
+      s.tw+=0.01;const a=s.a*(0.7+0.3*Math.sin(s.tw));
+      ctx.beginPath();ctx.arc(s.x,fy,s.r,0,Math.PI*2);
+      ctx.fillStyle=s.layer===2?`rgba(56,212,245,${a*.7})`:`rgba(255,255,255,${a})`;
+      ctx.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+  resize();init();addEventListener('resize',()=>{resize();init()});draw();
+})();
+
+/* AURORA */
+(function(){
+  const c=document.getElementById('aurora-c'),ctx=c.getContext('2d');
+  let W,H,mx=0.5,my=0.5;
+  addEventListener('mousemove',e=>{mx=e.clientX/innerWidth;my=e.clientY/innerHeight});
+  function resize(){W=c.width=innerWidth;H=c.height=innerHeight}
+  const bands=[
+    {color:[0,229,170],  base:.26,speed:.00028,amp:.09,freq:1.3,opa:.19,phase:0},
+    {color:[56,212,245], base:.20,speed:.00022,amp:.07,freq:1.8,opa:.14,phase:1.2},
+    {color:[184,69,255], base:.34,speed:.00018,amp:.11,freq:1.1,opa:.12,phase:2.4},
+    {color:[0,229,170],  base:.16,speed:.00032,amp:.06,freq:2.2,opa:.09,phase:.7},
+    {color:[58,143,255], base:.41,speed:.00015,amp:.08,freq:.9, opa:.09,phase:3.1},
+    {color:[184,69,255], base:.11,speed:.00025,amp:.05,freq:2.8,opa:.07,phase:1.8},
+  ];
+  let t=0;
+  function draw(){
+    t++;ctx.clearRect(0,0,W,H);
+    bands.forEach(b=>{
+      const py=(b.base+(my-.5)*.04)*H;
+      const px_off=(mx-.5)*.03;
+      for(let i=0;i<=60;i++){
+        const px=(i/60+px_off)*W;
+        const w1=Math.sin(i*b.freq*.18+t*b.speed*80+b.phase)*b.amp*H;
+        const w2=Math.sin(i*b.freq*.28+t*b.speed*50+b.phase+1)*b.amp*.5*H;
+        const topY=py+w1+w2;
+        const botY=topY+H*(.18+.06*Math.sin(i*.3+b.phase));
+        const g=ctx.createLinearGradient(0,topY,0,botY);
+        const [r,gr,bl]=b.color;
+        const opa=b.opa*(.6+.4*Math.sin(i*.22+t*b.speed*40+b.phase));
+        g.addColorStop(0,`rgba(${r},${gr},${bl},0)`);
+        g.addColorStop(.2,`rgba(${r},${gr},${bl},${opa})`);
+        g.addColorStop(.5,`rgba(${r},${gr},${bl},${opa*.7})`);
+        g.addColorStop(1,`rgba(${r},${gr},${bl},0)`);
+        ctx.fillStyle=g;
+        const sw=W/60;
+        ctx.fillRect(px-sw*.5,topY,sw*1.2,botY-topY);
+      }
+    });
+    requestAnimationFrame(draw);
+  }
+  resize();addEventListener('resize',resize);draw();
+})();
+
+/* CLOUDS */
+(function(){
+  const c=document.getElementById('cloud-c'),ctx=c.getContext('2d');
+  let W,H,clouds=[];
+  function resize(){W=c.width=innerWidth;H=c.height=innerHeight}
+  function mk(fx){
+    const n=5+Math.floor(Math.random()*5),R=55+Math.random()*110,blobs=[];
+    for(let i=0;i<n;i++)blobs.push({ox:(Math.random()-.5)*R*2,oy:(Math.random()-.5)*R*.5,r:R*(.4+Math.random()*.6)});
+    return{x:fx!==undefined?fx:Math.random()*W,y:Math.random()*H*.85,blobs,
+      tint:Math.random()<.5?[14,28,60]:[8,20,50],ws:.04+Math.random()*.07,
+      bob:Math.random()*Math.PI*2,bs:.001+Math.random()*.001,
+      life:0,maxLife:2200+Math.random()*1500,ff:280};
+  }
+  function init(){clouds=[];const n=Math.max(10,Math.floor(W/130));for(let i=0;i<n;i++)clouds.push(mk())}
+  function alpha(cl){
+    if(cl.life<cl.ff)return cl.life/cl.ff;
+    if(cl.life>cl.maxLife-cl.ff)return Math.max(0,(cl.maxLife-cl.life)/cl.ff);
+    return 1;
+  }
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    clouds.forEach(cl=>{
+      cl.life++;cl.x+=cl.ws;cl.bob+=cl.bs;
+      const dy=Math.sin(cl.bob)*5,a=alpha(cl)*.2;
+      if(a>.003)cl.blobs.forEach(b=>{
+        const bx=cl.x+b.ox,by=cl.y+b.oy+dy;
+        const g=ctx.createRadialGradient(bx,by,0,bx,by,b.r);
+        g.addColorStop(0,`rgba(${cl.tint[0]},${cl.tint[1]},${cl.tint[2]},${a})`);
+        g.addColorStop(1,`rgba(${cl.tint[0]},${cl.tint[1]},${cl.tint[2]},0)`);
+        ctx.fillStyle=g;ctx.beginPath();ctx.arc(bx,by,b.r,0,Math.PI*2);ctx.fill();
+      });
+      if(cl.life>=cl.maxLife||cl.x>W+240){const i=clouds.indexOf(cl);clouds[i]=mk(-180-Math.random()*120)}
+    });
+    requestAnimationFrame(draw);
+  }
+  resize();init();addEventListener('resize',()=>{resize();init()});draw();
+})();
+
+/* REVEAL */
+(function(){
+  const els=document.querySelectorAll('.reveal');
+  const io=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('visible');io.unobserve(x.target)}})},{threshold:.1});
+  els.forEach(el=>io.observe(el));
+})();
+
+/* NAV scroll */
+addEventListener('scroll',()=>{
+  document.getElementById('navbar').style.background=scrollY>40?'rgba(6,15,30,0.95)':'rgba(6,15,30,0.82)';
+});
+</script>
+</body>
+</html>
