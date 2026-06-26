@@ -1,1 +1,729 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Godoy Lisandro — Asesor Inmobiliario Spazios</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --green:#2E7D32;
+  --green2:#388E3C;
+  --green3:#43A047;
+  --green-light:#66BB6A;
+  --green-pale:#E8F5E9;
+  --dark:#0D1B0E;
+  --dark2:#111F12;
+  --white:#FFFFFF;
+  --gray:#F4F4F4;
+  --text-muted:rgba(255,255,255,0.72);
+}
+html{scroll-behavior:smooth;}
+body{font-family:'Inter',sans-serif;background:var(--dark);color:var(--white);overflow-x:hidden;}
 
+/* NAV */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:200;
+  display:flex;justify-content:space-between;align-items:center;
+  padding:0 24px;height:64px;
+  background:var(--green);
+  box-shadow:0 2px 12px rgba(0,0,0,0.3);
+}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
+.nav-logo-icon{
+  width:32px;height:32px;border:2px solid white;border-radius:4px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:0.7rem;font-weight:800;color:white;letter-spacing:0.05em;
+}
+.nav-logo-text{font-size:1rem;font-weight:700;color:white;letter-spacing:0.02em;}
+.nav-right{display:flex;align-items:center;gap:12px;}
+.nav-menu-btn{
+  background:none;border:none;color:white;font-size:1.5rem;cursor:pointer;padding:4px 8px;
+}
+.nav-cta-btn{
+  background:white;color:var(--green);
+  font-size:0.8rem;font-weight:700;
+  padding:8px 16px;border-radius:6px;
+  text-decoration:none;white-space:nowrap;
+  transition:background 0.2s;
+}
+.nav-cta-btn:hover{background:var(--green-pale);}
+
+/* HERO */
+.hero{
+  position:relative;min-height:100vh;
+  display:flex;flex-direction:column;justify-content:flex-end;
+  padding:80px 24px 0;
+  overflow:hidden;
+}
+.hero-bg{
+  position:absolute;inset:0;z-index:0;
+  background:
+    linear-gradient(180deg, rgba(13,27,14,0.45) 0%, rgba(13,27,14,0.2) 40%, rgba(13,27,14,0.75) 75%, rgba(13,27,14,1) 100%),
+    linear-gradient(135deg, #0a2010 0%, #1a3a1a 40%, #0d1f0d 100%);
+}
+.hero-bg-img{
+  position:absolute;inset:0;z-index:-1;
+  background:url('https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=900&q=80') center/cover no-repeat;
+  opacity:0.35;
+}
+.hero-social{
+  position:absolute;right:16px;top:50%;transform:translateY(-50%);
+  display:flex;flex-direction:column;gap:10px;z-index:10;
+}
+.social-btn{
+  width:42px;height:42px;border-radius:50%;background:var(--green);
+  display:flex;align-items:center;justify-content:center;
+  text-decoration:none;color:white;font-size:1rem;
+  transition:background 0.2s;
+}
+.social-btn:hover{background:var(--green3);}
+.hero-content{position:relative;z-index:1;padding-bottom:32px;}
+.hero-tag{
+  display:inline-block;
+  background:var(--green);color:white;
+  font-size:0.72rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;
+  padding:5px 14px;border-radius:20px;margin-bottom:18px;
+}
+.hero h1{
+  font-size:clamp(2rem,8vw,3.2rem);font-weight:800;
+  line-height:1.1;margin-bottom:14px;
+  color:white;
+}
+.hero-sub{
+  font-size:1rem;color:var(--text-muted);
+  line-height:1.7;margin-bottom:32px;max-width:480px;
+}
+.hero-stats{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:20px 32px;margin-bottom:0;
+}
+.stat-num{
+  font-size:2.2rem;font-weight:900;color:white;line-height:1;
+}
+.stat-label{
+  font-size:0.65rem;font-weight:600;letter-spacing:0.12em;
+  text-transform:uppercase;color:var(--green-light);margin-top:4px;
+}
+
+/* FORM CARD */
+.form-card{
+  background:white;border-radius:20px 20px 0 0;
+  padding:32px 24px 40px;
+  position:relative;z-index:10;
+  margin-top:40px;
+}
+.form-title{
+  font-size:1.7rem;font-weight:800;color:var(--green);
+  text-align:center;margin-bottom:8px;
+}
+.form-sub{
+  font-size:0.85rem;color:#666;text-align:center;margin-bottom:24px;
+}
+.form-group{margin-bottom:16px;}
+.form-group label{
+  display:block;font-size:0.8rem;font-weight:600;color:#333;
+  margin-bottom:6px;
+}
+.form-group label span{color:var(--green);margin-left:2px;}
+.form-group input,
+.form-group select,
+.form-group textarea{
+  width:100%;padding:14px 16px;
+  border:none;border-radius:8px;
+  background:var(--green);color:white;
+  font-size:0.92rem;font-family:'Inter',sans-serif;
+  outline:none;transition:background 0.2s;
+}
+.form-group input::placeholder,
+.form-group select::placeholder,
+.form-group textarea::placeholder{color:rgba(255,255,255,0.6);}
+.form-group input:focus,
+.form-group select:focus{background:var(--green2);}
+.form-group select option{background:#fff;color:#333;}
+.form-submit{
+  width:100%;padding:16px;margin-top:8px;
+  background:var(--green);color:white;
+  border:none;border-radius:8px;
+  font-size:1rem;font-weight:700;letter-spacing:0.04em;
+  cursor:pointer;transition:background 0.2s;
+  font-family:'Inter',sans-serif;
+}
+.form-submit:hover{background:var(--green2);}
+
+/* SECTIONS */
+.section{padding:64px 24px;}
+.section-tag{
+  display:inline-block;
+  font-size:0.68rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;
+  color:var(--green-light);margin-bottom:12px;
+}
+.section h2{
+  font-size:clamp(1.6rem,5vw,2.4rem);font-weight:800;
+  line-height:1.15;margin-bottom:16px;
+}
+.green-line{width:40px;height:3px;background:var(--green3);border-radius:2px;margin:18px 0;}
+
+/* SOBRE MÍ */
+.about{background:var(--dark2);}
+.about-photo{
+  width:100%;aspect-ratio:4/3;border-radius:12px;overflow:hidden;
+  background:var(--green);margin-bottom:28px;position:relative;
+}
+.about-photo img{width:100%;height:100%;object-fit:cover;object-position:top;}
+.about-photo-badge{
+  position:absolute;bottom:12px;left:12px;
+  background:var(--green);color:white;
+  font-size:0.7rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;
+  padding:6px 14px;border-radius:20px;
+}
+.about p{font-size:0.95rem;color:var(--text-muted);line-height:1.85;margin-bottom:14px;}
+.about-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px;}
+.chip{
+  background:rgba(46,125,50,0.2);border:1px solid rgba(102,187,106,0.3);
+  color:var(--green-light);
+  font-size:0.72rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;
+  padding:6px 14px;border-radius:20px;
+}
+
+/* PCI */
+.pci{background:var(--dark);}
+.pci-intro{color:var(--text-muted);font-size:0.95rem;line-height:1.8;margin-bottom:32px;}
+.pci-cards{display:flex;flex-direction:column;gap:14px;}
+.pci-card{
+  background:rgba(46,125,50,0.1);
+  border:1px solid rgba(102,187,106,0.2);
+  border-radius:12px;padding:20px;
+  display:flex;gap:16px;align-items:flex-start;
+  transition:border-color 0.3s,background 0.3s;
+}
+.pci-card:hover{border-color:rgba(102,187,106,0.5);background:rgba(46,125,50,0.18);}
+.pci-num{
+  min-width:36px;height:36px;border-radius:50%;
+  background:var(--green);
+  display:flex;align-items:center;justify-content:center;
+  font-size:0.8rem;font-weight:800;color:white;
+  flex-shrink:0;
+}
+.pci-card-body h3{font-size:0.95rem;font-weight:700;margin-bottom:6px;color:white;}
+.pci-card-body p{font-size:0.82rem;color:var(--text-muted);line-height:1.65;}
+
+/* SIMULADOR */
+.sim-section{background:var(--green);padding:48px 24px;}
+.sim-section .section-tag{color:rgba(255,255,255,0.7);}
+.sim-section h2{color:white;}
+.sim-section .green-line{background:white;opacity:0.4;}
+.sim-card{background:white;border-radius:16px;padding:24px;margin-top:28px;}
+.sim-row{margin-bottom:18px;}
+.sim-label{font-size:0.78rem;font-weight:600;color:#444;margin-bottom:6px;}
+.sim-input{
+  width:100%;padding:12px 16px;border-radius:8px;border:2px solid #e0e0e0;
+  font-size:1rem;font-weight:700;color:#111;font-family:'Inter',sans-serif;
+  outline:none;transition:border-color 0.2s;
+}
+.sim-input:focus{border-color:var(--green);}
+.sim-select{
+  width:100%;padding:12px 16px;border-radius:8px;border:2px solid #e0e0e0;
+  font-size:0.9rem;color:#111;font-family:'Inter',sans-serif;
+  background:white;outline:none;cursor:pointer;
+}
+.sim-btn{
+  width:100%;padding:14px;background:var(--green);color:white;
+  border:none;border-radius:8px;font-size:0.95rem;font-weight:700;
+  font-family:'Inter',sans-serif;cursor:pointer;margin-top:4px;
+  transition:background 0.2s;
+}
+.sim-btn:hover{background:var(--green2);}
+.sim-result{
+  display:none;margin-top:20px;
+  background:var(--green-pale);border-radius:12px;padding:20px;
+}
+.sim-result.show{display:block;}
+.sim-result-row{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:10px 0;border-bottom:1px solid rgba(0,0,0,0.07);
+}
+.sim-result-row:last-child{border:none;padding-bottom:0;}
+.sim-result-label{font-size:0.8rem;color:#555;}
+.sim-result-val{font-size:1rem;font-weight:800;color:var(--green);}
+.sim-result-total{
+  margin-top:16px;background:var(--green);border-radius:10px;
+  padding:16px;text-align:center;
+}
+.sim-result-total-num{font-size:2rem;font-weight:900;color:white;}
+.sim-result-total-label{font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.8);margin-top:4px;}
+
+/* RENTA */
+.renta{background:var(--dark2);}
+.renta-tabs{display:flex;gap:6px;margin-bottom:24px;overflow-x:auto;padding-bottom:2px;}
+.renta-tabs::-webkit-scrollbar{display:none;}
+.rtab{
+  flex-shrink:0;padding:8px 18px;border-radius:20px;border:none;
+  background:rgba(255,255,255,0.07);color:var(--text-muted);
+  font-size:0.78rem;font-weight:600;font-family:'Inter',sans-serif;
+  cursor:pointer;transition:background 0.2s,color 0.2s;
+}
+.rtab.active{background:var(--green);color:white;}
+.rcontent{display:none;}
+.rcontent.active{display:block;}
+.renta-table{width:100%;border-collapse:collapse;}
+.renta-table th{
+  font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;
+  color:var(--green-light);padding:10px 12px;text-align:left;
+  border-bottom:1px solid rgba(102,187,106,0.2);
+}
+.renta-table td{
+  padding:13px 12px;font-size:0.88rem;color:var(--text-muted);
+  border-bottom:1px solid rgba(255,255,255,0.05);
+}
+.renta-table td:first-child{font-weight:700;color:white;}
+.renta-table .gold-cell{color:var(--green-light);font-weight:700;}
+.renta-table .total-row td{
+  border-top:2px solid rgba(102,187,106,0.3);
+  color:var(--green-light) !important;font-weight:800 !important;font-size:0.95rem !important;
+  padding-top:16px;
+}
+.renta-highlight{
+  margin-top:24px;
+  background:rgba(46,125,50,0.15);border:1px solid rgba(102,187,106,0.25);
+  border-left:3px solid var(--green3);
+  border-radius:0 10px 10px 0;padding:18px 20px;
+}
+.renta-highlight-num{font-size:2rem;font-weight:900;color:var(--green-light);line-height:1;}
+.renta-highlight-label{font-size:0.68rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);margin-top:4px;}
+.renta-desc{font-size:0.83rem;color:var(--text-muted);line-height:1.75;margin-top:16px;}
+
+/* M2 */
+.m2{background:var(--dark);}
+.m2-box{
+  background:rgba(46,125,50,0.08);border:1px solid rgba(102,187,106,0.2);
+  border-radius:12px;padding:20px;margin-bottom:16px;
+}
+.m2-box-title{
+  font-size:0.65rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;
+  color:var(--green-light);margin-bottom:12px;
+}
+.m2-row{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid rgba(255,255,255,0.05);}
+.m2-row:last-child{border:none;}
+.m2-row-label{font-size:0.82rem;color:var(--text-muted);}
+.m2-row-val{font-size:0.9rem;font-weight:700;}
+.m2-row-val.red{color:#EF9A9A;}
+.m2-row-val.blue{color:#90CAF9;}
+.m2-row-val.green{color:var(--green-light);}
+.m2-total-box{
+  background:var(--green);border-radius:12px;
+  padding:20px;text-align:center;margin-bottom:16px;
+}
+.m2-total-num{font-size:2.5rem;font-weight:900;color:white;line-height:1;}
+.m2-total-label{font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.8);margin-top:6px;}
+.m2-logic{
+  background:rgba(255,255,255,0.04);border-radius:12px;
+  padding:20px;font-size:0.85rem;color:var(--text-muted);line-height:1.85;
+}
+.m2-logic strong{color:var(--green-light);}
+
+/* CONTACTO */
+.contacto{background:var(--green);padding:56px 24px;}
+.contacto h2{color:white;font-size:1.8rem;font-weight:800;text-align:center;margin-bottom:8px;}
+.contacto-sub{color:rgba(255,255,255,0.8);text-align:center;font-size:0.9rem;margin-bottom:32px;}
+.contact-cards{display:flex;flex-direction:column;gap:12px;}
+.ccard{
+  background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);
+  border-radius:12px;padding:18px 20px;
+  display:flex;align-items:center;gap:14px;
+  text-decoration:none;color:white;
+  transition:background 0.2s;
+}
+.ccard:hover{background:rgba(255,255,255,0.2);}
+.ccard-icon{font-size:1.4rem;flex-shrink:0;}
+.ccard-label{font-size:0.65rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.65);margin-bottom:2px;}
+.ccard-val{font-size:0.95rem;font-weight:600;}
+.wa-float{
+  position:fixed;bottom:24px;right:20px;z-index:999;
+  width:56px;height:56px;border-radius:50%;
+  background:#25D366;
+  display:flex;align-items:center;justify-content:center;
+  text-decoration:none;font-size:1.6rem;
+  box-shadow:0 4px 16px rgba(0,0,0,0.35);
+  transition:transform 0.2s;
+}
+.wa-float:hover{transform:scale(1.08);}
+
+/* FOOTER */
+footer{
+  background:var(--dark2);border-top:1px solid rgba(102,187,106,0.1);
+  padding:28px 24px;text-align:center;
+}
+.footer-logo{font-size:1rem;font-weight:800;color:var(--green-light);margin-bottom:6px;}
+.footer-copy{font-size:0.72rem;color:rgba(255,255,255,0.3);}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">
+    <div class="nav-logo-icon">GL</div>
+    <div class="nav-logo-text">Godoy Lisandro</div>
+  </a>
+  <div class="nav-right">
+    <a href="#contacto" class="nav-cta-btn">Contactar</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-bg-img"></div>
+  <div class="hero-social">
+    <a href="https://wa.me/5491138502056" class="social-btn" target="_blank">💬</a>
+    <a href="https://spazios.com.ar" class="social-btn" target="_blank">🏢</a>
+    <a href="mailto:lgodoy@spazios.com.ar" class="social-btn">✉️</a>
+  </div>
+  <div class="hero-content">
+    <div class="hero-tag">Asesor Inmobiliario · Spazios</div>
+    <h1>Tu inversión<br>en metros<br>cuadrados</h1>
+    <p class="hero-sub">Convertí tus pesos en patrimonio real. Departamentos en CABA y GBA con financiación directa, sin bancos, sin interés real.</p>
+    <div class="hero-stats">
+      <div>
+        <div class="stat-num">+20</div>
+        <div class="stat-label">Años de respaldo</div>
+      </div>
+      <div>
+        <div class="stat-num">+4.700</div>
+        <div class="stat-label">Clientes satisfechos</div>
+      </div>
+      <div>
+        <div class="stat-num">+37</div>
+        <div class="stat-label">Edificios</div>
+      </div>
+      <div>
+        <div class="stat-num">72%</div>
+        <div class="stat-label">Retorno a 5 años</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FORM -->
+  <div class="form-card">
+    <div class="form-title">Agendá tu consulta</div>
+    <div class="form-sub">Gratis y sin compromiso · Te respondo en menos de 24 hs</div>
+    <div class="form-group">
+      <label>Nombre y apellido <span>*</span></label>
+      <input type="text" placeholder="Introduce tu nombre y apellido">
+    </div>
+    <div class="form-group">
+      <label>Correo electrónico <span>*</span></label>
+      <input type="email" placeholder="Email">
+    </div>
+    <div class="form-group">
+      <label>Teléfono <span>*</span></label>
+      <input type="tel" placeholder="Tu número de WhatsApp">
+    </div>
+    <div class="form-group">
+      <label>¿Qué te interesa?</label>
+      <select>
+        <option value="">Seleccioná una opción</option>
+        <option>Plan de Capitalización (PCI)</option>
+        <option>Comprar un departamento</option>
+        <option>Esquema de Renta</option>
+        <option>Pasaje a M²</option>
+        <option>Consulta general</option>
+      </select>
+    </div>
+    <button class="form-submit" onclick="submitForm()">Quiero que me contacten →</button>
+  </div>
+</section>
+
+<!-- SOBRE MÍ -->
+<section class="section about" id="sobre-mi">
+  <div class="section-tag">Quién soy</div>
+  <h2>Godoy Lisandro</h2>
+  <div class="green-line"></div>
+  <div class="about-photo">
+    <img src="goday.jpg" alt="Godoy Lisandro">
+    <div class="about-photo-badge">Asesor Certificado</div>
+  </div>
+  <p>Soy asesor inmobiliario con foco en estrategias de capitalización en pesos. Mi trabajo es ayudarte a proteger tu dinero de la inflación convirtiéndolo en metros cuadrados reales.</p>
+  <p>Trabajo con Spazios, la desarrolladora número 1 de Buenos Aires, con más de 20 años y +4.700 clientes satisfechos. Eso significa que podés acceder a proyectos de primera calidad con financiación directa y sin burocracia bancaria.</p>
+  <p>No te vendo un departamento: te diseño una estrategia de largo plazo adaptada a tu situación y tus objetivos.</p>
+  <div class="about-chips">
+    <div class="chip">CABA y GBA</div>
+    <div class="chip">Sin bancos</div>
+    <div class="chip">Tasa 0% real</div>
+    <div class="chip">Departamento puente</div>
+    <div class="chip">Pasaje a M²</div>
+    <div class="chip">Renta en USD</div>
+  </div>
+</section>
+
+<!-- PCI -->
+<section class="section pci" id="pci">
+  <div class="section-tag">Plan de Capitalización Inmobiliaria</div>
+  <h2>La alternativa al crédito tradicional</h2>
+  <div class="green-line"></div>
+  <p class="pci-intro">Tu ahorro mensual en pesos deja de perder valor y empieza a convertirse en metros cuadrados. Sin tasas bancarias, sin inflación sobre tu capital.</p>
+  <div class="pci-cards">
+    <div class="pci-card">
+      <div class="pci-num">1</div>
+      <div class="pci-card-body">
+        <h3>Tasa 0% Real</h3>
+        <p>Las cuotas se ajustan solo por el Índice de Costo de Construcción (CAC), sin interés financiero adicional.</p>
+      </div>
+    </div>
+    <div class="pci-card">
+      <div class="pci-num">2</div>
+      <div class="pci-card-body">
+        <h3>Cuotas Accesibles</h3>
+        <p>Financiación directa sin bancos, sin calificación crediticia, sin garantes.</p>
+      </div>
+    </div>
+    <div class="pci-card">
+      <div class="pci-num">3</div>
+      <div class="pci-card-body">
+        <h3>Cláusula de Liquidez</h3>
+        <p>Podés hacer un pasaje de obra en cualquier momento. La empresa reconoce el valor de tus m² al precio actual de mercado.</p>
+      </div>
+    </div>
+    <div class="pci-card">
+      <div class="pci-num">4</div>
+      <div class="pci-card-body">
+        <h3>Capitalización Continua</h3>
+        <p>A medida que avanza la obra tu inversión se aprecia. Cada cuota compra m² que valen más al finalizar.</p>
+      </div>
+    </div>
+    <div class="pci-card">
+      <div class="pci-num">5</div>
+      <div class="pci-card-body">
+        <h3>Entrega y Posesión</h3>
+        <p>Podés habitar tu departamento y seguir pagando las cuotas restantes simultáneamente.</p>
+      </div>
+    </div>
+    <div class="pci-card">
+      <div class="pci-num">6</div>
+      <div class="pci-card-body">
+        <h3>Departamento Puente</h3>
+        <p>Los m² acumulados en una unidad puente se usan como anticipo de tu unidad meta. Crecés sin perder lo invertido.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SIMULADOR -->
+<section class="sim-section" id="simulador">
+  <div class="section-tag">Simulador</div>
+  <h2>Calculá tu capitalización</h2>
+  <div class="green-line"></div>
+  <div class="sim-card">
+    <div class="sim-row">
+      <div class="sim-label">Capital a invertir (USD)</div>
+      <input class="sim-input" type="number" id="sim-capital" placeholder="100000" value="100000">
+    </div>
+    <div class="sim-row">
+      <div class="sim-label">Esquema de renta</div>
+      <select class="sim-select" id="sim-tipo">
+        <option value="anual">Renta Anual (cobro anual)</option>
+        <option value="compuesta">Renta Compuesta (reinversión)</option>
+        <option value="pasaje">Pasaje a M² (11,5% fijo)</option>
+      </select>
+    </div>
+    <div class="sim-row">
+      <div class="sim-label">Plazo</div>
+      <select class="sim-select" id="sim-plazo">
+        <option value="1">1 año</option>
+        <option value="2">2 años</option>
+        <option value="3">3 años</option>
+        <option value="4">4 años</option>
+        <option value="5" selected>5 años</option>
+      </select>
+    </div>
+    <button class="sim-btn" onclick="calcular()">Calcular mi retorno →</button>
+    <div class="sim-result" id="sim-result"></div>
+  </div>
+</section>
+
+<!-- M2 -->
+<section class="section m2" id="m2">
+  <div class="section-tag">Capitalización por M²</div>
+  <h2>Cómo funciona el pasaje</h2>
+  <div class="green-line"></div>
+  <p style="font-size:0.88rem;color:var(--text-muted);margin-bottom:24px;line-height:1.8;">Ejemplo real con una unidad de 32 m² valuada en USD 57.153. El anticipo y las cuotas compran proporciones del departamento al precio congelado del momento del boleto.</p>
+
+  <div class="m2-box">
+    <div class="m2-box-title">Anticipo</div>
+    <div class="m2-row"><span class="m2-row-label">Monto pagado</span><span class="m2-row-val red">USD 19.000</span></div>
+    <div class="m2-row"><span class="m2-row-label">M² que compraba</span><span class="m2-row-val">12 m²</span></div>
+    <div class="m2-row"><span class="m2-row-label">% pagado del total</span><span class="m2-row-val red">100%</span></div>
+    <div class="m2-row"><span class="m2-row-label">M² obtenidos</span><span class="m2-row-val red">12 m²</span></div>
+  </div>
+
+  <div class="m2-box">
+    <div class="m2-box-title">16 Cuotas de $600.000</div>
+    <div class="m2-row"><span class="m2-row-label">M² que compraba</span><span class="m2-row-val">18 m²</span></div>
+    <div class="m2-row"><span class="m2-row-label">% pagado hasta ahora</span><span class="m2-row-val blue">2%</span></div>
+    <div class="m2-row"><span class="m2-row-label">M² acumulados con cuotas</span><span class="m2-row-val blue">1,3 m²</span></div>
+  </div>
+
+  <div class="m2-total-box">
+    <div class="m2-total-num">13,3 m²</div>
+    <div class="m2-total-label">Total acumulado al momento del pasaje</div>
+  </div>
+
+  <div class="m2-logic">
+    <strong>¿Qué pasa al hacer el pasaje?</strong><br><br>
+    Si al firmaste con el m² a <strong>USD 1.700</strong> y al momento del pasaje vale <strong>USD 2.500</strong>, la empresa reconoce:<br><br>
+    13,3 m² × USD 2.500 = <strong style="color:var(--green-light);font-size:1.1rem;">USD 33.250</strong><br><br>
+    Ese capital lo usás como anticipo de tu unidad meta — aunque solo hayas pagado aprox. USD 23.000. La diferencia es la apreciación por avance de obra.
+  </div>
+</section>
+
+<!-- RENTA -->
+<section class="section renta" id="renta">
+  <div class="section-tag">Esquemas de Inversión</div>
+  <h2>Tres formas de crecer</h2>
+  <div class="green-line"></div>
+  <p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:24px;">Ejemplo con USD 100.000. Elegí el esquema según tu objetivo.</p>
+  <div class="renta-tabs">
+    <button class="rtab active" onclick="showRenta('anual',this)">Renta Anual</button>
+    <button class="rtab" onclick="showRenta('compuesta',this)">Renta Compuesta</button>
+    <button class="rtab" onclick="showRenta('pasaje',this)">Pasaje a M²</button>
+  </div>
+
+  <div class="rcontent active" id="r-anual">
+    <table class="renta-table">
+      <thead><tr><th>Año</th><th>Tasa</th><th>Cobrado (USD)</th></tr></thead>
+      <tbody>
+        <tr><td>1º Año</td><td>4,50%</td><td class="gold-cell">4.500</td></tr>
+        <tr><td>2º Año</td><td>5%</td><td class="gold-cell">5.000</td></tr>
+        <tr><td>3º Año</td><td>7,50%</td><td class="gold-cell">7.500</td></tr>
+        <tr><td>4º Año</td><td>9,50%</td><td class="gold-cell">9.500</td></tr>
+        <tr><td>5º Año</td><td>11,50%</td><td class="gold-cell">11.500</td></tr>
+        <tr class="total-row"><td>Total</td><td>—</td><td>USD 38.000</td></tr>
+      </tbody>
+    </table>
+    <div class="renta-highlight"><div class="renta-highlight-num">USD 38.000</div><div class="renta-highlight-label">Renta total en 5 años</div></div>
+    <p class="renta-desc">Los intereses se liquidan anualmente y recibís tu capital de vuelta al finalizar el plazo. Ideal para quienes buscan un flujo de ingresos constante.</p>
+  </div>
+
+  <div class="rcontent" id="r-compuesta">
+    <table class="renta-table">
+      <thead><tr><th>Año</th><th>Tasa</th><th>Capital (USD)</th><th>Total</th></tr></thead>
+      <tbody>
+        <tr><td>1º Año</td><td>4,50%</td><td class="gold-cell">104.500</td><td>4,50%</td></tr>
+        <tr><td>2º Año</td><td>5%</td><td class="gold-cell">110.250</td><td>10,25%</td></tr>
+        <tr><td>3º Año</td><td>7,50%</td><td class="gold-cell">124.230</td><td>24,23%</td></tr>
+        <tr><td>4º Año</td><td>9,50%</td><td class="gold-cell">143.766</td><td>43,76%</td></tr>
+        <tr><td>5º Año</td><td>11,50%</td><td class="gold-cell">172.355</td><td>72,35%</td></tr>
+      </tbody>
+    </table>
+    <div class="renta-highlight"><div class="renta-highlight-num">USD 172.355</div><div class="renta-highlight-label">Capital total al 5º año · +72,35%</div></div>
+    <p class="renta-desc">El interés generado se reinvierte cada año. Al finalizar retirás capital más intereses acumulados. Máximo crecimiento patrimonial.</p>
+  </div>
+
+  <div class="rcontent" id="r-pasaje">
+    <table class="renta-table">
+      <thead><tr><th>Año</th><th>Tasa</th><th>Pasa a M² (USD)</th><th>Acumulado</th></tr></thead>
+      <tbody>
+        <tr><td>1º Año</td><td>11,50%</td><td class="gold-cell">111.500</td><td>11,50%</td></tr>
+        <tr><td>2º Año</td><td>11,50%</td><td class="gold-cell">124.322</td><td>24,32%</td></tr>
+        <tr><td>3º Año</td><td>11,50%</td><td class="gold-cell">138.619</td><td>38,62%</td></tr>
+        <tr><td>4º Año</td><td>11,50%</td><td class="gold-cell">154.560</td><td>54,56%</td></tr>
+        <tr><td>5º Año</td><td>11,50%</td><td class="gold-cell">172.355</td><td>72,35%</td></tr>
+      </tbody>
+    </table>
+    <div class="renta-highlight"><div class="renta-highlight-num">72,35%</div><div class="renta-highlight-label">Retorno total a 5 años · Podés salir cuando quieras</div></div>
+    <p class="renta-desc">La tasa es fija al 11,5% desde el primer año. En lugar de cobrar efectivo, convertís los intereses en m² al precio actual. Mayor poder adquisitivo real.</p>
+  </div>
+</section>
+
+<!-- CONTACTO -->
+<section class="contacto" id="contacto">
+  <div class="section-tag" style="color:rgba(255,255,255,0.7);">Contacto directo</div>
+  <h2>Hablemos de tu estrategia</h2>
+  <p class="contacto-sub">Consulta sin cargo · Respuesta en menos de 24 hs</p>
+  <div class="contact-cards">
+    <a href="https://wa.me/5491138502056?text=Hola%20Lisandro%2C%20quiero%20consultar%20sobre%20el%20PCI" class="ccard" target="_blank">
+      <div class="ccard-icon">💬</div>
+      <div><div class="ccard-label">WhatsApp</div><div class="ccard-val">+54 9 11 3850-2056</div></div>
+    </a>
+    <a href="mailto:lgodoy@spazios.com.ar" class="ccard">
+      <div class="ccard-icon">✉️</div>
+      <div><div class="ccard-label">Email</div><div class="ccard-val">lgodoy@spazios.com.ar</div></div>
+    </a>
+    <a href="https://spazios.com.ar/departamentos/" class="ccard" target="_blank">
+      <div class="ccard-icon">🏢</div>
+      <div><div class="ccard-label">Ver proyectos</div><div class="ccard-val">spazios.com.ar</div></div>
+    </a>
+    <a href="https://maps.app.goo.gl/?q=Andres+Ferreyra+2539+Caseros" class="ccard" target="_blank">
+      <div class="ccard-icon">📍</div>
+      <div><div class="ccard-label">Oficina</div><div class="ccard-val">Andres Ferreyra 2539, Caseros</div></div>
+    </a>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">Godoy Lisandro · Asesor Inmobiliario</div>
+  <div class="footer-copy">Spazios · La desarrolladora número 1 de Buenos Aires · Más de 20 años de respaldo</div>
+</footer>
+
+<!-- WhatsApp flotante -->
+<a href="https://wa.me/5491138502056?text=Hola%20Lisandro%2C%20quiero%20consultar%20sobre%20el%20PCI" class="wa-float" target="_blank">💬</a>
+
+<script>
+function showRenta(id, btn) {
+  document.querySelectorAll('.rcontent').forEach(c => c.classList.remove('active'));
+  document.querySelectorAll('.rtab').forEach(t => t.classList.remove('active'));
+  document.getElementById('r-' + id).classList.add('active');
+  btn.classList.add('active');
+}
+
+const tasas = {
+  anual:    [4.5, 5, 7.5, 9.5, 11.5],
+  compuesta:[4.5, 5, 7.5, 9.5, 11.5],
+  pasaje:   [11.5,11.5,11.5,11.5,11.5]
+};
+
+function calcular() {
+  const cap = parseFloat(document.getElementById('sim-capital').value) || 100000;
+  const tipo = document.getElementById('sim-tipo').value;
+  const plazo = parseInt(document.getElementById('sim-plazo').value);
+  const rates = tasas[tipo];
+  let capital = cap;
+  let totalRenta = 0;
+  let rows = '';
+
+  for (let i = 0; i < plazo; i++) {
+    const r = rates[i] / 100;
+    const interes = capital * r;
+    if (tipo === 'anual') {
+      totalRenta += interes;
+      rows += `<div class="sim-result-row"><span class="sim-result-label">Año ${i+1} (${rates[i]}%)</span><span class="sim-result-val">+ USD ${Math.round(interes).toLocaleString()}</span></div>`;
+    } else {
+      capital += interes;
+      rows += `<div class="sim-result-row"><span class="sim-result-label">Año ${i+1} (${rates[i]}%)</span><span class="sim-result-val">USD ${Math.round(capital).toLocaleString()}</span></div>`;
+    }
+  }
+
+  const finalVal = tipo === 'anual' ? cap + totalRenta : capital;
+  const ganancia = ((finalVal - cap) / cap * 100).toFixed(1);
+
+  const el = document.getElementById('sim-result');
+  el.innerHTML = rows +
+    `<div class="sim-result-total">
+      <div class="sim-result-total-num">USD ${Math.round(finalVal).toLocaleString()}</div>
+      <div class="sim-result-total-label">Capital final · +${ganancia}% en ${plazo} año${plazo>1?'s':''}</div>
+    </div>`;
+  el.classList.add('show');
+}
+
+function submitForm() {
+  const nombre = document.querySelector('input[type=text]').value;
+  const tel = document.querySelector('input[type=tel]').value;
+  if (!nombre || !tel) { alert('Por favor completá nombre y teléfono.'); return; }
+  const msg = encodeURIComponent(`Hola Lisandro, me llamo ${nombre} y quiero agendar una consulta. Mi teléfono es ${tel}.`);
+  window.open('https://wa.me/5491138502056?text=' + msg, '_blank');
+}
+</script>
+</body>
+</html>
